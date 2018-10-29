@@ -10,6 +10,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import SQLite from "react-native-sqlite-storage";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -20,6 +21,18 @@ const instructions = Platform.select({
 
 interface Props {}
 export default class App extends Component<Props> {
+
+  public componentDidMount() {
+    SQLite.DEBUG(true);
+    SQLite.enablePromise(true);
+    SQLite.openDatabase({
+      name: "TestDatabase",
+      location: "default"
+    }).then((db) => {
+      console.log("Database open!");
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>

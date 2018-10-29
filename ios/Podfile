@@ -10,6 +10,7 @@ target 'RNSQLiteDemo' do
   ]
   
   # We'll add the react-native-sqlite-storage package during a later post here
+  pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
 end
 

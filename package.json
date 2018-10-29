@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4"
+    "react-native": "0.57.4",
+    "react-native-sqlite-storage": "^3.3.7"
   },
   "devDependencies": {
     "@types/jest": "23.3.7",
     "@types/react": "16.4.18",
     "@types/react-native": "0.57.7",
+    "@types/react-native-sqlite-storage": "^3.3.1",
     "@types/react-test-renderer": "16.0.3",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
