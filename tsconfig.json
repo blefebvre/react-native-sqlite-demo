@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "target": "esnext"
   },
   "exclude": ["node_modules"]
