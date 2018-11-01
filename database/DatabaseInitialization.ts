@@ -22,7 +22,6 @@ export class DatabaseInitialization {
 
         // This is included as an example of how you make database schema changes once the app has been shipped
         if (dbVersion < 1) {
-          console.log("Running pre-version 1 DB inserts");
           // Uncomment the next line, and the referenced function below, to enable this
           // return database.transaction(this.preVersion1Inserts);
         }
@@ -31,7 +30,6 @@ export class DatabaseInitialization {
       })
       .then(() => {
         if (dbVersion < 2) {
-          console.log("Running pre-version 2 DB inserts");
           // Uncomment the next line, and the referenced function below, to enable this
           // return database.transaction(this.preVersion2Inserts);
         }
@@ -94,6 +92,8 @@ export class DatabaseInitialization {
   /*
     // This function should be called when the version of the db is < 1
     private preVersion1Inserts(transaction: SQLite.Transaction) {
+        console.log("Running pre-version 1 DB inserts");
+
         // Make schema changes
         transaction.executeSql("ALTER TABLE ...");
 
@@ -103,6 +103,8 @@ export class DatabaseInitialization {
 
     // This function should be called when the version of the db is < 2
     private preVersion2Inserts(transaction: SQLite.Transaction) {
+        console.log("Running pre-version 2 DB inserts");
+        
         // Make schema changes
         transaction.executeSql("ALTER TABLE ...");
 
