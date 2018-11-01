@@ -8,9 +8,10 @@
  */
 
 import React, { Component } from "react";
+import { AppState, Platform, StyleSheet, SafeAreaView } from "react-native";
 
-import { AppState, Platform, StyleSheet, Text, View } from "react-native";
 import { database } from "./database/Database";
+import { AllLists } from "./components/AllLists";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
@@ -50,11 +51,9 @@ export default class App extends Component<any, State> {
 
   public render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <AllLists />
+      </SafeAreaView>
     );
   }
 
@@ -64,11 +63,13 @@ export default class App extends Component<any, State> {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
+      // App has moved from the background (or inactive) into the foreground
       this.appIsNowRunningInForeground();
     } else if (
       this.state.appState === "active" &&
       nextAppState.match(/inactive|background/)
     ) {
+      // App has moved from the foreground into the background (or become inactive)
       this.appHasGoneToTheBackground();
     }
     this.setState({ appState: nextAppState });
@@ -95,19 +96,6 @@ export default class App extends Component<any, State> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
+    flex: 1
   }
 });
