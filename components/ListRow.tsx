@@ -1,11 +1,17 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { List } from "../types/List";
 
 interface Props {
   list: List;
+  handleListClicked(list: List): void;
 }
 
 export const ListRow = (props: Props) => {
-  return <Text>{props.list.title}</Text>;
+  const { list, handleListClicked } = props;
+  return (
+    <TouchableOpacity onPress={() => handleListClicked(list)}>
+      <Text>{list.title}</Text>
+    </TouchableOpacity>
+  );
 };

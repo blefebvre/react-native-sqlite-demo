@@ -6,10 +6,12 @@ import { Header } from "./Header";
 import { List } from "../types/List";
 import { ListRow } from "./ListRow";
 import { database } from "../database/Database";
+import { ViewList } from "./ViewList";
 
 interface State {
   newListTitle: string;
   lists: List[];
+  listModalVisible: boolean;
 }
 
 export class AllLists extends Component<any, State> {
@@ -17,10 +19,12 @@ export class AllLists extends Component<any, State> {
     super(props);
     this.state = {
       newListTitle: "",
-      lists: []
+      lists: [],
+      listModalVisible: false
     };
     this.handleNewListTitleChange = this.handleNewListTitleChange.bind(this);
     this.handleCreateList = this.handleCreateList.bind(this);
+    this.handleListClicked = this.handleListClicked.bind(this);
   }
 
   public componentDidMount() {
@@ -38,8 +42,14 @@ export class AllLists extends Component<any, State> {
         />
         <FlatList
           data={this.state.lists}
-          renderItem={({ item }) => <ListRow list={item} />}
+          renderItem={({ item }) => (
+            <ListRow list={item} handleListClicked={this.handleListClicked} />
+          )}
           keyExtractor={(item, index) => `${index}`}
+        />
+        <ViewList
+          visible={this.state.listModalVisible}
+          list={this.state.selectedList}
         />
       </View>
     );
@@ -58,6 +68,8 @@ export class AllLists extends Component<any, State> {
       this.refreshListOfLists();
     });
   }
+
+  private handleListClicked(list: List) {}
 
   private refreshListOfLists() {
     return database.getAllLists().then(lists => this.setState({ lists }));
