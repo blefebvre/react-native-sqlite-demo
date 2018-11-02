@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 
-import { NewList } from "./NewList";
+import { NewItem } from "./NewItem";
 import { Header } from "./Header";
 import { List } from "../types/List";
 import { ListRow } from "./ListRow";
 import { database } from "../database/Database";
-import { ViewList } from "./ViewList";
+import { ViewListModal } from "./ViewListModal";
 
 interface State {
   newListTitle: string;
   lists: List[];
   listModalVisible: boolean;
+  selectedList?: List;
 }
 
 export class AllLists extends Component<any, State> {
@@ -35,10 +36,12 @@ export class AllLists extends Component<any, State> {
     return (
       <View style={styles.container}>
         <Header title="Bruce's List App" />
-        <NewList
-          newListTitle={this.state.newListTitle}
-          handleTitleChange={this.handleNewListTitleChange}
-          handleCreateList={this.handleCreateList}
+        <NewItem
+          newItemName={this.state.newListTitle}
+          handleNameChange={this.handleNewListTitleChange}
+          handleCreateNewItem={this.handleCreateList}
+          placeholderText="Enter a name for your new list"
+          createButtonText="Add list"
         />
         <FlatList
           data={this.state.lists}
@@ -47,9 +50,10 @@ export class AllLists extends Component<any, State> {
           )}
           keyExtractor={(item, index) => `${index}`}
         />
-        <ViewList
+        <ViewListModal
           visible={this.state.listModalVisible}
           list={this.state.selectedList}
+          back={() => this.setState({ listModalVisible: false })}
         />
       </View>
     );
@@ -69,7 +73,13 @@ export class AllLists extends Component<any, State> {
     });
   }
 
-  private handleListClicked(list: List) {}
+  private handleListClicked(list: List) {
+    console.log(`List clicked! Title: ${list.title}`);
+    this.setState({
+      selectedList: list,
+      listModalVisible: true
+    });
+  }
 
   private refreshListOfLists() {
     return database.getAllLists().then(lists => this.setState({ lists }));

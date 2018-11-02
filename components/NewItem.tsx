@@ -9,33 +9,41 @@ import {
 } from "react-native";
 
 interface Props {
-  newListTitle: string;
-  handleTitleChange(title: string): void;
-  handleCreateList(): Promise<void>;
+  newItemName: string; // Prop that the TextInput is controlled by
+  placeholderText: string;
+  createButtonText: string;
+  handleNameChange(title: string): void;
+  handleCreateNewItem(): Promise<void>;
 }
 
-export const NewList = (props: Props) => {
-  const { handleTitleChange, newListTitle, handleCreateList } = props;
+export const NewItem = (props: Props) => {
+  const {
+    newItemName,
+    placeholderText,
+    createButtonText,
+    handleNameChange,
+    handleCreateNewItem
+  } = props;
   return (
     <View style={styles.wrapper}>
       <TextInput
-        placeholder="Enter a new list name"
-        onChangeText={handleTitleChange}
-        value={newListTitle}
+        placeholder={placeholderText}
+        onChangeText={handleNameChange}
+        value={newItemName}
         style={styles.textInput}
       />
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (newListTitle !== "") {
-            handleCreateList().then(() => {
+          if (newItemName !== "") {
+            handleCreateNewItem().then(() => {
               // Reset the text input
-              handleTitleChange("");
+              handleNameChange("");
             });
           }
         }}
       >
-        <Text>Add List</Text>
+        <Text>{createButtonText}</Text>
       </TouchableOpacity>
     </View>
   );
