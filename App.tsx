@@ -50,11 +50,16 @@ export default class App extends Component<any, State> {
   }
 
   public render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <AllLists />
-      </SafeAreaView>
-    );
+    // Once the database is ready, show the Lists
+    if (this.state.databaseIsReady) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <AllLists />
+        </SafeAreaView>
+      );
+    }
+    // Else, show nothing. TODO: show a loading spinner
+    return null;
   }
 
   // Handle the app going from foreground to background, and vice versa.

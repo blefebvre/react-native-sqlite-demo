@@ -40,12 +40,19 @@ export class DatabaseInitialization {
 
   // Perform initial setup of the database tables
   private createTables(transaction: SQLite.Transaction) {
+    // DANGER! For dev only
+    const dropAllTables = false;
+    if (dropAllTables) {
+      transaction.executeSql("DROP TABLE IF EXISTS List;");
+      transaction.executeSql("DROP TABLE IF EXISTS ListItem;");
+      transaction.executeSql("DROP TABLE IF EXISTS Version;");
+    }
+
     // List table
     transaction.executeSql(
       "CREATE TABLE IF NOT EXISTS List( " +
         "list_id INTEGER PRIMARY KEY NOT NULL, " +
-        "title TEXT, " +
-        "description TEXT" +
+        "title TEXT" +
         ");"
     );
 
