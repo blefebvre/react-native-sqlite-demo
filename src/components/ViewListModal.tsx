@@ -36,6 +36,7 @@ export class ViewListModal extends Component<Props, State> {
     this.handleNewItemNameChange = this.handleNewItemNameChange.bind(this);
     this.handleAddNewItemToList = this.handleAddNewItemToList.bind(this);
     this.refreshListItems = this.refreshListItems.bind(this);
+    this.toggleListItemDoneness = this.toggleListItemDoneness.bind(this);
   }
 
   public render() {
@@ -74,7 +75,12 @@ export class ViewListModal extends Component<Props, State> {
 
           <FlatList
             data={this.state.listItems}
-            renderItem={({ item }) => <ListItemRow listItem={item} />}
+            renderItem={({ item }) => (
+              <ListItemRow
+                listItem={item}
+                handleListItemClicked={this.toggleListItemDoneness}
+              />
+            )}
             keyExtractor={(item, index) => `item-${index}`}
           />
         </SafeAreaView>
@@ -92,6 +98,12 @@ export class ViewListModal extends Component<Props, State> {
         .getListItems(this.props.list)
         .then(listItems => this.setState({ listItems }));
     }
+  }
+
+  private toggleListItemDoneness(listItem: ListItem) {
+    const newDoneState = !listItem.done;
+    listItem.done = newDoneState;
+    database.updateListItem(listItem).then(() => this.refreshListItems());
   }
 
   private handleNewItemNameChange(newItemText: string) {

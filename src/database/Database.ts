@@ -10,6 +10,7 @@ export interface Database {
   getAllLists(): Promise<List[]>;
   addListItem(text: string, list: List): Promise<void>;
   getListItems(list: List): Promise<ListItem[]>;
+  updateListItem(listItem: ListItem): Promise<void>;
 }
 
 class DatabaseImpl implements Database {
@@ -125,7 +126,7 @@ class DatabaseImpl implements Database {
         const listItems: ListItem[] = [];
         for (let i = 0; i < count; i++) {
           const row = results.rows.item(i);
-          const { text, doneNumber, id } = row;
+          const { text, done: doneNumber, id } = row;
           const done = doneNumber === 1 ? true : false;
 
           console.log(`[db] List item text: ${text}, done? ${done} id: ${id}`);
@@ -133,6 +134,20 @@ class DatabaseImpl implements Database {
         }
         console.log(`[db] List items for list "${list.title}":`, listItems);
         return listItems;
+      });
+  }
+
+  public updateListItem(listItem: ListItem): Promise<void> {
+    const doneNumber = listItem.done ? 1 : 0;
+    return this.getDatabase()
+      .then(db =>
+        db.executeSql(
+          "UPDATE ListItem SET text = ?, done = ? WHERE item_id = ?;",
+          [listItem.text, doneNumber, listItem.id]
+        )
+      )
+      .then(([results]) => {
+        console.log(`[db] List item with id: ${listItem.id} updated.`);
       });
   }
 

@@ -1,33 +1,44 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ListItem } from "../types/ListItem";
+import { Checkbox } from "./Checkbox";
 
 interface Props {
   listItem: ListItem;
+  handleListItemClicked(listItem: ListItem): void;
 }
 
 export const ListItemRow = (props: Props) => {
-  const { listItem } = props;
+  const { listItem, handleListItemClicked } = props;
   return (
-    <View style={styles.row}>
-      <Text>{listItem.text}</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => handleListItemClicked(listItem)}
+      style={styles.row}
+    >
+      <Checkbox checked={listItem.done} />
+      <Text style={[styles.itemText, listItem.done && styles.done]}>
+        {listItem.text}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   row: {
     borderWidth: 1,
-    padding: 15,
+    paddingLeft: 15,
     marginTop: 10,
-    backgroundColor: "#EEE",
     borderRadius: 3,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  itemText: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 11
+  },
+  done: {
+    textDecorationLine: "line-through",
+    color: "gray"
   }
 });
