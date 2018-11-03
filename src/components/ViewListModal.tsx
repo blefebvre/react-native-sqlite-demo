@@ -5,11 +5,15 @@ import {
   Modal,
   Text,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from "react-native";
 import { Header } from "./Header";
 import { List } from "../types/List";
 import { NewItem } from "./NewItem";
+import { database } from "../database/Database";
+import { ListItem } from "../types/ListItem";
+import { ListItemRow } from "./ListItemRow";
 
 interface Props {
   visible: boolean;
@@ -18,17 +22,20 @@ interface Props {
 }
 
 interface State {
-  newItemName: string;
+  newItemText: string;
+  listItems: ListItem[];
 }
 
 export class ViewListModal extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      newItemName: ""
+      newItemText: "",
+      listItems: []
     };
     this.handleNewItemNameChange = this.handleNewItemNameChange.bind(this);
     this.handleAddNewItemToList = this.handleAddNewItemToList.bind(this);
+    this.refreshListItems = this.refreshListItems.bind(this);
   }
 
   public render() {
@@ -42,6 +49,8 @@ export class ViewListModal extends Component<Props, State> {
         transparent={false}
         visible={visible}
         onRequestClose={() => this.props.back()}
+        onShow={this.refreshListItems}
+        onDismiss={() => this.setState({ listItems: [] })}
       >
         <SafeAreaView style={styles.container}>
           <View style={styles.headerAndClose}>
@@ -56,23 +65,51 @@ export class ViewListModal extends Component<Props, State> {
           </View>
 
           <NewItem
-            newItemName={this.state.newItemName}
+            newItemName={this.state.newItemText}
             handleNameChange={this.handleNewItemNameChange}
             handleCreateNewItem={this.handleAddNewItemToList}
             placeholderText="Enter a new list item"
             createButtonText="Add item"
+          />
+
+          <FlatList
+            data={this.state.listItems}
+            renderItem={({ item }) => <ListItemRow listItem={item} />}
+            keyExtractor={(item, index) => `item-${index}`}
           />
         </SafeAreaView>
       </Modal>
     );
   }
 
-  private handleNewItemNameChange(newItemName: string) {
-    this.setState({ newItemName });
+  private refreshListItems() {
+    console.log(
+      `Refreshing list items for list: ${this.props.list &&
+        this.props.list.title}`
+    );
+    if (this.props.list !== undefined) {
+      database
+        .getListItems(this.props.list)
+        .then(listItems => this.setState({ listItems }));
+    }
+  }
+
+  private handleNewItemNameChange(newItemText: string) {
+    this.setState({ newItemText });
   }
 
   private handleAddNewItemToList(): Promise<void> {
-    return Promise.reject();
+    const { newItemText } = this.state;
+    if (newItemText === "") {
+      // Don't create new list items with no text
+      return Promise.resolve();
+    }
+    if (this.props.list === undefined) {
+      return Promise.reject(Error("Cannot add new item to undefined list"));
+    }
+    return database
+      .addListItem(newItemText, this.props.list)
+      .then(this.refreshListItems);
   }
 }
 

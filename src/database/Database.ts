@@ -1,12 +1,15 @@
 import SQLite from "react-native-sqlite-storage";
 import { DatabaseInitialization } from "./DatabaseInitialization";
 import { List } from "../types/List";
+import { ListItem } from "../types/ListItem";
 
 export interface Database {
   open(): Promise<SQLite.SQLiteDatabase>;
   close(): Promise<void>;
   createList(newListTitle: string): Promise<void>;
   getAllLists(): Promise<List[]>;
+  addListItem(text: string, list: List): Promise<void>;
+  getListItems(list: List): Promise<ListItem[]>;
 }
 
 class DatabaseImpl implements Database {
@@ -80,6 +83,56 @@ class DatabaseImpl implements Database {
           lists.push({ id, title });
         }
         return lists;
+      });
+  }
+
+  public addListItem(text: string, list: List): Promise<void> {
+    if (list === undefined) {
+      return Promise.reject(Error(`Could not add item to undefined list.`));
+    }
+    return this.getDatabase()
+      .then(db =>
+        db.executeSql("INSERT INTO ListItem (text, list_id) VALUES (?, ?);", [
+          text,
+          list.id
+        ])
+      )
+      .then(([results]) =>
+        console.log(
+          `[db] ListItem with "${text}" created successfully with id: ${
+            results.insertId
+          }`
+        )
+      );
+  }
+
+  public getListItems(list: List): Promise<ListItem[]> {
+    if (list === undefined) {
+      return Promise.resolve([]);
+    }
+    return this.getDatabase()
+      .then(db =>
+        db.executeSql(
+          "SELECT item_id as id, text, done FROM ListItem WHERE list_id = ?;",
+          [list.id]
+        )
+      )
+      .then(([results]) => {
+        if (results === undefined) {
+          return [];
+        }
+        const count = results.rows.length;
+        const listItems: ListItem[] = [];
+        for (let i = 0; i < count; i++) {
+          const row = results.rows.item(i);
+          const { text, doneNumber, id } = row;
+          const done = doneNumber === 1 ? true : false;
+
+          console.log(`[db] List item text: ${text}, done? ${done} id: ${id}`);
+          listItems.push({ id, text, done });
+        }
+        console.log(`[db] List items for list "${list.title}":`, listItems);
+        return listItems;
       });
   }
 
