@@ -13,13 +13,6 @@ import { AppState, Platform, StyleSheet, SafeAreaView } from "react-native";
 import { database } from "./database/Database";
 import { AllLists } from "./components/AllLists";
 
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
-
 interface State {
   appState: string;
   databaseIsReady: boolean;
