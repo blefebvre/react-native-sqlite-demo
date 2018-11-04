@@ -1283,7 +1283,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.RNSQLiteDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.reactnative.RNSQLiteDemo;
 				PRODUCT_NAME = RNSQLiteDemo;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1302,7 +1302,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.RNSQLiteDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.reactnative.RNSQLiteDemo;
 				PRODUCT_NAME = RNSQLiteDemo;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

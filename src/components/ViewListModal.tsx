@@ -6,7 +6,8 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Alert
 } from "react-native";
 import { Header } from "./Header";
 import { List } from "../types/List";
@@ -21,6 +22,7 @@ interface Props {
   listItems: ListItem[];
   back(): void;
   refreshListItems(): Promise<void>;
+  deleteList(): Promise<void>;
 }
 
 interface State {
@@ -79,6 +81,14 @@ export class ViewListModal extends Component<Props, State> {
               />
             )}
             keyExtractor={(item, index) => `item-${index}`}
+            ListFooterComponent={
+              <TouchableOpacity
+                style={styles.deleteList}
+                onPress={() => this.deleteList()}
+              >
+                <Text>Delete list</Text>
+              </TouchableOpacity>
+            }
           />
         </SafeAreaView>
       </Modal>
@@ -108,6 +118,27 @@ export class ViewListModal extends Component<Props, State> {
       .addListItem(newItemText, this.props.list)
       .then(this.props.refreshListItems);
   }
+
+  private deleteList() {
+    Alert.alert(
+      "Delete list?",
+      "Are you sure you would like to delete this list?",
+      [
+        {
+          text: "Yes, delete it",
+          style: "destructive",
+          onPress: () => {
+            // Delete the list, then head back to the main view
+            this.props.deleteList().then(() => this.props.back());
+          }
+        },
+        {
+          text: "No",
+          onPress: () => console.log("Cancel Pressed")
+        }
+      ]
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -123,5 +154,10 @@ const styles = StyleSheet.create({
   headerClose: {
     justifyContent: "center",
     padding: 5
+  },
+  deleteList: {
+    alignItems: "center",
+    marginTop: 10,
+    padding: 10
   }
 });

@@ -30,6 +30,7 @@ export class AllLists extends Component<any, State> {
     this.handleCreateList = this.handleCreateList.bind(this);
     this.handleListClicked = this.handleListClicked.bind(this);
     this.refreshListsItems = this.refreshListsItems.bind(this);
+    this.deleteList = this.deleteList.bind(this);
   }
 
   public componentDidMount() {
@@ -60,6 +61,7 @@ export class AllLists extends Component<any, State> {
           back={() => this.setState({ listModalVisible: false })}
           listItems={this.state.selectedListsItems}
           refreshListItems={this.refreshListsItems}
+          deleteList={this.deleteList}
         />
       </View>
     );
@@ -93,9 +95,10 @@ export class AllLists extends Component<any, State> {
     return database.getAllLists().then(lists => this.setState({ lists }));
   }
 
-  private refreshListsItems(list?: List, doneItemsLast = false): Promise<void> {
-    // Use list param if provided, otherwise fallback to this.state.selectedList
-    const listToRefresh = list || this.state.selectedList;
+  private refreshListsItems(
+    listToRefresh = this.state.selectedList,
+    doneItemsLast = false
+  ): Promise<void> {
     console.log(
       `Refreshing list items for list: ${listToRefresh && listToRefresh.title}`
     );
@@ -107,6 +110,16 @@ export class AllLists extends Component<any, State> {
     }
     // otherwise, listToRefresh is undefined
     return Promise.reject(Error("Could not refresh an undefined list's items"));
+  }
+
+  private deleteList(listToDelete = this.state.selectedList): Promise<void> {
+    if (listToDelete !== undefined) {
+      return database
+        .deleteList(listToDelete)
+        .then(() => this.refreshListOfLists());
+    }
+    // otherwise:
+    return Promise.reject(Error("Could not delete an undefined list"));
   }
 }
 

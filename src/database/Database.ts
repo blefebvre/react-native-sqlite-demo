@@ -11,6 +11,7 @@ export interface Database {
   addListItem(text: string, list: List): Promise<void>;
   getListItems(list: List, doneItemsLast: boolean): Promise<ListItem[]>;
   updateListItem(listItem: ListItem): Promise<void>;
+  deleteList(list: List): Promise<void>;
 }
 
 class DatabaseImpl implements Database {
@@ -150,6 +151,26 @@ class DatabaseImpl implements Database {
       )
       .then(([results]) => {
         console.log(`[db] List item with id: ${listItem.id} updated.`);
+      });
+  }
+
+  public deleteList(list: List): Promise<void> {
+    console.log(
+      `[db] Deleting list titled: "${list.title}" with id: ${list.id}`
+    );
+    return this.getDatabase()
+      .then(db => {
+        // Delete list items first, then delete the list itself
+        return db
+          .executeSql("DELETE FROM ListItem WHERE list_id = ?;", [list.id])
+          .then(() => db);
+      })
+      .then(db =>
+        db.executeSql("DELETE FROM List WHERE list_id = ?;", [list.id])
+      )
+      .then(() => {
+        console.log(`[db] Deleted list titled: "${list.title}"!`);
+        return;
       });
   }
 
