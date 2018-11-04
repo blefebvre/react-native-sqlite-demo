@@ -4,7 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { Component } from "react";
-import { AppState, Platform, StyleSheet, SafeAreaView } from "react-native";
+import { AppState, StyleSheet, SafeAreaView } from "react-native";
 
 import { database } from "./database/Database";
 import { AllLists } from "./components/AllLists";
