@@ -18,29 +18,28 @@ import { ListItemRow } from "./ListItemRow";
 interface Props {
   visible: boolean;
   list?: List;
+  listItems: ListItem[];
   back(): void;
+  refreshListItems(): Promise<void>;
 }
 
 interface State {
   newItemText: string;
-  listItems: ListItem[];
 }
 
 export class ViewListModal extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      newItemText: "",
-      listItems: []
+      newItemText: ""
     };
     this.handleNewItemNameChange = this.handleNewItemNameChange.bind(this);
     this.handleAddNewItemToList = this.handleAddNewItemToList.bind(this);
-    this.refreshListItems = this.refreshListItems.bind(this);
     this.toggleListItemDoneness = this.toggleListItemDoneness.bind(this);
   }
 
   public render() {
-    const { visible, list } = this.props;
+    const { visible, list, listItems } = this.props;
     if (list == null) {
       return null;
     }
@@ -50,8 +49,6 @@ export class ViewListModal extends Component<Props, State> {
         transparent={false}
         visible={visible}
         onRequestClose={() => this.props.back()}
-        onShow={this.refreshListItems}
-        onDismiss={() => this.setState({ listItems: [] })}
       >
         <SafeAreaView style={styles.container}>
           <View style={styles.headerAndClose}>
@@ -74,7 +71,7 @@ export class ViewListModal extends Component<Props, State> {
           />
 
           <FlatList
-            data={this.state.listItems}
+            data={listItems}
             renderItem={({ item }) => (
               <ListItemRow
                 listItem={item}
@@ -88,22 +85,10 @@ export class ViewListModal extends Component<Props, State> {
     );
   }
 
-  private refreshListItems() {
-    console.log(
-      `Refreshing list items for list: ${this.props.list &&
-        this.props.list.title}`
-    );
-    if (this.props.list !== undefined) {
-      database
-        .getListItems(this.props.list)
-        .then(listItems => this.setState({ listItems }));
-    }
-  }
-
   private toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
     listItem.done = newDoneState;
-    database.updateListItem(listItem).then(() => this.refreshListItems());
+    database.updateListItem(listItem).then(() => this.props.refreshListItems());
   }
 
   private handleNewItemNameChange(newItemText: string) {
@@ -121,7 +106,7 @@ export class ViewListModal extends Component<Props, State> {
     }
     return database
       .addListItem(newItemText, this.props.list)
-      .then(this.refreshListItems);
+      .then(this.props.refreshListItems);
   }
 }
 

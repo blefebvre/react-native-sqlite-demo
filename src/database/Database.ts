@@ -9,7 +9,7 @@ export interface Database {
   createList(newListTitle: string): Promise<void>;
   getAllLists(): Promise<List[]>;
   addListItem(text: string, list: List): Promise<void>;
-  getListItems(list: List): Promise<ListItem[]>;
+  getListItems(list: List, doneItemsLast: boolean): Promise<ListItem[]>;
   updateListItem(listItem: ListItem): Promise<void>;
 }
 
@@ -107,14 +107,16 @@ class DatabaseImpl implements Database {
       );
   }
 
-  public getListItems(list: List): Promise<ListItem[]> {
+  public getListItems(list: List, orderByDone = false): Promise<ListItem[]> {
     if (list === undefined) {
       return Promise.resolve([]);
     }
     return this.getDatabase()
       .then(db =>
         db.executeSql(
-          "SELECT item_id as id, text, done FROM ListItem WHERE list_id = ?;",
+          `SELECT item_id as id, text, done FROM ListItem WHERE list_id = ? ${
+            orderByDone ? "ORDER BY done" : ""
+          };`,
           [list.id]
         )
       )
