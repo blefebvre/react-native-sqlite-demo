@@ -1,12 +1,8 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/emin93/react-native-template-typescript
- *
+ * React Native SQLite Demo
+ * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-
 import React, { Component } from "react";
 import { AppState, Platform, StyleSheet, SafeAreaView } from "react-native";
 
