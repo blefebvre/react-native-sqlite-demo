@@ -47,7 +47,7 @@ class DatabaseImpl implements Database {
       });
   }
 
-  // close the connection to the database
+  // Close the connection to the database
   public close(): Promise<void> {
     if (this.database === undefined) {
       return Promise.reject("[db] Database was not open; unable to close.");

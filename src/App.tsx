@@ -5,7 +5,6 @@
  */
 import React, { Component } from "react";
 import { AppState, StyleSheet, SafeAreaView } from "react-native";
-
 import { database } from "./database/Database";
 import { AllLists } from "./components/AllLists";
 
@@ -21,6 +20,7 @@ export default class App extends Component<any, State> {
       appState: AppState.currentState,
       databaseIsReady: false
     };
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
   }
 
   public componentDidMount() {
@@ -52,7 +52,7 @@ export default class App extends Component<any, State> {
   }
 
   // Handle the app going from foreground to background, and vice versa.
-  private handleAppStateChange = (nextAppState: string) => {
+  private handleAppStateChange(nextAppState: string) {
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
@@ -67,13 +67,11 @@ export default class App extends Component<any, State> {
       this.appHasGoneToTheBackground();
     }
     this.setState({ appState: nextAppState });
-  };
+  }
 
   // Code to run when app is brought to the foreground
   private appIsNowRunningInForeground() {
     console.log("App is now running in the foreground!");
-
-    // Open the database
     return database.open().then(() =>
       this.setState({
         databaseIsReady: true
