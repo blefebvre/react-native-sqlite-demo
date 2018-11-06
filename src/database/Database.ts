@@ -189,4 +189,4 @@ class DatabaseImpl implements Database {
 }
 
 // Export a single instance of DatabaseImpl
-export let database: Database = new DatabaseImpl();
+export const database: Database = new DatabaseImpl();

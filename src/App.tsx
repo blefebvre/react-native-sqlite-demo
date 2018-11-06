@@ -13,7 +13,7 @@ interface State {
   databaseIsReady: boolean;
 }
 
-export default class App extends Component<any, State> {
+export default class App extends Component<object, State> {
   constructor(props: any) {
     super(props);
     this.state = {
