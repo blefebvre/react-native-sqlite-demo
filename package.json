@@ -18,6 +18,7 @@
     "@types/react-native": "0.57.7",
     "@types/react-native-sqlite-storage": "^3.3.1",
     "@types/react-test-renderer": "16.0.3",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.48.1",
@@ -38,7 +39,6 @@
       "js"
     ],
     "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "globals": {
