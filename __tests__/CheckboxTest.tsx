@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import renderer from "react-test-renderer";
+
 import { Checkbox } from "../src/components/Checkbox";
 
-export default class CheckboxTest extends Component {
-  public render() {
-    return <Checkbox checked={false} />;
-  }
-}
+test("Renders correctly unchecked", () => {
+  const tree = renderer.create(<Checkbox checked={false} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Renders correctly checked", () => {
+  const tree = renderer.create(<Checkbox checked={true} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

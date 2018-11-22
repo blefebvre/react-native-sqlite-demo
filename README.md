@@ -10,6 +10,10 @@ This project is a basic List application that demonstrates building an offline f
 
     npm run tsc -- -w
 
+## Run the Jest tests in watch mode
+
+    npm test -- --watch
+
 ## Open the source in VS Code
 
     code .

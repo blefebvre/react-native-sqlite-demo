@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders correctly checked 1`] = `
+<Text
+  style={
+    Object {
+      "fontSize": 30,
+    }
+  }
+>
+  ☑
+</Text>
+`;
+
+exports[`Renders correctly unchecked 1`] = `
+<Text
+  style={
+    Object {
+      "fontSize": 30,
+    }
+  }
+>
+  ⬜
+</Text>
+`;
