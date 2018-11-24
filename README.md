@@ -26,17 +26,24 @@ This project is a basic List application that demonstrates building an offline f
 
 Press "Play" button in Xcode.
 
+
 ## E2E Testing with Detox
+
+#### Build tests
+
+    npm run test:e2e:build
+
+#### Run tests
 
     npm run test:e2e
 
-## E2E testing without reinstalling onto the Simulator
+#### Run tests without reinstalling onto the Simulator
 
 Details on this workflow can be [found here](https://github.com/wix/Detox/blob/master/docs/Guide.DevelopingWhileWritingTests.md):
 
     npm run test:e2e:reuse
 
-## Extra
+## Troubleshooting
 
 #### Run Metro Bundler and clear it's cache
 

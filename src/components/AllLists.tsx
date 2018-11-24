@@ -52,6 +52,7 @@ export class AllLists extends Component<any, State> {
           handleCreateNewItem={this.handleCreateList}
           placeholderText="Enter a name for your new list"
           createButtonText="Add list"
+          buttonTestId="addListButton"
         />
         <FlatList
           data={this.state.lists}

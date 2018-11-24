@@ -16,6 +16,7 @@ interface Props {
   newItemName: string; // Prop that the TextInput is controlled by
   placeholderText: string;
   createButtonText: string;
+  buttonTestId?: string;
   handleNameChange(title: string): void;
   handleCreateNewItem(): Promise<void>;
 }
@@ -46,6 +47,7 @@ export const NewItem = (props: Props) => {
             });
           }
         }}
+        testID={props.buttonTestId || "newItemButton"}
       >
         <Text>{createButtonText}</Text>
       </TouchableOpacity>
