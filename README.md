@@ -25,3 +25,19 @@ This project is a basic List application that demonstrates building an offline f
 ## Run it on an iOS sim
 
 Press "Play" button in Xcode.
+
+## E2E Testing with Detox
+
+    npm run test:e2e
+
+## E2E testing without reinstalling onto the Simulator
+
+Details on this workflow can be [found here](https://github.com/wix/Detox/blob/master/docs/Guide.DevelopingWhileWritingTests.md):
+
+    npm run test:e2e:reuse
+
+## Extra
+
+#### Run Metro Bundler and clear it's cache
+
+    npm start -- --reset-cache
