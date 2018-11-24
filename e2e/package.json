@@ -1,0 +1,30 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "addNewList.spec.js",
+  "scripts": {
+    "test:e2e": "detox test",
+    "test:e2e:reuse": "detox test --reuse",
+    "test:e2e:build": "detox build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "detox": "^9.1.2",
+    "jest": "^23.6.0"
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "../ios/build/Build/Products/Debug-iphonesimulator/RNSQLiteDemo.app",
+        "build": "xcodebuild -workspace ../ios/RNSQLiteDemo.xcworkspace -scheme RNSQLiteDemo -configuration Debug -sdk iphonesimulator -derivedDataPath ../ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      }
+    },
+    "test-runner": "jest",
+    "runner-config": "./config.json"
+  }
+}
