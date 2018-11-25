@@ -36,6 +36,7 @@ export const NewItem = (props: Props) => {
         onChangeText={handleNameChange}
         value={newItemName}
         style={styles.textInput}
+        testID="newItemTextInput"
       />
       <TouchableOpacity
         style={styles.button}

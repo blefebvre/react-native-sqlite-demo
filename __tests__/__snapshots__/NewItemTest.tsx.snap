@@ -20,6 +20,7 @@ exports[`ListItemRow renders correctly 1`] = `
         "padding": 5,
       }
     }
+    testID="newItemTextInput"
     underlineColorAndroid="transparent"
     value="Test new item"
   />

@@ -57,7 +57,7 @@ export class ViewListModal extends Component<Props, State> {
         visible={visible}
         onRequestClose={() => this.props.back()}
       >
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} testID="viewListModal">
           <View style={styles.headerAndClose}>
             <Header title={`List: ${list.title}`} />
 
