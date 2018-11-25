@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "isolatedModules": false,
+    "typeRoots": ["node_modules/@types", "../node_modules/@types"]
+  }
+}

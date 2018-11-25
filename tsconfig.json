@@ -10,7 +10,8 @@
     "noEmit": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "target": "esnext"
+    "target": "esnext",
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": ["node_modules"]
 }

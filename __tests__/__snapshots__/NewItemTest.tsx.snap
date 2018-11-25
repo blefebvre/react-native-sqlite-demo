@@ -42,6 +42,7 @@ exports[`ListItemRow renders correctly 1`] = `
         "paddingTop": 5,
       }
     }
+    testID="newItemButton"
   >
     <Text>
       create

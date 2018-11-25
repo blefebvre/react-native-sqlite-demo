@@ -1,4 +1,5 @@
 {
-    "setupTestFrameworkScriptFile": "./init.js",
-    "testEnvironment": "node"
+  "preset": "ts-jest",
+  "setupTestFrameworkScriptFile": "./init.ts",
+  "testEnvironment": "node"
 }

@@ -44,7 +44,7 @@ export class AllLists extends Component<any, State> {
 
   public render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="allListsView">
         <Header title="SQLite List App" />
         <NewItem
           newItemName={this.state.newListTitle}
