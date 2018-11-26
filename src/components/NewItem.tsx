@@ -5,6 +5,7 @@
  */
 import React from "react";
 import {
+  Keyboard,
   View,
   TextInput,
   StyleSheet,
@@ -45,6 +46,8 @@ export const NewItem = (props: Props) => {
             handleCreateNewItem().then(() => {
               // Reset the text input
               handleNameChange("");
+              // Dismiss keyboard
+              Keyboard.dismiss();
             });
           }
         }}

@@ -76,7 +76,10 @@ class DatabaseImpl implements Database {
   public getAllLists(): Promise<List[]> {
     console.log("[db] Fetching lists from the db...");
     return this.getDatabase()
-      .then(db => db.executeSql("SELECT list_id as id, title FROM List;"))
+      .then(db =>
+        // Get all the lists, ordered by newest lists first
+        db.executeSql("SELECT list_id as id, title FROM List ORDER BY id DESC;")
+      )
       .then(([results]) => {
         if (results === undefined) {
           return [];

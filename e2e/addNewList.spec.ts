@@ -14,5 +14,10 @@ describe("Add new list test", () => {
     await expect(
       element(by.text(newListTitle).withAncestor(by.id("allListsView")))
     ).toBeVisible();
+
+    // Open the new list
+    await element(by.id(`listButton:${newListTitle}`)).tap();
+
+    await expect(element(by.id("viewListModal"))).toBeVisible();
   });
 });

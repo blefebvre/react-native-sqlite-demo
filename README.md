@@ -29,6 +29,10 @@ Press "Play" button in Xcode.
 
 ## E2E Testing with Detox
 
+End-to-end testing happens from within the `e2e/` directory:
+
+    cd e2e/
+
 #### Build tests
 
     npm run test:e2e:build

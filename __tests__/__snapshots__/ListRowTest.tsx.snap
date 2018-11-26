@@ -27,6 +27,7 @@ exports[`ListRow renders correctly 1`] = `
       "shadowRadius": 3,
     }
   }
+  testID="listButton:Test list title"
 >
   <Text>
     Test list title

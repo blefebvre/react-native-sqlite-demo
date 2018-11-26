@@ -18,6 +18,7 @@ export const ListRow = (props: Props) => {
     <TouchableOpacity
       onPress={() => handleListClicked(list)}
       style={styles.row}
+      testID={`listButton:${list.title}`}
     >
       <Text>{list.title}</Text>
     </TouchableOpacity>
