@@ -2,6 +2,7 @@
 
 exports[`Renders correctly checked 1`] = `
 <Text
+  accessibilityLabel="checkbox:checked"
   style={
     Object {
       "fontSize": 30,
@@ -14,6 +15,7 @@ exports[`Renders correctly checked 1`] = `
 
 exports[`Renders correctly unchecked 1`] = `
 <Text
+  accessibilityLabel="checkbox:unchecked"
   style={
     Object {
       "fontSize": 30,

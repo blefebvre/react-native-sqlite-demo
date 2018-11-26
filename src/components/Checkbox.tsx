@@ -12,7 +12,14 @@ interface Props {
 
 export const Checkbox = (props: Props) => {
   const { checked } = props;
-  return <Text style={styles.check}>{checked ? "☑" : "⬜"}</Text>;
+  return (
+    <Text
+      accessibilityLabel={`checkbox:${checked ? "checked" : "unchecked"}`}
+      style={styles.check}
+    >
+      {checked ? "☑" : "⬜"}
+    </Text>
+  );
 };
 
 const styles = StyleSheet.create({

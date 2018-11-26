@@ -21,8 +21,10 @@ exports[`ListItemRow renders correctly 1`] = `
       "paddingLeft": 15,
     }
   }
+  testID="listItem:Test list item text"
 >
   <Text
+    accessibilityLabel="checkbox:unchecked"
     style={
       Object {
         "fontSize": 30,

@@ -53,6 +53,7 @@ export class AllLists extends Component<any, State> {
           placeholderText="Enter a name for your new list"
           createButtonText="Add list"
           buttonTestId="addListButton"
+          textInputTestId="newListTextInput"
         />
         <FlatList
           data={this.state.lists}

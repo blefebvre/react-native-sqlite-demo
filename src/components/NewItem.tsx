@@ -18,6 +18,7 @@ interface Props {
   placeholderText: string;
   createButtonText: string;
   buttonTestId?: string;
+  textInputTestId?: string;
   handleNameChange(title: string): void;
   handleCreateNewItem(): Promise<void>;
 }
@@ -30,6 +31,18 @@ export const NewItem = (props: Props) => {
     handleNameChange,
     handleCreateNewItem
   } = props;
+
+  const createNewItem = () => {
+    if (newItemName !== "") {
+      handleCreateNewItem().then(() => {
+        // Reset the text input
+        handleNameChange("");
+        // Dismiss keyboard
+        Keyboard.dismiss();
+      });
+    }
+  };
+
   return (
     <View style={styles.wrapper}>
       <TextInput
@@ -37,20 +50,12 @@ export const NewItem = (props: Props) => {
         onChangeText={handleNameChange}
         value={newItemName}
         style={styles.textInput}
-        testID="newItemTextInput"
+        testID={props.textInputTestId || "newItemTextInput"}
+        onSubmitEditing={createNewItem}
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          if (newItemName !== "") {
-            handleCreateNewItem().then(() => {
-              // Reset the text input
-              handleNameChange("");
-              // Dismiss keyboard
-              Keyboard.dismiss();
-            });
-          }
-        }}
+        onPress={createNewItem}
         testID={props.buttonTestId || "newItemButton"}
       >
         <Text>{createButtonText}</Text>

@@ -19,6 +19,7 @@ export const ListItemRow = (props: Props) => {
     <TouchableOpacity
       onPress={() => handleListItemClicked(listItem)}
       style={styles.row}
+      testID={`listItem:${listItem.text}`}
     >
       <Checkbox checked={listItem.done} />
       <Text style={[styles.itemText, listItem.done && styles.done]}>

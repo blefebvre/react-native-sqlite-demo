@@ -90,6 +90,7 @@ export class ViewListModal extends Component<Props, State> {
               <TouchableOpacity
                 style={styles.deleteList}
                 onPress={() => this.deleteList()}
+                testID="deleteListButton"
               >
                 <Text>Delete list</Text>
               </TouchableOpacity>

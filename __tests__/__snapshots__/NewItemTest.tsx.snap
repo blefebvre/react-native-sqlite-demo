@@ -12,6 +12,7 @@ exports[`ListItemRow renders correctly 1`] = `
   <TextInput
     allowFontScaling={true}
     onChangeText={[Function]}
+    onSubmitEditing={[Function]}
     placeholder="Enter new item text here"
     style={
       Object {
