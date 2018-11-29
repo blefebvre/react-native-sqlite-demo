@@ -22,6 +22,10 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - rn-fetch-blob (0.10.6):
+    - React/Core
+  - RNFS (2.12.1):
+    - React
   - yoga (0.57.4.React)
 
 DEPENDENCIES:
@@ -29,21 +33,29 @@ DEPENDENCIES:
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   react-native-sqlite-storage:
-    :path: ../node_modules/react-native-sqlite-storage
+    :path: "../node_modules/react-native-sqlite-storage"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
+  rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
+  RNFS: bbb1a64eb245763daf34aea86f97c97c4e85f74c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 72702c63353078906bdda34400aaa0691bcb2eb3
+PODFILE CHECKSUM: fc9c71243a8b5f3173c2d2a9330958772698ec60
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

@@ -8,14 +8,19 @@
     "tsc": "tsc"
   },
   "dependencies": {
+    "moment": "^2.22.2",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
-    "react-native-sqlite-storage": "^3.3.7"
+    "react-native-fs": "^2.12.1",
+    "react-native-sqlite-storage": "^3.3.7",
+    "rn-fetch-blob": "^0.10.13",
+    "shitty-qs": "^1.0.1"
   },
   "devDependencies": {
     "@types/jest": "23.3.7",
     "@types/react": "16.4.18",
     "@types/react-native": "0.57.7",
+    "@types/react-native-fs": "^2.8.2",
     "@types/react-native-sqlite-storage": "^3.3.1",
     "@types/react-test-renderer": "16.0.3",
     "babel-core": "^7.0.0-bridge.0",

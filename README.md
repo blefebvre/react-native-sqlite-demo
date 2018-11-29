@@ -32,6 +32,7 @@ Press "Play" button in Xcode.
 End-to-end testing happens from within the `e2e/` directory:
 
     cd e2e/
+    npm install
 
 #### Build tests
 
