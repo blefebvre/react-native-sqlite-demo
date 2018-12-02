@@ -69,7 +69,7 @@ export default class App extends Component<object, State> {
     this.setState({ appState: nextAppState });
   }
 
-  // Code to run when app is brought to the foreground
+  // Function to run when the app is brought to the foreground
   private appIsNowRunningInForeground() {
     console.log("App is now running in the foreground!");
     return database.open().then(() =>
@@ -79,7 +79,7 @@ export default class App extends Component<object, State> {
     );
   }
 
-  // Code to run when app is sent to the background
+  // Function to run when the app is sent to the background
   private appHasGoneToTheBackground() {
     console.log("App has gone to the background.");
     database.close();

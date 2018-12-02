@@ -10,6 +10,7 @@ import moment, { Moment } from "moment";
 
 import { DROPBOX } from "./DropboxConstants";
 import { DatabaseSync } from "../DatabaseSync";
+import { DATABASE } from "../../database/Constants";
 
 // Class to support Dropbox backup and sync
 export class DropboxDatabaseSync implements DatabaseSync {
@@ -57,7 +58,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
           console.log("[Dropbox backup] BACKUP COMPLETE.");
         });
 
-        // We don't wait for the remote backup to complete: just return
+        // Don't wait for the remote backup to complete: just return
         return;
       })
       .catch(reason => {
@@ -421,11 +422,11 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   private getDatabaseName(): string {
-    return "AppDatabase.db";
+    return DATABASE.FILE_NAME;
   }
 
   private getDatabaseBackupName(): string {
-    return "AppDatabase_Backup.db";
+    return DATABASE.BACKUP_FILE_NAME;
   }
 
   private getDropboxFolder(): string {

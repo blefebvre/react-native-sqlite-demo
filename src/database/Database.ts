@@ -7,21 +7,31 @@ import SQLite from "react-native-sqlite-storage";
 import { DatabaseInitialization } from "./DatabaseInitialization";
 import { List } from "../types/List";
 import { ListItem } from "../types/ListItem";
+import { DATABASE } from "./Constants";
+import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
 
 export interface Database {
   open(): Promise<SQLite.SQLiteDatabase>;
   close(): Promise<void>;
+  // Create
   createList(newListTitle: string): Promise<void>;
-  getAllLists(): Promise<List[]>;
   addListItem(text: string, list: List): Promise<void>;
+  // Read
+  getAllLists(): Promise<List[]>;
   getListItems(list: List, doneItemsLast: boolean): Promise<ListItem[]>;
+  // Update
   updateListItem(listItem: ListItem): Promise<void>;
+  // Delete
   deleteList(list: List): Promise<void>;
 }
 
 class DatabaseImpl implements Database {
-  private databaseName = "AppDatabase.db";
   private database: SQLite.SQLiteDatabase | undefined;
+  private databaseSync: DropboxDatabaseSync;
+
+  constructor() {
+    this.databaseSync = new DropboxDatabaseSync();
+  }
 
   // Open the connection to the database
   public open(): Promise<SQLite.SQLiteDatabase> {
@@ -30,7 +40,7 @@ class DatabaseImpl implements Database {
     let databaseInstance: SQLite.SQLiteDatabase;
 
     return SQLite.openDatabase({
-      name: this.databaseName,
+      name: DATABASE.FILE_NAME,
       location: "default"
     })
       .then(db => {
@@ -69,6 +79,9 @@ class DatabaseImpl implements Database {
         console.log(
           `[db] Added list with title: "${newListTitle}"! InsertId: ${insertId}`
         );
+
+        // Queue database upload
+        return this.databaseSync.queueDatabaseUpload();
       });
   }
 
