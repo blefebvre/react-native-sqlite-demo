@@ -8,16 +8,10 @@ import shittyQs from "shitty-qs";
 
 import { DROPBOX } from "./DropboxConstants";
 import { OAUTH_CONFIG } from "./OAuthConfig";
-
-export interface DatabaseSyncAuth {
-  // Authorization related
-  authorize(): Promise<void>;
-  revokeAuthorization(): Promise<void>;
-  hasUserAuthorized(): Promise<boolean>;
-}
+import { Authorize } from "../Authorize";
 
 // Class to support authorizing for database synchronization via Dropbox
-export class DropboxDatabaseSyncAuth implements DatabaseSyncAuth {
+export class DropboxAuthorize implements Authorize {
   constructor() {
     this._handleOpenURL = this._handleOpenURL.bind(this);
   }

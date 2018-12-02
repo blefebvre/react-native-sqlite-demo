@@ -4,9 +4,9 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 export const DROPBOX = {
+  AUTHORIZE_URL: "https://www.dropbox.com/oauth2/authorize",
   GET_METADATA_URL: "https://api.dropboxapi.com/2/files/get_metadata",
   UPLOAD_URL: "https://content.dropboxapi.com/2/files/upload",
-  AUTHORIZE_URL: "https://www.dropbox.com/oauth2/authorize",
   DOWNLOAD_URL: "https://content.dropboxapi.com/2/files/download",
   API_RESULT_HEADER_NAME: "dropbox-api-result",
   CLIENT_MODIFIED_TIMESTAMP_KEY: "client_modified",
