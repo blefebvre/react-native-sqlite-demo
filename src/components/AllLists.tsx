@@ -4,7 +4,13 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { Component } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity
+} from "react-native";
 
 import { NewItem } from "./NewItem";
 import { Header } from "./Header";
@@ -13,11 +19,14 @@ import { ListRow } from "./ListRow";
 import { database } from "../database/Database";
 import { ViewListModal } from "./ViewListModal";
 import { ListItem } from "../types/ListItem";
+import { sharedStyle } from "../style/Shared";
+import { SettingsModal } from "./SettingsModal";
 
 interface State {
   newListTitle: string;
   lists: List[];
   listModalVisible: boolean;
+  settingsModalVisible: boolean;
   selectedList?: List;
   selectedListsItems: ListItem[];
 }
@@ -29,6 +38,7 @@ export class AllLists extends Component<any, State> {
       newListTitle: "",
       lists: [],
       listModalVisible: false,
+      settingsModalVisible: false,
       selectedListsItems: []
     };
     this.handleNewListTitleChange = this.handleNewListTitleChange.bind(this);
@@ -45,7 +55,16 @@ export class AllLists extends Component<any, State> {
   public render() {
     return (
       <View style={styles.container} testID="allListsView">
-        <Header title="SQLite List App" />
+        <View style={styles.headerWithSettings}>
+          <TouchableOpacity
+            style={styles.settingsButton}
+            onPress={() => this.setState({ settingsModalVisible: true })}
+          >
+            <Text style={styles.settingsButtonText}>⚙️</Text>
+          </TouchableOpacity>
+          <Header title="SQLite List App" />
+        </View>
+
         <NewItem
           newItemName={this.state.newListTitle}
           handleNameChange={this.handleNewListTitleChange}
@@ -55,6 +74,7 @@ export class AllLists extends Component<any, State> {
           buttonTestId="addListButton"
           textInputTestId="newListTextInput"
         />
+
         <FlatList
           data={this.state.lists}
           renderItem={({ item }) => (
@@ -62,6 +82,7 @@ export class AllLists extends Component<any, State> {
           )}
           keyExtractor={(item, index) => `${index}`}
         />
+
         <ViewListModal
           visible={this.state.listModalVisible}
           list={this.state.selectedList}
@@ -69,6 +90,11 @@ export class AllLists extends Component<any, State> {
           listItems={this.state.selectedListsItems}
           refreshListItems={this.refreshListsItems}
           deleteList={this.deleteList}
+        />
+
+        <SettingsModal
+          visible={this.state.settingsModalVisible}
+          back={() => this.setState({ settingsModalVisible: false })}
         />
       </View>
     );
@@ -135,5 +161,18 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     flex: 1
+  },
+  headerWithSettings: {
+    flexDirection: "row",
+    justifyContent: "flex-start"
+  },
+  settingsButton: {
+    marginTop: 10,
+    paddingRight: 5,
+    paddingBottom: 10,
+    paddingTop: 10
+  },
+  settingsButtonText: {
+    fontSize: 20
   }
 });

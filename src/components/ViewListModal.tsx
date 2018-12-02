@@ -20,6 +20,7 @@ import { NewItem } from "./NewItem";
 import { database } from "../database/Database";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
+import { sharedStyle } from "../style/Shared";
 
 interface Props {
   visible: boolean;
@@ -58,14 +59,14 @@ export class ViewListModal extends Component<Props, State> {
         onRequestClose={() => this.props.back()}
       >
         <SafeAreaView style={styles.container} testID="viewListModal">
-          <View style={styles.headerAndClose}>
+          <View style={sharedStyle.headerWithButton}>
             <Header title={`List: ${list.title}`} />
 
             <TouchableOpacity
-              style={styles.headerClose}
+              style={sharedStyle.headerButton}
               onPress={() => this.props.back()}
             >
-              <Text>Close</Text>
+              <Text>✖️</Text>
             </TouchableOpacity>
           </View>
 
@@ -152,14 +153,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     marginRight: 10
-  },
-  headerAndClose: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  headerClose: {
-    justifyContent: "center",
-    padding: 5
   },
   deleteList: {
     alignItems: "center",
