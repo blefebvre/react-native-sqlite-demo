@@ -1,4 +1,6 @@
 PODS:
+  - RCTRestart (0.0.7):
+    - React
   - React (0.57.4):
     - React/Core (= 0.57.4)
   - react-native-sqlite-storage (3.3.7):
@@ -29,6 +31,7 @@ PODS:
   - yoga (0.57.4.React)
 
 DEPENDENCIES:
+  - RCTRestart (from `../node_modules/react-native-restart/ios`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
@@ -38,6 +41,8 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
+  RCTRestart:
+    :path: "../node_modules/react-native-restart/ios"
   React:
     :path: "../node_modules/react-native"
   react-native-sqlite-storage:
@@ -50,12 +55,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  RCTRestart: 2f9ddcfd9abb887f123b6580cec64d72fb6cccaa
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
   rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
   RNFS: bbb1a64eb245763daf34aea86f97c97c4e85f74c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: fc9c71243a8b5f3173c2d2a9330958772698ec60
+PODFILE CHECKSUM: dcf1a514f2cd3ab276b3f58b0d878809355e8cb0
 
 COCOAPODS: 1.5.3

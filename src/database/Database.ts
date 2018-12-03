@@ -120,13 +120,16 @@ class DatabaseImpl implements Database {
           list.id
         ])
       )
-      .then(([results]) =>
+      .then(([results]) => {
         console.log(
           `[db] ListItem with "${text}" created successfully with id: ${
             results.insertId
           }`
-        )
-      );
+        );
+
+        // Queue database upload
+        return this.databaseSync.queueDatabaseUpload();
+      });
   }
 
   public getListItems(list: List, orderByDone = false): Promise<ListItem[]> {
@@ -172,6 +175,9 @@ class DatabaseImpl implements Database {
       )
       .then(([results]) => {
         console.log(`[db] List item with id: ${listItem.id} updated.`);
+
+        // Queue database upload
+        return this.databaseSync.queueDatabaseUpload();
       });
   }
 
@@ -191,7 +197,9 @@ class DatabaseImpl implements Database {
       )
       .then(() => {
         console.log(`[db] Deleted list titled: "${list.title}"!`);
-        return;
+
+        // Queue database upload
+        return this.databaseSync.queueDatabaseUpload();
       });
   }
 

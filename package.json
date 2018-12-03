@@ -12,6 +12,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-native-fs": "^2.12.1",
+    "react-native-restart": "0.0.7",
     "react-native-sqlite-storage": "^3.3.7",
     "rn-fetch-blob": "^0.10.13",
     "shitty-qs": "^1.0.1"

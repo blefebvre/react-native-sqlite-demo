@@ -13,9 +13,13 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import RNRestart from "react-native-restart";
+import { database } from "../database/Database";
 import { Header } from "./Header";
 import { sharedStyle } from "../style/Shared";
 import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";
+import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
+import { LoadingScreen } from "./LoadingScreen";
 
 interface Props {
   visible: boolean;
@@ -25,23 +29,27 @@ interface Props {
 interface State {
   isDropboxStatusKnown: boolean;
   hasAuthorizedWithDropbox: boolean;
+  downloading: boolean;
 }
 
 export class SettingsModal extends Component<Props, State> {
   private dropboxAuth: DropboxAuthorize;
+  private dropboxSync: DropboxDatabaseSync;
 
   constructor(props: Props) {
     super(props);
 
     this.dropboxAuth = new DropboxAuthorize();
+    this.dropboxSync = new DropboxDatabaseSync();
     this.state = {
       isDropboxStatusKnown: false,
-      hasAuthorizedWithDropbox: false
+      hasAuthorizedWithDropbox: false,
+      downloading: false
     };
 
     this.modalOnShow = this.modalOnShow.bind(this);
     this.authorizeWithDropbox = this.authorizeWithDropbox.bind(this);
-    this.unlinkFromDropbox = this.unlinkFromDropbox.bind(this);
+    this.promptToUnlinkFromDropbox = this.promptToUnlinkFromDropbox.bind(this);
   }
 
   public render() {
@@ -54,20 +62,24 @@ export class SettingsModal extends Component<Props, State> {
         onRequestClose={() => this.props.back()}
         onShow={this.modalOnShow}
       >
-        <SafeAreaView style={styles.container} testID="settingsModal">
-          <View style={sharedStyle.headerWithButton}>
-            <Header title={`Settings`} />
+        {this.state.downloading ? (
+          <LoadingScreen text="Downloading database..." />
+        ) : (
+          <SafeAreaView style={styles.container} testID="settingsModal">
+            <View style={sharedStyle.headerWithButton}>
+              <Header title={`Settings`} />
 
-            <TouchableOpacity
-              style={sharedStyle.headerButton}
-              onPress={() => this.props.back()}
-            >
-              <Text>✖️</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={sharedStyle.headerButton}
+                onPress={() => this.props.back()}
+              >
+                <Text>✖️</Text>
+              </TouchableOpacity>
+            </View>
 
-          {this.state.isDropboxStatusKnown && this.renderDropboxComponents()}
-        </SafeAreaView>
+            {this.state.isDropboxStatusKnown && this.renderDropboxComponents()}
+          </SafeAreaView>
+        )}
       </Modal>
     );
   }
@@ -83,7 +95,7 @@ export class SettingsModal extends Component<Props, State> {
 
           <TouchableOpacity
             style={styles.dropboxButton}
-            onPress={this.unlinkFromDropbox}
+            onPress={this.promptToUnlinkFromDropbox}
             testID="unlinkButton"
           >
             <Text>Unlink Dropbox</Text>
@@ -111,13 +123,68 @@ export class SettingsModal extends Component<Props, State> {
   }
 
   // Begin authorization flow
-  private authorizeWithDropbox() {
+  private authorizeWithDropbox(): Promise<void> {
     return this.dropboxAuth
       .authorize()
       .then(() => {
         this.setState({
           hasAuthorizedWithDropbox: true
         });
+        return this.dropboxSync.isRemoteDatabaseNewer();
+      })
+      .then(remoteDatabaseIsNewer => {
+        if (remoteDatabaseIsNewer) {
+          return new Promise<void>((resolve, reject) => {
+            // We just linked, and there is existing data on Dropbox. Prompt to overwrite it.
+            Alert.alert(
+              "Replace local database?",
+              "Would you like to overwrite the app's current database with the version on Dropbox?",
+              [
+                {
+                  text: "Yes, replace my local DB",
+                  onPress: () => {
+                    console.log("User chose to replace local DB.");
+                    // Download the update
+                    this.setState({
+                      downloading: true
+                    });
+                    // Close the database connection
+                    database
+                      .close()
+                      .then(() => {
+                        // Download the database from Dropbox
+                        return this.dropboxSync.downloadDatabase();
+                      })
+                      .then(() => {
+                        console.log("DB download success! Reloading app.");
+                        RNRestart.Restart();
+                      })
+                      .catch(reason => {
+                        // Error!
+                        this.setState({
+                          downloading: false
+                        });
+                        database.open().then(() => {
+                          return reject(
+                            "Error downloading database from Dropbox. Reason: " +
+                              reason
+                          );
+                        });
+                      });
+                  }
+                },
+                {
+                  text: "No, unlink Dropbox",
+                  onPress: () => this.unlinkFromDropbox()
+                }
+              ],
+              { cancelable: false }
+            );
+          });
+        } else {
+          // Nothing exists on Dropbox yet, so kick off the 1st upload
+          return this.dropboxSync.queueDatabaseUpload();
+        }
       })
       .catch(reason => {
         Alert.alert(
@@ -127,7 +194,7 @@ export class SettingsModal extends Component<Props, State> {
       });
   }
 
-  private unlinkFromDropbox() {
+  private promptToUnlinkFromDropbox() {
     Alert.alert(
       "Unlink Dropbox",
       "Are you sure you would like to unlink Dropbox? Your data will remain on this device, but it will no longer be backed up or synced.",
@@ -141,17 +208,20 @@ export class SettingsModal extends Component<Props, State> {
         },
         {
           text: "Yes, unlink",
-          onPress: () => {
-            this.dropboxAuth.revokeAuthorization().then(() => {
-              this.setState({
-                hasAuthorizedWithDropbox: false
-              });
-            });
-          },
+          onPress: () => this.unlinkFromDropbox(),
           style: "destructive"
         }
       ]
     );
+  }
+
+  private unlinkFromDropbox() {
+    console.log("Unlinking from Dropbox.");
+    this.dropboxAuth.revokeAuthorization().then(() => {
+      this.setState({
+        hasAuthorizedWithDropbox: false
+      });
+    });
   }
 
   private modalOnShow(): void {
