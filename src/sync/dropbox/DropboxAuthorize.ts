@@ -79,15 +79,37 @@ export class DropboxAuthorize implements Authorize {
   }
 
   public revokeAuthorization(): Promise<void> {
-    return AsyncStorage.removeItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
-      .then(() => {
-        return AsyncStorage.removeItem(DROPBOX.LAST_UPDATE_STATUS_KEY);
+    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
+      .then(accessToken => {
+        if (accessToken === null) {
+          throw new Error("Cannot unlink without an access token");
+        }
+
+        return fetch(DROPBOX.REVOKE_TOKEN_URL, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
       })
-      .then(() => {
-        return AsyncStorage.removeItem(
-          DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY
+      .then(response => {
+        console.log("Unlink response:", response);
+        // "Success"
+        if (response.status === 200) {
+          return;
+        }
+        // otherwise
+        throw new Error(
+          `Failed to revoke Dropbox token. status: ${
+            response.status
+          } and response: ${JSON.stringify(response)}`
         );
-      });
+      })
+      .then(() => AsyncStorage.removeItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY))
+      .then(() => AsyncStorage.removeItem(DROPBOX.LAST_UPDATE_STATUS_KEY))
+      .then(() =>
+        AsyncStorage.removeItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY)
+      );
   }
 
   // Private helpers

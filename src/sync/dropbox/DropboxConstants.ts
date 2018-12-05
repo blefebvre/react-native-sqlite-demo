@@ -6,6 +6,7 @@
 export const DROPBOX = {
   AUTHORIZE_URL: "https://www.dropbox.com/oauth2/authorize",
   GET_METADATA_URL: "https://api.dropboxapi.com/2/files/get_metadata",
+  REVOKE_TOKEN_URL: "https://api.dropboxapi.com/2/auth/token/revoke",
   UPLOAD_URL: "https://content.dropboxapi.com/2/files/upload",
   DOWNLOAD_URL: "https://content.dropboxapi.com/2/files/download",
   API_RESULT_HEADER_NAME: "dropbox-api-result",
