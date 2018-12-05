@@ -130,7 +130,7 @@ export class SettingsModal extends Component<Props, State> {
         this.setState({
           hasAuthorizedWithDropbox: true
         });
-        return this.dropboxSync.isRemoteDatabaseNewer();
+        return this.dropboxSync.hasRemoteUpdate();
       })
       .then(remoteDatabaseIsNewer => {
         if (remoteDatabaseIsNewer) {
@@ -153,7 +153,7 @@ export class SettingsModal extends Component<Props, State> {
                       .close()
                       .then(() => {
                         // Download the database from Dropbox
-                        return this.dropboxSync.downloadDatabase();
+                        return this.dropboxSync.download();
                       })
                       .then(() => {
                         console.log("DB download success! Reloading app.");
@@ -183,7 +183,7 @@ export class SettingsModal extends Component<Props, State> {
           });
         } else {
           // Nothing exists on Dropbox yet, so kick off the 1st upload
-          return this.dropboxSync.queueDatabaseUpload();
+          return this.dropboxSync.upload();
         }
       })
       .catch(reason => {

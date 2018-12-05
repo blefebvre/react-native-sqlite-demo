@@ -81,7 +81,7 @@ class DatabaseImpl implements Database {
         );
 
         // Queue database upload
-        return this.databaseSync.queueDatabaseUpload();
+        return this.databaseSync.upload();
       });
   }
 
@@ -128,7 +128,7 @@ class DatabaseImpl implements Database {
         );
 
         // Queue database upload
-        return this.databaseSync.queueDatabaseUpload();
+        return this.databaseSync.upload();
       });
   }
 
@@ -177,7 +177,7 @@ class DatabaseImpl implements Database {
         console.log(`[db] List item with id: ${listItem.id} updated.`);
 
         // Queue database upload
-        return this.databaseSync.queueDatabaseUpload();
+        return this.databaseSync.upload();
       });
   }
 
@@ -199,7 +199,7 @@ class DatabaseImpl implements Database {
         console.log(`[db] Deleted list titled: "${list.title}"!`);
 
         // Queue database upload
-        return this.databaseSync.queueDatabaseUpload();
+        return this.databaseSync.upload();
       });
   }
 

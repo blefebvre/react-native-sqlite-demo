@@ -17,10 +17,10 @@ export class DropboxDatabaseSync implements DatabaseSync {
   // True when a backup is already in progress
   private backupIsCurrentlyInProgress = false;
 
-  // Creates a copy of the database file and queues it for backup.
+  // Creates a copy of the database file and kicks off the backup process.
   // Promise is resolved once COPY is complete.
   // Backup to dropbox will occur in the background later on.
-  public queueDatabaseUpload(): Promise<void> {
+  public upload(): Promise<void> {
     return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
       .then(accessToken => {
         if (accessToken === null) {
@@ -69,7 +69,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   // Check if the backup file on Dropbox is newer than our local database file.
-  public isRemoteDatabaseNewer(): Promise<boolean> {
+  public hasRemoteUpdate(): Promise<boolean> {
     // Is this device online?
     return NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected === false) {
@@ -172,7 +172,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   // This function indicates if the last backup to Dropbox had completed successfully.
-  public wasLastUploadCompleted(): Promise<boolean> {
+  public hasLastUploadCompleted(): Promise<boolean> {
     return AsyncStorage.getItem(DROPBOX.LAST_UPDATE_STATUS_KEY).then(
       lastUpdateStatus => {
         if (lastUpdateStatus === null) {
@@ -197,7 +197,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
 
   // WARNING! Overwrites the existing DB with what is contained in Dropbox.
   // This function assumes the user has already agreed to overwrite the existing local DB.
-  public downloadDatabase(): Promise<void> {
+  public download(): Promise<void> {
     return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
       .then(accessToken => {
         if (accessToken === null) {
@@ -261,7 +261,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
       });
   }
 
-  public hasDatabaseBeenSynced(): Promise<boolean> {
+  public hasSynced(): Promise<boolean> {
     return AsyncStorage.getItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY).then(
       result => {
         if (result === null) {

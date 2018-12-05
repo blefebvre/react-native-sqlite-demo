@@ -36,11 +36,11 @@ export class DatabaseSynchronizer {
     let anUpdateToTheDatabaseExists: boolean;
 
     // Has this database been synced yet?
-    this.dropboxSync.hasDatabaseBeenSynced().then(hasBeenSynced => {
+    this.dropboxSync.hasSynced().then(hasBeenSynced => {
       if (hasBeenSynced === true) {
         // Proceed with checking for an update
         this.dropboxSync
-          .isRemoteDatabaseNewer()
+          .hasRemoteUpdate()
           .then(updateExists => {
             // When updateExists === true, there has been an update made to the database file by another device.
             // We need to download it and replace our current database file with it, in order to have the latest
@@ -49,7 +49,7 @@ export class DatabaseSynchronizer {
 
             // Was the last upload from this device completed successfully?
             // This will change the way we prompt the user, since we do not handle merging data.
-            return this.dropboxSync.wasLastUploadCompleted();
+            return this.dropboxSync.hasLastUploadCompleted();
           })
           .then(wasLastUploadCompleted => {
             console.log(
@@ -66,7 +66,7 @@ export class DatabaseSynchronizer {
                 "[DatabaseSynchronizer] the local DB needs to be uploaded! Queuing an upload now."
               );
 
-              return this.dropboxSync.queueDatabaseUpload();
+              return this.dropboxSync.upload();
             } else if (
               wasLastUploadCompleted &&
               anUpdateToTheDatabaseExists === false
@@ -164,7 +164,7 @@ export class DatabaseSynchronizer {
     // Perform update preparation
     this.prepareForDatabaseUpdate()
       .then(() => {
-        return this.dropboxSync.downloadDatabase();
+        return this.dropboxSync.download();
       })
       .then(() => {
         console.log(
