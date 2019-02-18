@@ -390,7 +390,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
         })
       },
       RNFetchBlob.wrap(localFilePath)
-    ).then(fetchBlobResponse => {
+    ).then((fetchBlobResponse: any) => {
       console.log("[Dropbox backup] UPLOAD response!", fetchBlobResponse);
       // Ensure we have `data` and a 200 response
       if (
