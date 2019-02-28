@@ -4,7 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { Component } from "react";
-import { AppState, StyleSheet, SafeAreaView } from "react-native";
+import { AppState, StyleSheet, SafeAreaView, YellowBox } from "react-native";
 import { database } from "./database/Database";
 import { AllLists } from "./components/AllLists";
 import { DatabaseSynchronizer } from "./database/DatabaseSynchronizer";
@@ -16,6 +16,9 @@ interface State {
   loading: boolean;
   loadingText: string;
 }
+
+// TODO: migrate to Async Storage and NetInfo modules hosted in react-native-community org
+YellowBox.ignoreWarnings(['Warning: Async Storage', 'Warning: NetInfo']);
 
 export default class App extends Component<object, State> {
   private databaseSynchronizer: DatabaseSynchronizer;
