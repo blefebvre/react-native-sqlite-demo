@@ -21,6 +21,7 @@ import { database } from "../database/Database";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
 import { sharedStyle } from "../style/Shared";
+import { ListStatus } from "./ListStatus";
 
 interface Props {
   visible: boolean;
@@ -88,13 +89,16 @@ export class ViewListModal extends Component<Props, State> {
             )}
             keyExtractor={(item, index) => `item-${index}`}
             ListFooterComponent={
-              <TouchableOpacity
-                style={styles.deleteList}
-                onPress={() => this.deleteList()}
-                testID="deleteListButton"
-              >
-                <Text>Delete list</Text>
-              </TouchableOpacity>
+              <>
+                <ListStatus listItems={listItems} />
+                <TouchableOpacity
+                  style={styles.deleteList}
+                  onPress={() => this.deleteList()}
+                  testID="deleteListButton"
+                >
+                  <Text>Delete list</Text>
+                </TouchableOpacity>
+              </>
             }
           />
         </SafeAreaView>
