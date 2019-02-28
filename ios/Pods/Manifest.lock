@@ -1,26 +1,26 @@
 PODS:
   - RCTRestart (0.0.7):
     - React
-  - React (0.58.2):
-    - React/Core (= 0.58.2)
+  - React (0.58.4):
+    - React/Core (= 0.58.4)
   - react-native-sqlite-storage (3.3.7):
     - React
-  - React/Core (0.58.2):
-    - yoga (= 0.58.2.React)
-  - React/DevSupport (0.58.2):
+  - React/Core (0.58.4):
+    - yoga (= 0.58.4.React)
+  - React/DevSupport (0.58.4):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.58.2)
-  - React/RCTBlob (0.58.2):
+  - React/fishhook (0.58.4)
+  - React/RCTBlob (0.58.4):
     - React/Core
-  - React/RCTImage (0.58.2):
+  - React/RCTImage (0.58.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.2):
+  - React/RCTLinkingIOS (0.58.4):
     - React/Core
-  - React/RCTNetwork (0.58.2):
+  - React/RCTNetwork (0.58.4):
     - React/Core
-  - React/RCTWebSocket (0.58.2):
+  - React/RCTWebSocket (0.58.4):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -28,7 +28,7 @@ PODS:
     - React/Core
   - RNFS (2.12.1):
     - React
-  - yoga (0.58.2.React)
+  - yoga (0.58.4.React)
 
 DEPENDENCIES:
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
