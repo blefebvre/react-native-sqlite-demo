@@ -14,6 +14,7 @@ exports[`ListItemRow renders correctly 1`] = `
     onChangeText={[Function]}
     onSubmitEditing={[Function]}
     placeholder="Enter new item text here"
+    rejectResponderTermination={true}
     style={
       Object {
         "borderWidth": 1,
