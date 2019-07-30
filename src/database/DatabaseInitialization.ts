@@ -54,31 +54,31 @@ export class DatabaseInitialization {
     }
 
     // List table
-    transaction.executeSql(
-      "CREATE TABLE IF NOT EXISTS List( " +
-        "list_id INTEGER PRIMARY KEY NOT NULL, " +
-        "title TEXT" +
-        ");"
-    );
+    transaction.executeSql(`
+      CREATE TABLE IF NOT EXISTS List(
+        list_id INTEGER PRIMARY KEY NOT NULL,
+        title TEXT
+      );
+    `);
 
     // ListItem table
-    transaction.executeSql(
-      "CREATE TABLE IF NOT EXISTS ListItem( " +
-        "item_id INTEGER PRIMARY KEY NOT NULL, " +
-        "list_id INTEGER, " +
-        "text TEXT, " +
-        "done INTEGER DEFAULT 0, " +
-        "FOREIGN KEY ( list_id ) REFERENCES List ( list_id )" +
-        ");"
-    );
+    transaction.executeSql(`
+      CREATE TABLE IF NOT EXISTS ListItem(
+        item_id INTEGER PRIMARY KEY NOT NULL,
+        list_id INTEGER,
+        text TEXT,
+        done INTEGER DEFAULT 0,
+        FOREIGN KEY ( list_id ) REFERENCES List ( list_id )
+      );
+    `);
 
     // Version table
-    transaction.executeSql(
-      "CREATE TABLE IF NOT EXISTS Version( " +
-        "version_id INTEGER PRIMARY KEY NOT NULL, " +
-        "version INTEGER" +
-        ");"
-    );
+    transaction.executeSql(`
+      CREATE TABLE IF NOT EXISTS Version(
+        version_id INTEGER PRIMARY KEY NOT NULL,
+        version INTEGER
+      );
+    `);
   }
 
   // Get the version of the database, as specified in the Version table
