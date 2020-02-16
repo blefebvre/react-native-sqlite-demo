@@ -9,15 +9,13 @@ import {DropboxDatabaseSync} from "../sync/dropbox/DropboxDatabaseSync";
 import {DropboxAuthorize} from "../sync/dropbox/DropboxAuthorize";
 
 export type SynchronizerFunction = () => void;
-export interface HookProps {
-  prepareForDatabaseUpdate(): Promise<void>;
-}
+export type PrepareForUpdateFunction = () => Promise<void>;
 
 const dropboxSync = new DropboxDatabaseSync();
 const dropboxAuth = new DropboxAuthorize();
 
 // Hook to synchronize database changes with the copy that exists on Dropbox
-export function useDatabaseSync({prepareForDatabaseUpdate}: HookProps): SynchronizerFunction {
+export function useDatabaseSync(prepareForDatabaseUpdate: PrepareForUpdateFunction): SynchronizerFunction {
   async function reconcileDatabaseChanges(): Promise<void> {
     let anUpdateToTheDatabaseExists: boolean;
 
