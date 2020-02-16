@@ -3,12 +3,12 @@
  * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { Component } from "react";
-import { AppState, StyleSheet, SafeAreaView, YellowBox } from "react-native";
-import { database } from "./database/Database";
-import { AllLists } from "./components/AllLists";
-import { DatabaseSynchronizer } from "./database/DatabaseSynchronizer";
-import { LoadingScreen } from "./components/LoadingScreen";
+import React, {useState, useEffect} from "react";
+import {AppState, StyleSheet, SafeAreaView, AppStateStatus} from "react-native";
+import {database} from "./database/Database";
+import {AllLists} from "./components/AllLists";
+import {LoadingScreen} from "./components/LoadingScreen";
+import {useDatabaseSync} from "./hooks/useDatabaseSync";
 
 interface State {
   appState: string;
@@ -17,106 +17,89 @@ interface State {
   loadingText: string;
 }
 
-// TODO: migrate to Async Storage and NetInfo modules hosted in react-native-community org
-YellowBox.ignoreWarnings(['Warning: Async Storage', 'Warning: NetInfo']);
+// Track the current state of the app as a regular variable (instead of in state), since
+// we do not want to re-render when this value changes.
+let appState: AppStateStatus;
 
-export default class App extends Component<object, State> {
-  private databaseSynchronizer: DatabaseSynchronizer;
+export const App: React.FunctionComponent = function() {
+  // Initialize state
+  const [isDatabaseReady, setIsDatabaseReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("Loading...");
+  // Init appState.
+  appState = AppState.currentState;
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      appState: AppState.currentState,
-      databaseIsReady: false,
-      loading: false,
-      loadingText: "Loading..."
-    };
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
-    this.prepareForDatabaseUpdate = this.prepareForDatabaseUpdate.bind(this);
-    this.databaseSynchronizer = new DatabaseSynchronizer(
-      this.prepareForDatabaseUpdate
-    );
-  }
+  // Initialize Dropbox sync
+  const syncDatabase = useDatabaseSync({prepareForDatabaseUpdate});
 
-  public componentDidMount() {
-    // App is starting up
-    this.appIsNowRunningInForeground();
-    this.setState({
-      appState: "active"
-    });
+  // Set up handler to fire when AppState changes
+  useEffect(function() {
+    appIsNowRunningInForeground();
+    appState = "active";
     // Listen for app state changes
-    AppState.addEventListener("change", this.handleAppStateChange);
-  }
+    AppState.addEventListener("change", handleAppStateChange);
 
-  public componentWillUnmount() {
-    // Remove app state change listener
-    AppState.removeEventListener("change", this.handleAppStateChange);
-  }
-
-  public render() {
-    // Once the database is ready, show the Lists
-    if (this.state.databaseIsReady && this.state.loading === false) {
-      return (
-        <SafeAreaView style={styles.container}>
-          <AllLists />
-        </SafeAreaView>
-      );
-    } else {
-      // Else, show a loading screen
-      return <LoadingScreen text={this.state.loadingText} />;
-    }
-  }
+    return function() {
+      // Cleanup function
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   // Handle the app going from foreground to background, and vice versa.
-  private handleAppStateChange(nextAppState: string) {
-    if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
+  function handleAppStateChange(nextAppState: AppStateStatus) {
+    if (appState.match(/inactive|background/) && nextAppState === "active") {
       // App has moved from the background (or inactive) into the foreground
-      this.appIsNowRunningInForeground();
-    } else if (
-      this.state.appState === "active" &&
-      nextAppState.match(/inactive|background/)
-    ) {
+      appIsNowRunningInForeground();
+    } else if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // App has moved from the foreground into the background (or become inactive)
-      this.appHasGoneToTheBackground();
+      appHasGoneToTheBackground();
     }
-    this.setState({ appState: nextAppState });
+    appState = nextAppState;
   }
 
   // Function to run when the app is brought to the foreground
-  private appIsNowRunningInForeground() {
+  async function appIsNowRunningInForeground() {
     console.log("App is now running in the foreground!");
 
     // Check for an update to the database
-    this.databaseSynchronizer.syncDatabase();
+    syncDatabase();
 
     // Do not wait for database sync to complete. Instead, open DB and show app content.
-    return database.open().then(() =>
-      this.setState({
-        databaseIsReady: true
-      })
-    );
+    await database.open();
+    setIsDatabaseReady(true);
   }
 
   // Function to run when the app is sent to the background
-  private appHasGoneToTheBackground() {
+  function appHasGoneToTheBackground() {
     console.log("App has gone to the background.");
     database.close();
   }
 
-  private prepareForDatabaseUpdate(): Promise<void> {
-    this.setState({
-      loading: true,
-      loadingText: "Downloading database..."
-    });
+  function isReady() {
+    return isDatabaseReady && isLoading === false;
+  }
+
+  function prepareForDatabaseUpdate(): Promise<void> {
+    setIsLoading(true);
+    setLoadingText("Downloading database...");
     return database.close();
   }
-}
+
+  // Once the database is ready, show the Lists
+  if (isReady()) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <AllLists />
+      </SafeAreaView>
+    );
+  } else {
+    // Else, show a loading screen
+    return <LoadingScreen text={loadingText} />;
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

@@ -3,12 +3,13 @@
  * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import { AsyncStorage, Linking } from "react-native";
+import {Linking} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import shittyQs from "shitty-qs";
 
-import { DROPBOX } from "./DropboxConstants";
-import { OAUTH_CONFIG } from "./OAuthConfig";
-import { Authorize } from "../Authorize";
+import {DROPBOX} from "./DropboxConstants";
+import {OAUTH_CONFIG} from "./OAuthConfig";
+import {Authorize} from "../Authorize";
 
 // Class to support authorizing for database synchronization via Dropbox
 export class DropboxAuthorize implements Authorize {
@@ -32,19 +33,14 @@ export class DropboxAuthorize implements Authorize {
         "?response_type=token",
         `&client_id=${OAUTH_CONFIG.OAUTH_CLIENT_ID}`,
         `&redirect_uri=${OAUTH_CONFIG.OAUTH_REDIRECT_URI}`,
-        `&state=${stateValue}`
-      ].join("")
+        `&state=${stateValue}`,
+      ].join(""),
     )
-      .catch(err =>
-        console.error(
-          "An error occurred trying to open the browser to authorize with Dropbox:",
-          err
-        )
-      )
+      .catch(err => console.error("An error occurred trying to open the browser to authorize with Dropbox:", err))
       .then(() => {
         return new Promise<void>((resolve, reject) => {
           // Callback for when the app is invoked via it's custom URL protocol
-          const handleOpenURL = (event: { url: string }) => {
+          const handleOpenURL = (event: {url: string}) => {
             this._handleOpenURL(event, stateValue)
               .then(() => {
                 resolve();
@@ -67,15 +63,13 @@ export class DropboxAuthorize implements Authorize {
   }
 
   public hasUserAuthorized(): Promise<boolean> {
-    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then(
-      accessToken => {
-        if (accessToken !== null) {
-          // We have an access token!
-          return true;
-        } // otherwise
-        return false;
-      }
-    );
+    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then(accessToken => {
+      if (accessToken !== null) {
+        // We have an access token!
+        return true;
+      } // otherwise
+      return false;
+    });
   }
 
   public revokeAuthorization(): Promise<void> {
@@ -88,8 +82,8 @@ export class DropboxAuthorize implements Authorize {
         return fetch(DROPBOX.REVOKE_TOKEN_URL, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       })
       .then(response => {
@@ -100,31 +94,22 @@ export class DropboxAuthorize implements Authorize {
         }
         // otherwise
         throw new Error(
-          `Failed to revoke Dropbox token. status: ${
-            response.status
-          } and response: ${JSON.stringify(response)}`
+          `Failed to revoke Dropbox token. status: ${response.status} and response: ${JSON.stringify(response)}`,
         );
       })
       .then(() => AsyncStorage.removeItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY))
       .then(() => AsyncStorage.removeItem(DROPBOX.LAST_UPDATE_STATUS_KEY))
-      .then(() =>
-        AsyncStorage.removeItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY)
-      );
+      .then(() => AsyncStorage.removeItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY));
   }
 
   // Private helpers
 
-  private _handleOpenURL(
-    event: { url: string },
-    stateValue: string
-  ): Promise<void> {
+  private _handleOpenURL(event: {url: string}, stateValue: string): Promise<void> {
     console.log("Deep link event!", event);
 
     const queryStringResult = event.url.match(/\#(.*)/);
     if (queryStringResult === null || queryStringResult.length < 2) {
-      return Promise.reject(
-        "Did not receive a query string as part of this deep link!"
-      );
+      return Promise.reject("Did not receive a query string as part of this deep link!");
     }
 
     const [, queryString] = queryStringResult;
@@ -137,9 +122,7 @@ export class DropboxAuthorize implements Authorize {
       console.error("Dropbox OAuth error! code:", errorCode);
       console.error("Error description:", errorDescription);
 
-      return Promise.reject(
-        `Could not authorize with Dropbox. Code: ${errorCode}`
-      );
+      return Promise.reject(`Could not authorize with Dropbox. Code: ${errorCode}`);
     }
 
     if (stateValue !== parsedQueryString.state) {
@@ -157,10 +140,7 @@ export class DropboxAuthorize implements Authorize {
         return AsyncStorage.setItem(DROPBOX.ACCOUNT_ID_STORAGE_KEY, accountId);
       })
       .then(() => {
-        console.log(
-          "Dropbox OAuth authorization success! Account ID:",
-          accountId
-        );
+        console.log("Dropbox OAuth authorization success! Account ID:", accountId);
         return;
       });
   }

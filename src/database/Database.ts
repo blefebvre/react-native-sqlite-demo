@@ -4,11 +4,11 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import SQLite from "react-native-sqlite-storage";
-import { DatabaseInitialization } from "./DatabaseInitialization";
-import { List } from "../types/List";
-import { ListItem } from "../types/ListItem";
-import { DATABASE } from "./Constants";
-import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
+import {DatabaseInitialization} from "./DatabaseInitialization";
+import {List} from "../types/List";
+import {ListItem} from "../types/ListItem";
+import {DATABASE} from "./Constants";
+import {DropboxDatabaseSync} from "../sync/dropbox/DropboxDatabaseSync";
 
 export interface Database {
   open(): Promise<SQLite.SQLiteDatabase>;
@@ -41,7 +41,7 @@ class DatabaseImpl implements Database {
 
     return SQLite.openDatabase({
       name: DATABASE.FILE_NAME,
-      location: "default"
+      location: "default",
     })
       .then(db => {
         databaseInstance = db;
@@ -60,7 +60,8 @@ class DatabaseImpl implements Database {
   // Close the connection to the database
   public close(): Promise<void> {
     if (this.database === undefined) {
-      return Promise.reject("[db] Database was not open; unable to close.");
+      // No need to close DB again - already closed.
+      return Promise.resolve();
     }
     return this.database.close().then(status => {
       console.log("[db] Database closed.");
@@ -71,14 +72,10 @@ class DatabaseImpl implements Database {
   // Insert a new list into the database
   public createList(newListTitle: string): Promise<void> {
     return this.getDatabase()
-      .then(db =>
-        db.executeSql("INSERT INTO List (title) VALUES (?);", [newListTitle])
-      )
+      .then(db => db.executeSql("INSERT INTO List (title) VALUES (?);", [newListTitle]))
       .then(([results]) => {
-        const { insertId } = results;
-        console.log(
-          `[db] Added list with title: "${newListTitle}"! InsertId: ${insertId}`
-        );
+        const {insertId} = results;
+        console.log(`[db] Added list with title: "${newListTitle}"! InsertId: ${insertId}`);
 
         // Queue database upload
         return this.databaseSync.upload();
@@ -91,7 +88,7 @@ class DatabaseImpl implements Database {
     return this.getDatabase()
       .then(db =>
         // Get all the lists, ordered by newest lists first
-        db.executeSql("SELECT list_id as id, title FROM List ORDER BY id DESC;")
+        db.executeSql("SELECT list_id as id, title FROM List ORDER BY id DESC;"),
       )
       .then(([results]) => {
         if (results === undefined) {
@@ -101,9 +98,9 @@ class DatabaseImpl implements Database {
         const lists: List[] = [];
         for (let i = 0; i < count; i++) {
           const row = results.rows.item(i);
-          const { title, id } = row;
+          const {title, id} = row;
           console.log(`[db] List title: ${title}, id: ${id}`);
-          lists.push({ id, title });
+          lists.push({id, title});
         }
         return lists;
       });
@@ -114,18 +111,9 @@ class DatabaseImpl implements Database {
       return Promise.reject(Error(`Could not add item to undefined list.`));
     }
     return this.getDatabase()
-      .then(db =>
-        db.executeSql("INSERT INTO ListItem (text, list_id) VALUES (?, ?);", [
-          text,
-          list.id
-        ])
-      )
+      .then(db => db.executeSql("INSERT INTO ListItem (text, list_id) VALUES (?, ?);", [text, list.id]))
       .then(([results]) => {
-        console.log(
-          `[db] ListItem with "${text}" created successfully with id: ${
-            results.insertId
-          }`
-        );
+        console.log(`[db] ListItem with "${text}" created successfully with id: ${results.insertId}`);
 
         // Queue database upload
         return this.databaseSync.upload();
@@ -139,11 +127,9 @@ class DatabaseImpl implements Database {
     return this.getDatabase()
       .then(db =>
         db.executeSql(
-          `SELECT item_id as id, text, done FROM ListItem WHERE list_id = ? ${
-            orderByDone ? "ORDER BY done" : ""
-          };`,
-          [list.id]
-        )
+          `SELECT item_id as id, text, done FROM ListItem WHERE list_id = ? ${orderByDone ? "ORDER BY done" : ""};`,
+          [list.id],
+        ),
       )
       .then(([results]) => {
         if (results === undefined) {
@@ -153,11 +139,11 @@ class DatabaseImpl implements Database {
         const listItems: ListItem[] = [];
         for (let i = 0; i < count; i++) {
           const row = results.rows.item(i);
-          const { text, done: doneNumber, id } = row;
+          const {text, done: doneNumber, id} = row;
           const done = doneNumber === 1 ? true : false;
 
           console.log(`[db] List item text: ${text}, done? ${done} id: ${id}`);
-          listItems.push({ id, text, done });
+          listItems.push({id, text, done});
         }
         console.log(`[db] List items for list "${list.title}":`, listItems);
         return listItems;
@@ -168,10 +154,11 @@ class DatabaseImpl implements Database {
     const doneNumber = listItem.done ? 1 : 0;
     return this.getDatabase()
       .then(db =>
-        db.executeSql(
-          "UPDATE ListItem SET text = ?, done = ? WHERE item_id = ?;",
-          [listItem.text, doneNumber, listItem.id]
-        )
+        db.executeSql("UPDATE ListItem SET text = ?, done = ? WHERE item_id = ?;", [
+          listItem.text,
+          doneNumber,
+          listItem.id,
+        ]),
       )
       .then(([results]) => {
         console.log(`[db] List item with id: ${listItem.id} updated.`);
@@ -182,19 +169,13 @@ class DatabaseImpl implements Database {
   }
 
   public deleteList(list: List): Promise<void> {
-    console.log(
-      `[db] Deleting list titled: "${list.title}" with id: ${list.id}`
-    );
+    console.log(`[db] Deleting list titled: "${list.title}" with id: ${list.id}`);
     return this.getDatabase()
       .then(db => {
         // Delete list items first, then delete the list itself
-        return db
-          .executeSql("DELETE FROM ListItem WHERE list_id = ?;", [list.id])
-          .then(() => db);
+        return db.executeSql("DELETE FROM ListItem WHERE list_id = ?;", [list.id]).then(() => db);
       })
-      .then(db =>
-        db.executeSql("DELETE FROM List WHERE list_id = ?;", [list.id])
-      )
+      .then(db => db.executeSql("DELETE FROM List WHERE list_id = ?;", [list.id]))
       .then(() => {
         console.log(`[db] Deleted list titled: "${list.title}"!`);
 

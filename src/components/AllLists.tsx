@@ -3,24 +3,18 @@
  * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { Component } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  TouchableOpacity
-} from "react-native";
+import React, {Component} from "react";
+import {View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native";
 
-import { NewItem } from "./NewItem";
-import { Header } from "./Header";
-import { List } from "../types/List";
-import { ListRow } from "./ListRow";
-import { database } from "../database/Database";
-import { ViewListModal } from "./ViewListModal";
-import { ListItem } from "../types/ListItem";
-import { sharedStyle } from "../style/Shared";
-import { SettingsModal } from "./SettingsModal";
+import {NewItem} from "./NewItem";
+import {Header} from "./Header";
+import {List} from "../types/List";
+import {ListRow} from "./ListRow";
+import {database} from "../database/Database";
+import {ViewListModal} from "./ViewListModal";
+import {ListItem} from "../types/ListItem";
+import {sharedStyle} from "../style/Shared";
+import {SettingsModal} from "./SettingsModal";
 
 interface State {
   newListTitle: string;
@@ -39,7 +33,7 @@ export class AllLists extends Component<any, State> {
       lists: [],
       listModalVisible: false,
       settingsModalVisible: false,
-      selectedListsItems: []
+      selectedListsItems: [],
     };
     this.handleNewListTitleChange = this.handleNewListTitleChange.bind(this);
     this.handleCreateList = this.handleCreateList.bind(this);
@@ -56,13 +50,10 @@ export class AllLists extends Component<any, State> {
     return (
       <View style={styles.container} testID="allListsView">
         <View style={styles.headerWithSettings}>
-          <TouchableOpacity
-            style={styles.settingsButton}
-            onPress={() => this.setState({ settingsModalVisible: true })}
-          >
+          <TouchableOpacity style={styles.settingsButton} onPress={() => this.setState({settingsModalVisible: true})}>
             <Text style={styles.settingsButtonText}>⚙️</Text>
           </TouchableOpacity>
-          <Header title="SQLite List App" />
+          <Header title="SQLite List App - with Hooks" />
         </View>
 
         <NewItem
@@ -77,16 +68,14 @@ export class AllLists extends Component<any, State> {
 
         <FlatList
           data={this.state.lists}
-          renderItem={({ item }) => (
-            <ListRow list={item} handleListClicked={this.handleListClicked} />
-          )}
+          renderItem={({item}) => <ListRow list={item} handleListClicked={this.handleListClicked} />}
           keyExtractor={(item, index) => `${index}`}
         />
 
         <ViewListModal
           visible={this.state.listModalVisible}
           list={this.state.selectedList}
-          back={() => this.setState({ listModalVisible: false })}
+          back={() => this.setState({listModalVisible: false})}
           listItems={this.state.selectedListsItems}
           refreshListItems={this.refreshListsItems}
           deleteList={this.deleteList}
@@ -94,7 +83,7 @@ export class AllLists extends Component<any, State> {
 
         <SettingsModal
           visible={this.state.settingsModalVisible}
-          back={() => this.setState({ settingsModalVisible: false })}
+          back={() => this.setState({settingsModalVisible: false})}
         />
       </View>
     );
@@ -102,12 +91,12 @@ export class AllLists extends Component<any, State> {
 
   private handleNewListTitleChange(title: string) {
     this.setState({
-      newListTitle: title
+      newListTitle: title,
     });
   }
 
   private handleCreateList(): Promise<void> {
-    const { newListTitle } = this.state;
+    const {newListTitle} = this.state;
     return database.createList(newListTitle).then(() => {
       // Refresh the list of lists
       this.refreshListOfLists();
@@ -119,27 +108,22 @@ export class AllLists extends Component<any, State> {
     this.refreshListsItems(list).then(() =>
       this.setState({
         selectedList: list,
-        listModalVisible: true
-      })
+        listModalVisible: true,
+      }),
     );
   }
 
   private refreshListOfLists() {
-    return database.getAllLists().then(lists => this.setState({ lists }));
+    return database.getAllLists().then(lists => this.setState({lists}));
   }
 
-  private refreshListsItems(
-    listToRefresh = this.state.selectedList,
-    doneItemsLast = false
-  ): Promise<void> {
-    console.log(
-      `Refreshing list items for list: ${listToRefresh && listToRefresh.title}`
-    );
+  private refreshListsItems(listToRefresh = this.state.selectedList, doneItemsLast = false): Promise<void> {
+    console.log(`Refreshing list items for list: ${listToRefresh && listToRefresh.title}`);
 
     if (listToRefresh !== undefined) {
       return database
         .getListItems(listToRefresh, doneItemsLast)
-        .then(selectedListsItems => this.setState({ selectedListsItems }));
+        .then(selectedListsItems => this.setState({selectedListsItems}));
     }
     // otherwise, listToRefresh is undefined
     return Promise.reject(Error("Could not refresh an undefined list's items"));
@@ -147,9 +131,7 @@ export class AllLists extends Component<any, State> {
 
   private deleteList(listToDelete = this.state.selectedList): Promise<void> {
     if (listToDelete !== undefined) {
-      return database
-        .deleteList(listToDelete)
-        .then(() => this.refreshListOfLists());
+      return database.deleteList(listToDelete).then(() => this.refreshListOfLists());
     }
     // otherwise:
     return Promise.reject(Error("Could not delete an undefined list"));
@@ -160,19 +142,19 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 10,
     paddingRight: 10,
-    flex: 1
+    flex: 1,
   },
   headerWithSettings: {
     flexDirection: "row",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   settingsButton: {
     marginTop: 10,
     paddingRight: 5,
     paddingBottom: 10,
-    paddingTop: 10
+    paddingTop: 10,
   },
   settingsButtonText: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });

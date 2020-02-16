@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-sqlite-storage/src/ios/SQLite.h
+../../../../../node_modules/react-native-sqlite-storage/platforms/ios/SQLite.h

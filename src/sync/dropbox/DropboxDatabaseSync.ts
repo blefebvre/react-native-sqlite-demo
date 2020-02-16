@@ -3,14 +3,15 @@
  * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import { AsyncStorage, NetInfo } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+import AsyncStorage from "@react-native-community/async-storage";
 import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
-import moment, { Moment } from "moment";
+import moment, {Moment} from "moment";
 
-import { DROPBOX } from "./DropboxConstants";
-import { DatabaseSync } from "../DatabaseSync";
-import { DATABASE } from "../../database/Constants";
+import {DROPBOX} from "./DropboxConstants";
+import {DatabaseSync} from "../DatabaseSync";
+import {DATABASE} from "../../database/Constants";
 
 // Class to support Dropbox backup and sync
 export class DropboxDatabaseSync implements DatabaseSync {
@@ -36,10 +37,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
         this.backupIsCurrentlyInProgress = true;
 
         // Record that a backup has started
-        return AsyncStorage.setItem(
-          DROPBOX.LAST_UPDATE_STATUS_KEY,
-          DROPBOX.UPDATE_STATUS_STARTED
-        );
+        return AsyncStorage.setItem(DROPBOX.LAST_UPDATE_STATUS_KEY, DROPBOX.UPDATE_STATUS_STARTED);
       })
       .then(() => {
         // Create a copy of the DB first to the backup file
@@ -51,9 +49,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
         // Kick off the remote backup to Dropbox.
         this.performBackup().then(() => {
           // "Finally"
-          console.log(
-            '[Dropbox backup] "Finally" block. setting backupIsCurrentlyInProgress = false.'
-          );
+          console.log('[Dropbox backup] "Finally" block. setting backupIsCurrentlyInProgress = false.');
           this.backupIsCurrentlyInProgress = false;
           console.log("[Dropbox backup] BACKUP COMPLETE.");
         });
@@ -71,128 +67,92 @@ export class DropboxDatabaseSync implements DatabaseSync {
   // Check if the backup file on Dropbox is newer than our local database file.
   public hasRemoteUpdate(): Promise<boolean> {
     // Is this device online?
-    return NetInfo.isConnected.fetch().then(isConnected => {
+    return NetInfo.fetch().then(({isConnected}) => {
       if (isConnected === false) {
         // Not connected to the internet; won't be able to check for an update
-        console.log(
-          "[Dropbox backup] no internet connection; can't check for update"
-        );
+        console.log("[Dropbox backup] no internet connection; can't check for update");
         return false;
       }
 
       // Otherwise, we are connected
-      return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then(
-        accessToken => {
-          if (accessToken === null) {
-            // Not wired up to Dropbox, so there cannot be a remote DB update
-            console.log(
-              "[Dropbox backup] no Dropbox access token; can't check for update"
-            );
-            return false;
-          }
-
-          let lastLocalBackupTimestamp: Moment;
-          let lastDropboxBackupTimestamp: Moment;
-          return this.getDatabaseFileMetadataFromDropbox(
-            this.getDropboxFolder() + this.getDatabaseBackupName(),
-            accessToken
-          ).then(dropboxMetadataResponse => {
-            if (dropboxMetadataResponse.status === 200) {
-              // We have a valid response.
-              // Get the client modified date from the response to compare with our local value
-              return dropboxMetadataResponse
-                .json()
-                .then(responseJson => {
-                  const clientModifiedString =
-                    responseJson[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
-                  console.log(
-                    "[Dropbox backup] Client modified timestamp FROM DROPBOX: " +
-                      clientModifiedString
-                  );
-                  lastDropboxBackupTimestamp = moment(clientModifiedString);
-
-                  return AsyncStorage.getItem(
-                    DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY
-                  );
-                })
-                .then(lastLocalBackupTimestampString => {
-                  console.log(
-                    "[Dropbox backup] Last recorded LOCAL backup timestamp: " +
-                      lastLocalBackupTimestampString
-                  );
-
-                  if (lastLocalBackupTimestampString === null) {
-                    // This app hasn't been backed up yet.
-                    // Since we received a 200 response above, this is likely a 2nd device that a user is syncing via Dropbox.
-                    // Therefor, we'll return true indicating that an update exists.
-                    console.log(
-                      "[Dropbox backup] lastLocalBackupTimestamp is null, and a DB update exists on Dropbox!"
-                    );
-                    return true;
-                  }
-
-                  lastLocalBackupTimestamp = moment(
-                    lastLocalBackupTimestampString
-                  );
-                  // If the local backup timestamp is BEFORE the Dropbox timestamp, we should overwrite our local DB
-                  if (
-                    lastLocalBackupTimestamp.isBefore(
-                      lastDropboxBackupTimestamp
-                    )
-                  ) {
-                    // Dropbox DB has been updated more recently - it is newer
-                    console.log(
-                      "[Dropbox backup] DB update exists on Dropbox!"
-                    );
-                    return true;
-                  } else {
-                    // Otherwise, we are up to date with Dropbox
-                    console.log(
-                      "[Dropbox backup] Local and Dropbox DBs are up to date!"
-                    );
-                    return false;
-                  }
-                });
-            } else if (dropboxMetadataResponse.status === 409) {
-              // We have a valid response, but this means "path not found", so the file does not exist on Dropbox yet
-              console.log(
-                "[Dropbox backup] no Dropbox DB file yet; so no update."
-              );
-              return false;
-            } else {
-              throw new Error(
-                "[Dropbox backup] unknown response from Dropbox. HTTP status: " +
-                  dropboxMetadataResponse.status
-              );
-            }
-          });
+      return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then(accessToken => {
+        if (accessToken === null) {
+          // Not wired up to Dropbox, so there cannot be a remote DB update
+          console.log("[Dropbox backup] no Dropbox access token; can't check for update");
+          return false;
         }
-      );
+
+        let lastLocalBackupTimestamp: Moment;
+        let lastDropboxBackupTimestamp: Moment;
+        return this.getDatabaseFileMetadataFromDropbox(
+          this.getDropboxFolder() + this.getDatabaseBackupName(),
+          accessToken,
+        ).then(dropboxMetadataResponse => {
+          if (dropboxMetadataResponse.status === 200) {
+            // We have a valid response.
+            // Get the client modified date from the response to compare with our local value
+            return dropboxMetadataResponse
+              .json()
+              .then(responseJson => {
+                const clientModifiedString = responseJson[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
+                console.log("[Dropbox backup] Client modified timestamp FROM DROPBOX: " + clientModifiedString);
+                lastDropboxBackupTimestamp = moment(clientModifiedString);
+
+                return AsyncStorage.getItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY);
+              })
+              .then(lastLocalBackupTimestampString => {
+                console.log("[Dropbox backup] Last recorded LOCAL backup timestamp: " + lastLocalBackupTimestampString);
+
+                if (lastLocalBackupTimestampString === null) {
+                  // This app hasn't been backed up yet.
+                  // Since we received a 200 response above, this is likely a 2nd device that a user is syncing via Dropbox.
+                  // Therefor, we'll return true indicating that an update exists.
+                  console.log("[Dropbox backup] lastLocalBackupTimestamp is null, and a DB update exists on Dropbox!");
+                  return true;
+                }
+
+                lastLocalBackupTimestamp = moment(lastLocalBackupTimestampString);
+                // If the local backup timestamp is BEFORE the Dropbox timestamp, we should overwrite our local DB
+                if (lastLocalBackupTimestamp.isBefore(lastDropboxBackupTimestamp)) {
+                  // Dropbox DB has been updated more recently - it is newer
+                  console.log("[Dropbox backup] DB update exists on Dropbox!");
+                  return true;
+                } else {
+                  // Otherwise, we are up to date with Dropbox
+                  console.log("[Dropbox backup] Local and Dropbox DBs are up to date!");
+                  return false;
+                }
+              });
+          } else if (dropboxMetadataResponse.status === 409) {
+            // We have a valid response, but this means "path not found", so the file does not exist on Dropbox yet
+            console.log("[Dropbox backup] no Dropbox DB file yet; so no update.");
+            return false;
+          } else {
+            throw new Error(
+              "[Dropbox backup] unknown response from Dropbox. HTTP status: " + dropboxMetadataResponse.status,
+            );
+          }
+        });
+      });
     });
   }
 
   // This function indicates if the last backup to Dropbox had completed successfully.
   public hasLastUploadCompleted(): Promise<boolean> {
-    return AsyncStorage.getItem(DROPBOX.LAST_UPDATE_STATUS_KEY).then(
-      lastUpdateStatus => {
-        if (lastUpdateStatus === null) {
-          console.log(
-            "[Dropbox backup] No previous update; wasLastUploadCompleted = true"
-          );
-          return true;
-        } else if (lastUpdateStatus === DROPBOX.UPDATE_STATUS_FINISHED) {
-          console.log(
-            "[Dropbox backup] Previous update finished; wasLastUploadCompleted = true"
-          );
-          return true;
-        } else {
-          console.log(
-            `[Dropbox backup] Previous update status !== finished (it was: ${lastUpdateStatus}); wasLastUploadCompleted = false`
-          );
-          return false;
-        }
+    return AsyncStorage.getItem(DROPBOX.LAST_UPDATE_STATUS_KEY).then(lastUpdateStatus => {
+      if (lastUpdateStatus === null) {
+        console.log("[Dropbox backup] No previous update; wasLastUploadCompleted = true");
+        return true;
+      } else if (lastUpdateStatus === DROPBOX.UPDATE_STATUS_FINISHED) {
+        console.log("[Dropbox backup] Previous update finished; wasLastUploadCompleted = true");
+        return true;
+      } else {
+        console.log(
+          `[Dropbox backup] Previous update status !== finished (it was: ${lastUpdateStatus}); wasLastUploadCompleted = false`,
+        );
+        return false;
       }
-    );
+    });
   }
 
   // WARNING! Overwrites the existing DB with what is contained in Dropbox.
@@ -202,24 +162,20 @@ export class DropboxDatabaseSync implements DatabaseSync {
       .then(accessToken => {
         if (accessToken === null) {
           // Not wired up to Dropbox, so there cannot be a remote DB update
-          throw new Error(
-            "[Dropbox backup] no Dropbox access token; can't download update"
-          );
+          throw new Error("[Dropbox backup] no Dropbox access token; can't download update");
         }
 
-        console.log(
-          "[Dropbox backup] DOWNLOADING and applying DB from Dropbox: beginning."
-        );
+        console.log("[Dropbox backup] DOWNLOADING and applying DB from Dropbox: beginning.");
 
         // Download the backup file, replacing the existing database
         return RNFetchBlob.config({
           // DB data will be saved to this path
-          path: this.getLocalDBFilePath()
+          path: this.getLocalDBFilePath(),
         }).fetch("POST", DROPBOX.DOWNLOAD_URL, {
           Authorization: `Bearer ${accessToken}`,
           "Dropbox-API-Arg": JSON.stringify({
-            path: this.getDropboxFolder() + this.getDatabaseBackupName()
-          })
+            path: this.getDropboxFolder() + this.getDatabaseBackupName(),
+          }),
         });
       })
       .then(response => {
@@ -230,46 +186,29 @@ export class DropboxDatabaseSync implements DatabaseSync {
           response.respInfo.headers &&
           response.respInfo.headers[DROPBOX.API_RESULT_HEADER_NAME]
         ) {
-          const apiResult = JSON.parse(
-            response.respInfo.headers[DROPBOX.API_RESULT_HEADER_NAME]
-          );
-          const clientModifiedString =
-            apiResult[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
-          console.log(
-            "[Dropbox backup] client_modified timestamp: " +
-              clientModifiedString
-          );
+          const apiResult = JSON.parse(response.respInfo.headers[DROPBOX.API_RESULT_HEADER_NAME]);
+          const clientModifiedString = apiResult[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
+          console.log("[Dropbox backup] client_modified timestamp: " + clientModifiedString);
 
           // Store client modified value
-          return AsyncStorage.setItem(
-            DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY,
-            clientModifiedString
-          ).then(() => {
+          return AsyncStorage.setItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY, clientModifiedString).then(() => {
             // Indicate that the last update has finished
-            return AsyncStorage.setItem(
-              DROPBOX.LAST_UPDATE_STATUS_KEY,
-              DROPBOX.UPDATE_STATUS_FINISHED
-            );
+            return AsyncStorage.setItem(DROPBOX.LAST_UPDATE_STATUS_KEY, DROPBOX.UPDATE_STATUS_FINISHED);
           });
         } else {
-          console.error(
-            "[Dropbox backup] client_modified timestamp missing. Response:",
-            response
-          );
+          console.error("[Dropbox backup] client_modified timestamp missing. Response:", response);
           return;
         }
       });
   }
 
   public hasSynced(): Promise<boolean> {
-    return AsyncStorage.getItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY).then(
-      result => {
-        if (result === null) {
-          return false;
-        } // Otherwise
-        return true;
-      }
-    );
+    return AsyncStorage.getItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY).then(result => {
+      if (result === null) {
+        return false;
+      } // Otherwise
+      return true;
+    });
   }
 
   // Private helpers
@@ -278,9 +217,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
     return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
       .then(accessToken => {
         if (accessToken === null) {
-          throw new Error(
-            "[Dropbox backup] cannot perform backup without an access token"
-          );
+          throw new Error("[Dropbox backup] cannot perform backup without an access token");
         }
         // Otherwise, we have an access token!
         console.log("[Dropbox backup] We have a dropbox access token!");
@@ -289,19 +226,14 @@ export class DropboxDatabaseSync implements DatabaseSync {
         return this.uploadDBToDropbox(
           this.getLocalDBBackupFilePath(),
           this.getDropboxFolder() + this.getDatabaseBackupName(),
-          accessToken
+          accessToken,
         );
       })
       .then(() => {
         console.log("[Dropbox backup] DROPBOX UPLOAD COMPLETE!");
-        console.log(
-          "[Dropbox backup] Setting LAST_UPDATE_STATUS_KEY to UPDATE_STATUS_FINISHED"
-        );
+        console.log("[Dropbox backup] Setting LAST_UPDATE_STATUS_KEY to UPDATE_STATUS_FINISHED");
         // Record that a backup has finished
-        return AsyncStorage.setItem(
-          DROPBOX.LAST_UPDATE_STATUS_KEY,
-          DROPBOX.UPDATE_STATUS_FINISHED
-        );
+        return AsyncStorage.setItem(DROPBOX.LAST_UPDATE_STATUS_KEY, DROPBOX.UPDATE_STATUS_FINISHED);
       })
       .catch(error => {
         console.error("[Dropbox backup] DROPBOX UPLOAD ERROR!", error);
@@ -318,10 +250,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
         return RNFS.unlink(databaseBackupFilePath);
       })
       .catch(reason => {
-        if (
-          reason &&
-          reason.toString().includes(DROPBOX.NO_SUCH_FILE_ERROR_SUBSTRING)
-        ) {
+        if (reason && reason.toString().includes(DROPBOX.NO_SUCH_FILE_ERROR_SUBSTRING)) {
           // The file doesn't exist yet! This is good.
           return;
         }
@@ -331,9 +260,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
       })
       .then(() => {
         // Copy the database to the backup location
-        console.log(
-          "[Dropbox backup] DB backup file is now gone; continue with backup."
-        );
+        console.log("[Dropbox backup] DB backup file is now gone; continue with backup.");
         return RNFS.copyFile(this.getLocalDBFilePath(), databaseBackupFilePath);
       })
       .then(() => {
@@ -342,19 +269,16 @@ export class DropboxDatabaseSync implements DatabaseSync {
       });
   }
 
-  private getDatabaseFileMetadataFromDropbox(
-    dropboxFilePath: string,
-    dropboxAccessToken: string
-  ): Promise<Response> {
+  private getDatabaseFileMetadataFromDropbox(dropboxFilePath: string, dropboxAccessToken: string): Promise<Response> {
     return fetch(DROPBOX.GET_METADATA_URL, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${dropboxAccessToken}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        path: dropboxFilePath
-      })
+        path: dropboxFilePath,
+      }),
     }).then(response => {
       console.log("[Dropbox backup] response!", response);
       // "Success" || "path not found"
@@ -365,19 +289,13 @@ export class DropboxDatabaseSync implements DatabaseSync {
       throw new Error(
         `[Dropbox backup] failed to get metadata from dropbox for file ${dropboxFilePath}. status: ${
           response.status
-        } and response: ${JSON.stringify(response)}`
+        } and response: ${JSON.stringify(response)}`,
       );
     });
   }
 
-  private uploadDBToDropbox(
-    localFilePath: string,
-    dropboxFilePath: string,
-    dropboxAccessToken: string
-  ): Promise<void> {
-    console.log(
-      `[Dropbox backup] UPLOADING local file [${localFilePath}] to remote file [${dropboxFilePath}]!`
-    );
+  private uploadDBToDropbox(localFilePath: string, dropboxFilePath: string, dropboxAccessToken: string): Promise<void> {
+    console.log(`[Dropbox backup] UPLOADING local file [${localFilePath}] to remote file [${dropboxFilePath}]!`);
     return RNFetchBlob.fetch(
       "POST",
       DROPBOX.UPLOAD_URL,
@@ -386,37 +304,23 @@ export class DropboxDatabaseSync implements DatabaseSync {
         "Content-Type": "application/octet-stream",
         "Dropbox-API-Arg": JSON.stringify({
           path: dropboxFilePath,
-          mode: "overwrite"
-        })
+          mode: "overwrite",
+        }),
       },
-      RNFetchBlob.wrap(localFilePath)
+      RNFetchBlob.wrap(localFilePath),
     ).then((fetchBlobResponse: any) => {
       console.log("[Dropbox backup] UPLOAD response!", fetchBlobResponse);
       // Ensure we have `data` and a 200 response
-      if (
-        fetchBlobResponse.data &&
-        fetchBlobResponse.respInfo &&
-        fetchBlobResponse.respInfo.status === 200
-      ) {
+      if (fetchBlobResponse.data && fetchBlobResponse.respInfo && fetchBlobResponse.respInfo.status === 200) {
         console.log("[Dropbox backup] UPLOAD SUCCESS!");
         // Record `client_modified` timestamp
         const responseData = JSON.parse(fetchBlobResponse.data);
-        const clientModifiedTimestamp =
-          responseData[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
-        console.log(
-          "[Dropbox backup] logging most recent backup timestamp as: " +
-            clientModifiedTimestamp
-        );
+        const clientModifiedTimestamp = responseData[DROPBOX.CLIENT_MODIFIED_TIMESTAMP_KEY];
+        console.log("[Dropbox backup] logging most recent backup timestamp as: " + clientModifiedTimestamp);
 
-        return AsyncStorage.setItem(
-          DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY,
-          clientModifiedTimestamp
-        );
+        return AsyncStorage.setItem(DROPBOX.MOST_RECENT_BACKUP_TIMESTAMP_KEY, clientModifiedTimestamp);
       } else {
-        throw new Error(
-          "[Dropbox backup] Upload failure! HTTP status: " +
-            fetchBlobResponse.respInfo.status
-        );
+        throw new Error("[Dropbox backup] Upload failure! HTTP status: " + fetchBlobResponse.respInfo.status);
       }
     });
   }
@@ -434,16 +338,10 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   private getLocalDBFilePath(): string {
-    return (
-      RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName()
-    );
+    return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName();
   }
 
   private getLocalDBBackupFilePath(): string {
-    return (
-      RNFS.LibraryDirectoryPath +
-      "/LocalDatabase/" +
-      this.getDatabaseBackupName()
-    );
+    return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseBackupName();
   }
 }
