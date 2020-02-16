@@ -21,8 +21,6 @@ export const App: React.FunctionComponent = function() {
   const [loadingText, setLoadingText] = useState("Loading...");
   // Read the initial value of AppState
   appState = AppState.currentState;
-  // Initialize Dropbox sync
-  const syncDatabase = useDatabaseSync(prepareForDatabaseUpdate);
 
   // Set up a callback to fire when AppState changes (when the app goes to/from the background)
   useEffect(function() {
@@ -55,7 +53,8 @@ export const App: React.FunctionComponent = function() {
   async function appIsNowRunningInForeground() {
     console.log("App is now running in the foreground!");
 
-    // Check for an update to the database
+    // Sync the database with Dropbox
+    const syncDatabase = useDatabaseSync(prepareForDatabaseUpdate);
     syncDatabase();
 
     // Do not wait for database sync to complete. Instead, open DB and show app content.
@@ -69,14 +68,15 @@ export const App: React.FunctionComponent = function() {
     database.close();
   }
 
-  function isReady() {
-    return isDatabaseReady && isLoading === false;
-  }
-
+  // Function to call right before a DB update begins
   function prepareForDatabaseUpdate(): Promise<void> {
     setIsLoading(true);
     setLoadingText("Downloading database...");
     return database.close();
+  }
+
+  function isReady() {
+    return isDatabaseReady && isLoading === false;
   }
 
   if (isReady()) {

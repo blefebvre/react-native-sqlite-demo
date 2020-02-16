@@ -3,7 +3,7 @@
  * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, {Component} from "react";
+import React, {useState, useEffect} from "react";
 import {View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native";
 
 import {NewItem} from "./NewItem";
@@ -13,130 +13,102 @@ import {ListRow} from "./ListRow";
 import {database} from "../database/Database";
 import {ViewListModal} from "./ViewListModal";
 import {ListItem} from "../types/ListItem";
-import {sharedStyle} from "../style/Shared";
 import {SettingsModal} from "./SettingsModal";
 
-interface State {
-  newListTitle: string;
-  lists: List[];
-  listModalVisible: boolean;
-  settingsModalVisible: boolean;
-  selectedList?: List;
-  selectedListsItems: ListItem[];
-}
+// Main page of the app. This component renders:
+// - a header, including a cog icon to open the Settings modal
+// - the form to add a new List
+// - and a list of all the Lists saved locally in the app's database
+export const AllLists: React.FunctionComponent = function() {
+  const [newListTitle, setNewListTitle] = useState("");
+  const [lists, setLists] = useState([] as List[]);
+  const [isListModalVisible, setIsListModalVisible] = useState(false);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [selectedList, setSelectedList] = useState<List>();
+  const [selectedListsItems, setSelectedListsItems] = useState([] as ListItem[]);
 
-export class AllLists extends Component<any, State> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      newListTitle: "",
-      lists: [],
-      listModalVisible: false,
-      settingsModalVisible: false,
-      selectedListsItems: [],
-    };
-    this.handleNewListTitleChange = this.handleNewListTitleChange.bind(this);
-    this.handleCreateList = this.handleCreateList.bind(this);
-    this.handleListClicked = this.handleListClicked.bind(this);
-    this.refreshListsItems = this.refreshListsItems.bind(this);
-    this.deleteList = this.deleteList.bind(this);
+  useEffect(function() {
+    refreshListOfLists();
+  }, []); // no dependecies - only run effecton initial render
+
+  function refreshListOfLists() {
+    // Query all lists from the DB, and set them into the `lists` state variable
+    return database.getAllLists().then(lists => setLists(lists));
   }
 
-  public componentDidMount() {
-    this.refreshListOfLists();
-  }
-
-  public render() {
-    return (
-      <View style={styles.container} testID="allListsView">
-        <View style={styles.headerWithSettings}>
-          <TouchableOpacity style={styles.settingsButton} onPress={() => this.setState({settingsModalVisible: true})}>
-            <Text style={styles.settingsButtonText}>⚙️</Text>
-          </TouchableOpacity>
-          <Header title="SQLite List App - with Hooks" />
-        </View>
-
-        <NewItem
-          newItemName={this.state.newListTitle}
-          handleNameChange={this.handleNewListTitleChange}
-          handleCreateNewItem={this.handleCreateList}
-          placeholderText="Enter a name for your new list"
-          createButtonText="Add list"
-          buttonTestId="addListButton"
-          textInputTestId="newListTextInput"
-        />
-
-        <FlatList
-          data={this.state.lists}
-          renderItem={({item}) => <ListRow list={item} handleListClicked={this.handleListClicked} />}
-          keyExtractor={(item, index) => `${index}`}
-        />
-
-        <ViewListModal
-          visible={this.state.listModalVisible}
-          list={this.state.selectedList}
-          back={() => this.setState({listModalVisible: false})}
-          listItems={this.state.selectedListsItems}
-          refreshListItems={this.refreshListsItems}
-          deleteList={this.deleteList}
-        />
-
-        <SettingsModal
-          visible={this.state.settingsModalVisible}
-          back={() => this.setState({settingsModalVisible: false})}
-        />
-      </View>
-    );
-  }
-
-  private handleNewListTitleChange(title: string) {
-    this.setState({
-      newListTitle: title,
-    });
-  }
-
-  private handleCreateList(): Promise<void> {
-    const {newListTitle} = this.state;
+  function handleCreateList(): Promise<void> {
     return database.createList(newListTitle).then(() => {
       // Refresh the list of lists
-      this.refreshListOfLists();
+      refreshListOfLists();
     });
   }
 
-  private handleListClicked(list: List) {
+  function handleListClicked(list: List) {
     console.log(`List clicked! Title: ${list.title}`);
-    this.refreshListsItems(list).then(() =>
-      this.setState({
-        selectedList: list,
-        listModalVisible: true,
-      }),
-    );
+    refreshListsItems(list).then(() => {
+      setSelectedList(list);
+      setIsListModalVisible(true);
+    });
   }
 
-  private refreshListOfLists() {
-    return database.getAllLists().then(lists => this.setState({lists}));
-  }
-
-  private refreshListsItems(listToRefresh = this.state.selectedList, doneItemsLast = false): Promise<void> {
+  function refreshListsItems(listToRefresh = selectedList, doneItemsLast = false): Promise<void> {
     console.log(`Refreshing list items for list: ${listToRefresh && listToRefresh.title}`);
 
     if (listToRefresh !== undefined) {
       return database
         .getListItems(listToRefresh, doneItemsLast)
-        .then(selectedListsItems => this.setState({selectedListsItems}));
+        .then(selectedListsItems => setSelectedListsItems(selectedListsItems));
     }
     // otherwise, listToRefresh is undefined
     return Promise.reject(Error("Could not refresh an undefined list's items"));
   }
 
-  private deleteList(listToDelete = this.state.selectedList): Promise<void> {
+  function deleteList(listToDelete = selectedList): Promise<void> {
     if (listToDelete !== undefined) {
-      return database.deleteList(listToDelete).then(() => this.refreshListOfLists());
+      return database.deleteList(listToDelete).then(() => refreshListOfLists());
     }
     // otherwise:
     return Promise.reject(Error("Could not delete an undefined list"));
   }
-}
+
+  return (
+    <View style={styles.container} testID="allListsView">
+      <View style={styles.headerWithSettings}>
+        <TouchableOpacity style={styles.settingsButton} onPress={() => setIsSettingsModalVisible(true)}>
+          <Text style={styles.settingsButtonText}>⚙️</Text>
+        </TouchableOpacity>
+        <Header title="SQLite List App - with Hooks" />
+      </View>
+
+      <NewItem
+        newItemName={newListTitle}
+        handleNameChange={value => setNewListTitle(value)}
+        handleCreateNewItem={handleCreateList}
+        placeholderText="Enter a name for your new list"
+        createButtonText="Add list"
+        buttonTestId="addListButton"
+        textInputTestId="newListTextInput"
+      />
+
+      <FlatList
+        data={lists}
+        renderItem={({item}) => <ListRow list={item} handleListClicked={handleListClicked} />}
+        keyExtractor={(item, index) => `${index}`}
+      />
+
+      <ViewListModal
+        visible={isListModalVisible}
+        list={selectedList}
+        back={() => setIsListModalVisible(false)}
+        listItems={selectedListsItems}
+        refreshListItems={refreshListsItems}
+        deleteList={deleteList}
+      />
+
+      <SettingsModal visible={isSettingsModalVisible} back={() => setIsSettingsModalVisible(false)} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -4,27 +4,24 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
-import { ListItem } from "../types/ListItem";
-import { Checkbox } from "./Checkbox";
+import {Text, StyleSheet, TouchableOpacity} from "react-native";
+import {ListItem} from "../types/ListItem";
+import {Checkbox} from "./Checkbox";
 
 interface Props {
   listItem: ListItem;
   handleListItemClicked(listItem: ListItem): void;
 }
 
-export const ListItemRow = (props: Props) => {
-  const { listItem, handleListItemClicked } = props;
+export const ListItemRow: React.FunctionComponent<Props> = function(props) {
+  const {listItem, handleListItemClicked} = props;
   return (
     <TouchableOpacity
       onPress={() => handleListItemClicked(listItem)}
       style={styles.row}
-      testID={`listItem:${listItem.text}`}
-    >
+      testID={`listItem:${listItem.text}`}>
       <Checkbox checked={listItem.done} />
-      <Text style={[styles.itemText, listItem.done && styles.done]}>
-        {listItem.text}
-      </Text>
+      <Text style={[styles.itemText, listItem.done && styles.done]}>{listItem.text}</Text>
     </TouchableOpacity>
   );
 };
@@ -36,15 +33,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 3,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   itemText: {
     marginTop: 15,
     marginBottom: 15,
-    marginLeft: 11
+    marginLeft: 11,
   },
   done: {
     textDecorationLine: "line-through",
-    color: "gray"
-  }
+    color: "gray",
+  },
 });

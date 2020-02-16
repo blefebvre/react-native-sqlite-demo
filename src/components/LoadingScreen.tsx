@@ -4,14 +4,14 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
 
 interface Props {
   text?: string;
 }
 
 // Component that shows a spinner, and some text below it
-export const LoadingScreen = (props: Props) => {
+export const LoadingScreen: React.FunctionComponent<Props> = function(props) {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#00FF00" />
@@ -23,10 +23,10 @@ export const LoadingScreen = (props: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   text: {
     textAlign: "center",
-    paddingTop: 10
-  }
+    paddingTop: 10,
+  },
 });

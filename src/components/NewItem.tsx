@@ -4,14 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import {
-  Keyboard,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Text
-} from "react-native";
+import {Keyboard, View, TextInput, StyleSheet, TouchableOpacity, Text} from "react-native";
 
 interface Props {
   newItemName: string; // Prop that the TextInput is controlled by
@@ -23,14 +16,8 @@ interface Props {
   handleCreateNewItem(): Promise<void>;
 }
 
-export const NewItem = (props: Props) => {
-  const {
-    newItemName,
-    placeholderText,
-    createButtonText,
-    handleNameChange,
-    handleCreateNewItem
-  } = props;
+export const NewItem: React.FunctionComponent<Props> = function(props) {
+  const {newItemName, placeholderText, createButtonText, handleNameChange, handleCreateNewItem} = props;
 
   const createNewItem = () => {
     if (newItemName !== "") {
@@ -53,11 +40,7 @@ export const NewItem = (props: Props) => {
         testID={props.textInputTestId || "newItemTextInput"}
         onSubmitEditing={createNewItem}
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={createNewItem}
-        testID={props.buttonTestId || "newItemButton"}
-      >
+      <TouchableOpacity style={styles.button} onPress={createNewItem} testID={props.buttonTestId || "newItemButton"}>
         <Text>{createButtonText}</Text>
       </TouchableOpacity>
     </View>
@@ -68,17 +51,17 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 1,
     padding: 5,
-    flex: 4
+    flex: 4,
   },
   wrapper: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   button: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     paddingTop: 5,
-    paddingBottom: 5
-  }
+    paddingBottom: 5,
+  },
 });

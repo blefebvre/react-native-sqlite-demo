@@ -4,22 +4,18 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import { List } from "../types/List";
+import {Text, TouchableOpacity, StyleSheet} from "react-native";
+import {List} from "../types/List";
 
 interface Props {
   list: List;
   handleListClicked(list: List): void;
 }
 
-export const ListRow = (props: Props) => {
-  const { list, handleListClicked } = props;
+export const ListRow: React.FunctionComponent<Props> = function(props) {
+  const {list, handleListClicked} = props;
   return (
-    <TouchableOpacity
-      onPress={() => handleListClicked(list)}
-      style={styles.row}
-      testID={`listButton:${list.title}`}
-    >
+    <TouchableOpacity onPress={() => handleListClicked(list)} style={styles.row} testID={`listButton:${list.title}`}>
       <Text>{list.title}</Text>
     </TouchableOpacity>
   );
@@ -35,9 +31,9 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3
-  }
+    shadowRadius: 3,
+  },
 });
