@@ -15,10 +15,10 @@
   "devDependencies": {
     "@types/detox": "^9.0.5",
     "@types/jasmine": "^2.8.9",
-    "@types/jest": "^23.3.9",
-    "detox": "^9.1.2",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
+    "@types/jest": "^25.1.2",
+    "detox": "^15.2.2",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
     "typescript": "^3.1.6"
   },
   "detox": {
@@ -27,7 +27,7 @@
         "binaryPath": "../ios/build/Build/Products/Debug-iphonesimulator/RNSQLiteDemo.app",
         "build": "xcodebuild -workspace ../ios/RNSQLiteDemo.xcworkspace -scheme RNSQLiteDemo -configuration Debug -sdk iphonesimulator -derivedDataPath ../ios/build",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 8"
       }
     },
     "test-runner": "jest",

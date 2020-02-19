@@ -1,6 +1,8 @@
-# React Native SQLite Demo
+# React Native SQLite + Dropbox sync demo
 
-This project is a basic List application that demonstrates building an offline first app with SQLite and React Native (featuring TypeScript and CocoaPods under the hood). These instructions only cover iOS usage at this time.
+This project is a basic List application that demonstrates building an offline first app with SQLite and React Native (featuring TypeScript and CocoaPods under the hood). Once authorized, the database can be synced between multiple devices using Dropbox. 
+
+These instructions only cover iOS usage at this time.
 
 
 ## Install JS dependencies
@@ -15,6 +17,11 @@ This project is a basic List application that demonstrates building an offline f
     popd
 
 
+## Start the React Native Metro Bundler
+
+    npm start
+
+
 ## Compile TypeScript source in watch mode
 
     npm run tsc -- -w
@@ -22,7 +29,7 @@ This project is a basic List application that demonstrates building an offline f
 
 ## Run the Jest tests in watch mode
 
-    npm test -- --watch
+    npm test
 
 
 ## Open the source in VS Code
@@ -36,6 +43,11 @@ With the "React Native Tools" VSCode extension installed, open the Debug tab and
 
 When the simulator opens, press Command-D to open the developer menu. Tap "Debug JS Remotely" to connect VSCode to the app and enable debugging.
 
+Alternatively: 
+
+    open ios/RNSQLiteDemo.xcworkspace
+
+Select a simulator of your choice. Press the "run" button.
 
 ## E2E Testing with Detox
 
@@ -45,12 +57,12 @@ End-to-end testing happens from within the `e2e/` directory:
     npm install
 
 
-#### Build tests
+#### Build E2E tests
 
     npm run test:e2e:build
 
 
-#### Run tests
+#### Run E2E tests
 
     npm run test:e2e
 

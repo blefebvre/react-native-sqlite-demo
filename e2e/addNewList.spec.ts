@@ -1,8 +1,6 @@
-describe("Add new list test", () => {
-  beforeEach(async () => {
-    // await device.reloadReactNative();
-  });
+import {expect, element, by} from "detox";
 
+describe("Add new list test", () => {
   const newListTitle = `Test list (time ${Date.now()})`;
 
   it("should have 'all lists' view visible", async () => {
@@ -14,9 +12,7 @@ describe("Add new list test", () => {
     await element(by.id("addListButton")).tap();
 
     // Check that our new list was created
-    await expect(
-      element(by.text(newListTitle).withAncestor(by.id("allListsView")))
-    ).toBeVisible();
+    await expect(element(by.text(newListTitle).withAncestor(by.id("allListsView")))).toBeVisible();
   });
 
   it("should support adding items to the new list", async () => {
@@ -45,11 +41,7 @@ describe("Add new list test", () => {
   it("should mark an item as done", async () => {
     await element(by.id("listItem:Bread")).tap();
     // Check for the checkbox:checked accessibility label
-    await expect(
-      element(
-        by.label("checkbox:checked").withAncestor(by.id("listItem:Bread"))
-      )
-    ).toBeVisible();
+    await expect(element(by.label("checkbox:checked").withAncestor(by.id("listItem:Bread")))).toBeVisible();
   });
 
   it("should delete the new list", async () => {
@@ -60,8 +52,6 @@ describe("Add new list test", () => {
   it("should go back to the main list view, and the test list should be gone", async () => {
     await expect(element(by.id("allListsView"))).toBeVisible();
 
-    await expect(
-      element(by.text(newListTitle).withAncestor(by.id("allListsView")))
-    ).toNotExist();
+    await expect(element(by.text(newListTitle).withAncestor(by.id("allListsView")))).toNotExist();
   });
 });
