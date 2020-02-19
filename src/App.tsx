@@ -42,9 +42,6 @@ export const App: React.FunctionComponent = function() {
     if (appState.match(/inactive|background/) && nextAppState === "active") {
       // App has moved from the background (or inactive) into the foreground
       appIsNowRunningInForeground();
-    } else if (appState === "active" && nextAppState.match(/inactive|background/)) {
-      // App has moved from the foreground into the background (or become inactive)
-      appHasGoneToTheBackground();
     }
     appState = nextAppState;
   }
@@ -56,27 +53,16 @@ export const App: React.FunctionComponent = function() {
     // Sync the database with Dropbox
     const syncDatabase = useDatabaseSync(prepareForDatabaseUpdate);
     syncDatabase();
-
-    // Do not wait for database sync to complete. Instead, open DB and show app content.
-    await database.open();
-    setIsDatabaseReady(true);
-  }
-
-  // Function to run when the app is sent to the background
-  function appHasGoneToTheBackground() {
-    console.log("App has gone to the background.");
-    database.close();
   }
 
   // Function to call right before a DB update begins
-  function prepareForDatabaseUpdate(): Promise<void> {
+  async function prepareForDatabaseUpdate() {
     setIsLoading(true);
     setLoadingText("Downloading database...");
-    return database.close();
   }
 
   function isReady() {
-    return isDatabaseReady && isLoading === false;
+    return isLoading === false;
   }
 
   if (isReady()) {

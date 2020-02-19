@@ -73,8 +73,6 @@ export const SettingsModal: React.FunctionComponent<Props> = function(props) {
               text: "Yes, replace my local DB",
               onPress: async function overwriteLocalDB() {
                 console.log("User chose to replace the local DB.");
-                // Close the database connection
-                await database.close();
                 // Download the update
                 try {
                   setIsDownloading(true);
@@ -85,8 +83,6 @@ export const SettingsModal: React.FunctionComponent<Props> = function(props) {
                 } catch (reason) {
                   // Error!
                   setIsDownloading(false);
-                  // Re-open the DB
-                  await database.open();
                   console.error("Error downloading database from Dropbox. Reason: " + reason);
                 }
               },

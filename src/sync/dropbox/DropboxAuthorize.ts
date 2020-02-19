@@ -13,6 +13,9 @@ import {Authorize} from "../Authorize";
 
 // Class to support authorizing for database synchronization via Dropbox
 export class DropboxAuthorize implements Authorize {
+  private urlHandlerIsListening = false;
+  private handleOpenURL: (event: {url: string}) => void;
+
   constructor() {
     this._handleOpenURL = this._handleOpenURL.bind(this);
   }
@@ -25,6 +28,12 @@ export class DropboxAuthorize implements Authorize {
     // This helps us be sure a deep link into the app is indeed related to the request
     // we made to Dropbox.
     const stateValue = Math.random().toString();
+
+    if (this.urlHandlerIsListening && this.handleOpenURL) {
+      // There is already a listener! Remove it.
+      Linking.removeEventListener("url", this.handleOpenURL);
+      this.urlHandlerIsListening = false;
+    }
 
     // Open the Dropbox authorization page in the device browser
     return Linking.openURL(
@@ -40,7 +49,7 @@ export class DropboxAuthorize implements Authorize {
       .then(() => {
         return new Promise<void>((resolve, reject) => {
           // Callback for when the app is invoked via it's custom URL protocol
-          const handleOpenURL = (event: {url: string}) => {
+          this.handleOpenURL = (event: {url: string}) => {
             this._handleOpenURL(event, stateValue)
               .then(() => {
                 resolve();
@@ -51,13 +60,15 @@ export class DropboxAuthorize implements Authorize {
               .then(() => {
                 // "Finally" block
                 // Remove deep link event listener
-                Linking.removeEventListener("url", handleOpenURL);
+                Linking.removeEventListener("url", this.handleOpenURL);
+                this.urlHandlerIsListening = false;
                 return;
               });
           };
 
           // Add deep link event listener to catch when Dropbox sends the user back to the app.
-          Linking.addEventListener("url", handleOpenURL);
+          Linking.addEventListener("url", this.handleOpenURL);
+          this.urlHandlerIsListening = true;
         });
       });
   }
