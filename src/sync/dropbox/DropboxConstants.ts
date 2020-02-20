@@ -1,6 +1,6 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 export const DROPBOX = {
@@ -17,6 +17,5 @@ export const DROPBOX = {
   LAST_UPDATE_STATUS_KEY: "dropbox:lastUpdateStatus",
   UPDATE_STATUS_STARTED: "updateStarted",
   UPDATE_STATUS_FINISHED: "updateFinished",
-  NO_SUCH_FILE_ERROR_SUBSTRING:
-    "couldn’t be opened because there is no such file"
+  NO_SUCH_FILE_ERROR_SUBSTRING: "couldn’t be opened because there is no such file",
 };

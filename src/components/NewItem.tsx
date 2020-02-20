@@ -1,10 +1,10 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import {Keyboard, View, TextInput, StyleSheet, TouchableOpacity, Text} from "react-native";
+import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 interface Props {
   newItemName: string; // Prop that the TextInput is controlled by
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const NewItem: React.FunctionComponent<Props> = function(props) {
-  const {newItemName, placeholderText, createButtonText, handleNameChange, handleCreateNewItem} = props;
+  const { newItemName, placeholderText, createButtonText, handleNameChange, handleCreateNewItem } = props;
 
   const createNewItem = () => {
     if (newItemName !== "") {

@@ -1,14 +1,13 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, {useState, useEffect} from "react";
-import {AppState, StyleSheet, SafeAreaView, AppStateStatus} from "react-native";
-import {database} from "./database/Database";
-import {AllLists} from "./components/AllLists";
-import {LoadingScreen} from "./components/LoadingScreen";
-import {useDatabaseSync} from "./hooks/useDatabaseSync";
+import React, { useState, useEffect } from "react";
+import { AppState, StyleSheet, SafeAreaView, AppStateStatus } from "react-native";
+import { AllLists } from "./components/AllLists";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { useDatabaseSync } from "./hooks/useDatabaseSync";
 
 // Track the current state of the app as a regular variable (instead of in state), since
 // we do not want to re-render when this value changes.
@@ -16,7 +15,6 @@ let appState: AppStateStatus;
 
 export const App: React.FunctionComponent = function() {
   // Initialize state
-  const [isDatabaseReady, setIsDatabaseReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Loading...");
   // Read the initial value of AppState

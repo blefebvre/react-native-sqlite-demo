@@ -1,17 +1,17 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, {Component, useState} from "react";
-import {View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, FlatList, Alert} from "react-native";
-import {Header} from "./Header";
-import {List} from "../types/List";
-import {NewItem} from "./NewItem";
-import {database} from "../database/Database";
-import {ListItem} from "../types/ListItem";
-import {ListItemRow} from "./ListItemRow";
-import {sharedStyle} from "../style/Shared";
+import React, { Component, useState } from "react";
+import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
+import { Header } from "./Header";
+import { List } from "../types/List";
+import { NewItem } from "./NewItem";
+import { sqliteDatabase } from "../database/Database";
+import { ListItem } from "../types/ListItem";
+import { ListItemRow } from "./ListItemRow";
+import { sharedStyle } from "../style/Shared";
 
 interface Props {
   visible: boolean;
@@ -24,12 +24,12 @@ interface Props {
 
 export const ViewListModal: React.FunctionComponent<Props> = function(props) {
   const [newItemText, setNewItemText] = useState("");
-  const {visible, list, listItems} = props;
+  const { visible, list, listItems } = props;
 
   function toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
     listItem.done = newDoneState;
-    database.updateListItem(listItem).then(() => props.refreshListItems());
+    sqliteDatabase.updateListItem(listItem).then(() => props.refreshListItems());
   }
 
   function handleAddNewItemToList(): Promise<void> {
@@ -40,7 +40,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
     if (list === undefined) {
       return Promise.reject(Error("Cannot add new item to undefined list"));
     }
-    return database.addListItem(newItemText, list).then(props.refreshListItems);
+    return sqliteDatabase.addListItem(newItemText, list).then(props.refreshListItems);
   }
 
   function deleteList() {
@@ -76,7 +76,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
 
         <NewItem
           newItemName={newItemText}
-          handleNameChange={value => setNewItemText(value)}
+          handleNameChange={(value) => setNewItemText(value)}
           handleCreateNewItem={handleAddNewItemToList}
           placeholderText="Enter a new list item"
           createButtonText="Add item"
@@ -84,7 +84,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
 
         <FlatList
           data={listItems}
-          renderItem={({item}) => <ListItemRow listItem={item} handleListItemClicked={toggleListItemDoneness} />}
+          renderItem={({ item }) => <ListItemRow listItem={item} handleListItemClicked={toggleListItemDoneness} />}
           keyExtractor={(item, index) => `item-${index}`}
           ListFooterComponent={
             <TouchableOpacity style={styles.deleteList} onPress={deleteList} testID="deleteListButton">

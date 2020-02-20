@@ -1,17 +1,17 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, {Component, useState} from "react";
-import {View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, Alert} from "react-native";
+import React, { Component, useState } from "react";
+import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import RNRestart from "react-native-restart";
-import {database} from "../database/Database";
-import {Header} from "./Header";
-import {sharedStyle} from "../style/Shared";
-import {DropboxAuthorize} from "../sync/dropbox/DropboxAuthorize";
-import {DropboxDatabaseSync} from "../sync/dropbox/DropboxDatabaseSync";
-import {LoadingScreen} from "./LoadingScreen";
+import { sqliteDatabase } from "../database/Database";
+import { Header } from "./Header";
+import { sharedStyle } from "../style/Shared";
+import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";
+import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
+import { LoadingScreen } from "./LoadingScreen";
 
 interface Props {
   visible: boolean;
@@ -22,7 +22,7 @@ const dropboxAuth: DropboxAuthorize = new DropboxAuthorize();
 const dropboxSync: DropboxDatabaseSync = new DropboxDatabaseSync();
 
 export const SettingsModal: React.FunctionComponent<Props> = function(props) {
-  const {visible} = props;
+  const { visible } = props;
   // Initialize state
   const [isDropboxStatusKnown, setIsDropboxStatusKnown] = useState(false);
   const [hasAuthorizedWithDropbox, setHasAuthorizedWithDropbox] = useState(false);
@@ -92,7 +92,7 @@ export const SettingsModal: React.FunctionComponent<Props> = function(props) {
               onPress: () => unlinkFromDropbox(),
             },
           ],
-          {cancelable: false},
+          { cancelable: false },
         );
       } else {
         // Nothing exists on Dropbox yet, so kick off the 1st upload

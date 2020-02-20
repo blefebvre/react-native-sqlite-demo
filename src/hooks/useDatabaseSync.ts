@@ -1,12 +1,12 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import {Alert} from "react-native";
+import { Alert } from "react-native";
 import RNRestart from "react-native-restart";
-import {DropboxDatabaseSync} from "../sync/dropbox/DropboxDatabaseSync";
-import {DropboxAuthorize} from "../sync/dropbox/DropboxAuthorize";
+import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
+import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";
 
 export type SynchronizerFunction = () => void;
 export type PrepareForUpdateFunction = () => Promise<void>;
@@ -104,7 +104,7 @@ export function useDatabaseSync(prepareForDatabaseUpdate: PrepareForUpdateFuncti
           onPress: () => dropboxAuth.revokeAuthorization(),
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -122,7 +122,7 @@ export function useDatabaseSync(prepareForDatabaseUpdate: PrepareForUpdateFuncti
           onPress: () => dropboxAuth.revokeAuthorization(),
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -137,7 +137,7 @@ export function useDatabaseSync(prepareForDatabaseUpdate: PrepareForUpdateFuncti
         console.log("[DatabaseSynchronizer] DB download success! Reloading app.");
         RNRestart.Restart();
       })
-      .catch(reason => {
+      .catch((reason) => {
         console.error("[DatabaseSynchronizer] Error downloading Dropbox database copy. Reason:", reason);
         // TODO: present error, or reopen DB?
         // For now, reload the app bundle via RNRestart
@@ -151,7 +151,7 @@ export function useDatabaseSync(prepareForDatabaseUpdate: PrepareForUpdateFuncti
 
     // TODO: need community NetInfo
     //return NetInfo.isConnected.fetch().then(isConnected => {
-    return Promise.resolve(false).then(isConnected => {
+    return Promise.resolve(false).then((isConnected) => {
       if (isConnected) {
         console.log("[DatabaseSynchronizer] App is online! Check for an update.");
         return reconcileDatabaseChanges();

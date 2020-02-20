@@ -1,6 +1,6 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import SQLite from "react-native-sqlite-storage";
@@ -19,7 +19,7 @@ export class DatabaseInitialization {
         // Get the current database version
         return this.getDatabaseVersion(database);
       })
-      .then(version => {
+      .then((version) => {
         dbVersion = version;
         console.log("Current database version is: " + dbVersion);
 
@@ -94,7 +94,7 @@ export class DatabaseInitialization {
           return 0;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`No version set. Returning 0. Details: ${error}`);
         return 0;
       });

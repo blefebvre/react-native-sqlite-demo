@@ -1,12 +1,12 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import {Text, StyleSheet, TouchableOpacity} from "react-native";
-import {ListItem} from "../types/ListItem";
-import {Checkbox} from "./Checkbox";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { ListItem } from "../types/ListItem";
+import { Checkbox } from "./Checkbox";
 
 interface Props {
   listItem: ListItem;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const ListItemRow: React.FunctionComponent<Props> = function(props) {
-  const {listItem, handleListItemClicked} = props;
+  const { listItem, handleListItemClicked } = props;
   return (
     <TouchableOpacity
       onPress={() => handleListItemClicked(listItem)}

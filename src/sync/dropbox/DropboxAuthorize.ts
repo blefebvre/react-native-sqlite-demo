@@ -1,20 +1,20 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import {Linking} from "react-native";
+import { Linking } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import shittyQs from "shitty-qs";
 
-import {DROPBOX} from "./DropboxConstants";
-import {OAUTH_CONFIG} from "./OAuthConfig";
-import {Authorize} from "../Authorize";
+import { DROPBOX } from "./DropboxConstants";
+import { OAUTH_CONFIG } from "./OAuthConfig";
+import { Authorize } from "../Authorize";
 
 // Class to support authorizing for database synchronization via Dropbox
 export class DropboxAuthorize implements Authorize {
   private urlHandlerIsListening = false;
-  private handleOpenURL: (event: {url: string}) => void;
+  private handleOpenURL: (event: { url: string }) => void;
 
   constructor() {
     this._handleOpenURL = this._handleOpenURL.bind(this);
@@ -45,16 +45,16 @@ export class DropboxAuthorize implements Authorize {
         `&state=${stateValue}`,
       ].join(""),
     )
-      .catch(err => console.error("An error occurred trying to open the browser to authorize with Dropbox:", err))
+      .catch((err) => console.error("An error occurred trying to open the browser to authorize with Dropbox:", err))
       .then(() => {
         return new Promise<void>((resolve, reject) => {
           // Callback for when the app is invoked via it's custom URL protocol
-          this.handleOpenURL = (event: {url: string}) => {
+          this.handleOpenURL = (event: { url: string }) => {
             this._handleOpenURL(event, stateValue)
               .then(() => {
                 resolve();
               })
-              .catch(reason => {
+              .catch((reason) => {
                 reject(reason);
               })
               .then(() => {
@@ -74,7 +74,7 @@ export class DropboxAuthorize implements Authorize {
   }
 
   public hasUserAuthorized(): Promise<boolean> {
-    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then(accessToken => {
+    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then((accessToken) => {
       if (accessToken !== null) {
         // We have an access token!
         return true;
@@ -85,7 +85,7 @@ export class DropboxAuthorize implements Authorize {
 
   public revokeAuthorization(): Promise<void> {
     return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
-      .then(accessToken => {
+      .then((accessToken) => {
         if (accessToken === null) {
           throw new Error("Cannot unlink without an access token");
         }
@@ -97,7 +97,7 @@ export class DropboxAuthorize implements Authorize {
           },
         });
       })
-      .then(response => {
+      .then((response) => {
         console.log("Unlink response:", response);
         // "Success"
         if (response.status === 200) {
@@ -115,7 +115,7 @@ export class DropboxAuthorize implements Authorize {
 
   // Private helpers
 
-  private _handleOpenURL(event: {url: string}, stateValue: string): Promise<void> {
+  private _handleOpenURL(event: { url: string }, stateValue: string): Promise<void> {
     console.log("Deep link event!", event);
 
     const queryStringResult = event.url.match(/\#(.*)/);

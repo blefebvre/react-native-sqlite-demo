@@ -1,19 +1,19 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, {useState, useEffect} from "react";
-import {View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, FlatList, Text, TouchableOpacity } from "react-native";
 
-import {NewItem} from "./NewItem";
-import {Header} from "./Header";
-import {List} from "../types/List";
-import {ListRow} from "./ListRow";
-import {database} from "../database/Database";
-import {ViewListModal} from "./ViewListModal";
-import {ListItem} from "../types/ListItem";
-import {SettingsModal} from "./SettingsModal";
+import { NewItem } from "./NewItem";
+import { Header } from "./Header";
+import { List } from "../types/List";
+import { ListRow } from "./ListRow";
+import { sqliteDatabase } from "../database/Database";
+import { ViewListModal } from "./ViewListModal";
+import { ListItem } from "../types/ListItem";
+import { SettingsModal } from "./SettingsModal";
 
 // Main page of the app. This component renders:
 // - a header, including a cog icon to open the Settings modal
@@ -33,11 +33,11 @@ export const AllLists: React.FunctionComponent = function() {
 
   function refreshListOfLists() {
     // Query all lists from the DB, and set them into the `lists` state variable
-    return database.getAllLists().then(lists => setLists(lists));
+    return sqliteDatabase.getAllLists().then((lists) => setLists(lists));
   }
 
   function handleCreateList(): Promise<void> {
-    return database.createList(newListTitle).then(() => {
+    return sqliteDatabase.createList(newListTitle).then(() => {
       // Refresh the list of lists
       refreshListOfLists();
     });
@@ -55,9 +55,9 @@ export const AllLists: React.FunctionComponent = function() {
     console.log(`Refreshing list items for list: ${listToRefresh && listToRefresh.title}`);
 
     if (listToRefresh !== undefined) {
-      return database
+      return sqliteDatabase
         .getListItems(listToRefresh, doneItemsLast)
-        .then(selectedListsItems => setSelectedListsItems(selectedListsItems));
+        .then((selectedListsItems) => setSelectedListsItems(selectedListsItems));
     }
     // otherwise, listToRefresh is undefined
     return Promise.reject(Error("Could not refresh an undefined list's items"));
@@ -65,7 +65,7 @@ export const AllLists: React.FunctionComponent = function() {
 
   function deleteList(listToDelete = selectedList): Promise<void> {
     if (listToDelete !== undefined) {
-      return database.deleteList(listToDelete).then(() => refreshListOfLists());
+      return sqliteDatabase.deleteList(listToDelete).then(() => refreshListOfLists());
     }
     // otherwise:
     return Promise.reject(Error("Could not delete an undefined list"));
@@ -82,7 +82,7 @@ export const AllLists: React.FunctionComponent = function() {
 
       <NewItem
         newItemName={newListTitle}
-        handleNameChange={value => setNewListTitle(value)}
+        handleNameChange={(value) => setNewListTitle(value)}
         handleCreateNewItem={handleCreateList}
         placeholderText="Enter a name for your new list"
         createButtonText="Add list"
@@ -92,7 +92,7 @@ export const AllLists: React.FunctionComponent = function() {
 
       <FlatList
         data={lists}
-        renderItem={({item}) => <ListRow list={item} handleListClicked={handleListClicked} />}
+        renderItem={({ item }) => <ListRow list={item} handleListClicked={handleListClicked} />}
         keyExtractor={(item, index) => `${index}`}
       />
 
