@@ -3,10 +3,9 @@
  * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import RNRestart from "react-native-restart";
-import { sqliteDatabase } from "../database/Database";
 import { Header } from "./Header";
 import { sharedStyle } from "../style/Shared";
 import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";

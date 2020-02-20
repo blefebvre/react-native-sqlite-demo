@@ -3,15 +3,15 @@
  * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { Component, useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
 import { Header } from "./Header";
 import { List } from "../types/List";
 import { NewItem } from "./NewItem";
-import { sqliteDatabase } from "../database/Database";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
 import { sharedStyle } from "../style/Shared";
+import { DatabaseContext } from "../context/DatabaseContext";
 
 interface Props {
   visible: boolean;
@@ -26,10 +26,13 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
   const [newItemText, setNewItemText] = useState("");
   const { visible, list, listItems } = props;
 
+  // Pull our database object from the context
+  const database = useContext(DatabaseContext);
+
   function toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
     listItem.done = newDoneState;
-    sqliteDatabase.updateListItem(listItem).then(() => props.refreshListItems());
+    database.updateListItem(listItem).then(() => props.refreshListItems());
   }
 
   function handleAddNewItemToList(): Promise<void> {
@@ -40,7 +43,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
     if (list === undefined) {
       return Promise.reject(Error("Cannot add new item to undefined list"));
     }
-    return sqliteDatabase.addListItem(newItemText, list).then(props.refreshListItems);
+    return database.addListItem(newItemText, list).then(props.refreshListItems);
   }
 
   function deleteList() {

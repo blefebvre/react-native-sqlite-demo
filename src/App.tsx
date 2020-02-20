@@ -8,6 +8,7 @@ import { AppState, StyleSheet, SafeAreaView, AppStateStatus } from "react-native
 import { AllLists } from "./components/AllLists";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { useDatabaseSync } from "./hooks/useDatabaseSync";
+import { DatabaseProvider } from "./context/DatabaseContext";
 
 // Track the current state of the app as a regular variable (instead of in state), since
 // we do not want to re-render when this value changes.
@@ -67,7 +68,9 @@ export const App: React.FunctionComponent = function() {
     // Once the database is ready, render the Lists
     return (
       <SafeAreaView style={styles.container}>
-        <AllLists />
+        <DatabaseProvider>
+          <AllLists />
+        </DatabaseProvider>
       </SafeAreaView>
     );
   } else {
