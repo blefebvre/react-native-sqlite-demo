@@ -236,7 +236,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
         return AsyncStorage.setItem(DROPBOX.LAST_UPDATE_STATUS_KEY, DROPBOX.UPDATE_STATUS_FINISHED);
       })
       .catch((error) => {
-        console.error("[Dropbox backup] DROPBOX UPLOAD ERROR!", error);
+        console.warn("[Dropbox backup] DROPBOX UPLOAD ERROR!", error);
       });
   }
 

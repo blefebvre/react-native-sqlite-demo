@@ -3,7 +3,7 @@
  * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, FlatList, Text, TouchableOpacity } from "react-native";
 
 import { NewItem } from "./NewItem";
@@ -11,9 +11,8 @@ import { Header } from "./Header";
 import { List } from "../types/List";
 import { ListRow } from "./ListRow";
 import { ViewListModal } from "./ViewListModal";
-import { ListItem } from "../types/ListItem";
 import { SettingsModal } from "./SettingsModal";
-import { DatabaseContext } from "../context/DatabaseContext";
+import { useLists } from "../hooks/useLists";
 
 // Main page of the app. This component renders:
 // - a header, including a cog icon to open the Settings modal
@@ -21,57 +20,17 @@ import { DatabaseContext } from "../context/DatabaseContext";
 // - and a list of all the Lists saved locally in the app's database
 export const AllLists: React.FunctionComponent = function() {
   const [newListTitle, setNewListTitle] = useState("");
-  const [lists, setLists] = useState([] as List[]);
   const [isListModalVisible, setIsListModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-  const [selectedList, setSelectedList] = useState<List>();
-  const [selectedListsItems, setSelectedListsItems] = useState([] as ListItem[]);
 
-  // Pull our database object from the context
-  const database = useContext(DatabaseContext);
+  // Use the useLists hook to simplify list management.
+  const { lists, selectList, selectedList, createList, deleteList, selectedListsItems } = useLists();
 
-  useEffect(function() {
-    refreshListOfLists();
-  }, []); // no dependecies - only run effecton initial render
-
-  function refreshListOfLists() {
-    // Query all lists from the DB, and set them into the `lists` state variable
-    return database.getAllLists().then((lists) => setLists(lists));
-  }
-
-  function handleCreateList(): Promise<void> {
-    return database.createList(newListTitle).then(() => {
-      // Refresh the list of lists
-      refreshListOfLists();
-    });
-  }
-
-  function handleListClicked(list: List) {
+  async function handleListClicked(list: List) {
     console.log(`List clicked! Title: ${list.title}`);
-    refreshListsItems(list).then(() => {
-      setSelectedList(list);
-      setIsListModalVisible(true);
-    });
-  }
-
-  function refreshListsItems(listToRefresh = selectedList, doneItemsLast = false): Promise<void> {
-    console.log(`Refreshing list items for list: ${listToRefresh && listToRefresh.title}`);
-
-    if (listToRefresh !== undefined) {
-      return database
-        .getListItems(listToRefresh, doneItemsLast)
-        .then((selectedListsItems) => setSelectedListsItems(selectedListsItems));
-    }
-    // otherwise, listToRefresh is undefined
-    return Promise.reject(Error("Could not refresh an undefined list's items"));
-  }
-
-  function deleteList(listToDelete = selectedList): Promise<void> {
-    if (listToDelete !== undefined) {
-      return database.deleteList(listToDelete).then(() => refreshListOfLists());
-    }
-    // otherwise:
-    return Promise.reject(Error("Could not delete an undefined list"));
+    await selectList(list);
+    // Open the modal which shows a single list's items
+    setIsListModalVisible(true);
   }
 
   return (
@@ -86,7 +45,7 @@ export const AllLists: React.FunctionComponent = function() {
       <NewItem
         newItemName={newListTitle}
         handleNameChange={(value) => setNewListTitle(value)}
-        handleCreateNewItem={handleCreateList}
+        handleCreateNewItem={createList}
         placeholderText="Enter a name for your new list"
         createButtonText="Add list"
         buttonTestId="addListButton"
@@ -104,7 +63,9 @@ export const AllLists: React.FunctionComponent = function() {
         list={selectedList}
         back={() => setIsListModalVisible(false)}
         listItems={selectedListsItems}
-        refreshListItems={refreshListsItems}
+        refreshListItems={async function() {
+          /* TODO!! */
+        }}
         deleteList={deleteList}
       />
 

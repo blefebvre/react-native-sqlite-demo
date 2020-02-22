@@ -13,7 +13,7 @@ interface Props {
   buttonTestId?: string;
   textInputTestId?: string;
   handleNameChange(title: string): void;
-  handleCreateNewItem(): Promise<void>;
+  handleCreateNewItem(title: string): Promise<void>;
 }
 
 export const NewItem: React.FunctionComponent<Props> = function(props) {
@@ -21,7 +21,7 @@ export const NewItem: React.FunctionComponent<Props> = function(props) {
 
   const createNewItem = () => {
     if (newItemName !== "") {
-      handleCreateNewItem().then(() => {
+      handleCreateNewItem(newItemName).then(() => {
         // Reset the text input
         handleNameChange("");
         // Dismiss keyboard

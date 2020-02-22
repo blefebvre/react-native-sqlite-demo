@@ -11,7 +11,7 @@ import { NewItem } from "./NewItem";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
 import { sharedStyle } from "../style/Shared";
-import { DatabaseContext } from "../context/DatabaseContext";
+import { useDatabase } from "../context/DatabaseContext";
 
 interface Props {
   visible: boolean;
@@ -19,7 +19,7 @@ interface Props {
   listItems: ListItem[];
   back(): void;
   refreshListItems(): Promise<void>;
-  deleteList(): Promise<void>;
+  deleteList(list: List): Promise<void>;
 }
 
 export const ViewListModal: React.FunctionComponent<Props> = function(props) {
@@ -27,7 +27,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
   const { visible, list, listItems } = props;
 
   // Pull our database object from the context
-  const database = useContext(DatabaseContext);
+  const database = useDatabase();
 
   function toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
@@ -53,7 +53,7 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
         style: "destructive",
         onPress: () => {
           // Delete the list, then head back to the main view
-          props.deleteList().then(() => props.back());
+          props.deleteList(list).then(() => props.back());
         },
       },
       {
