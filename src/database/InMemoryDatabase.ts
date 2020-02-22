@@ -7,29 +7,39 @@ import { Database } from "./Database";
 import { List } from "../types/List";
 import { ListItem } from "../types/ListItem";
 
-// An in-memory implementation of the Database interface.
+// A (naive!) in-memory implementation of the Database interface.
+let lists = [] as List[];
+let listIndex = 0;
+// Map where each key represents a list ID, and the value is an array of list items.
+let listItemsMap: { [key: number]: ListItem[] } = {};
+let listItemIndex = 0;
 
 async function createList(newListTitle: string) {
-  return;
+  const newList: List = { title: newListTitle, id: listIndex++ };
+  listItemsMap = { ...listItemsMap, [newList.id]: [] };
+  lists = [...lists, newList];
 }
 
 async function addListItem(text: string, list: List) {
-  return;
+  const listItemsForList = listItemsMap[list.id];
+  const newListItem: ListItem = { text, done: false, id: listItemIndex++ };
+  const updatedListItemsForList = [...listItemsForList, newListItem];
+  listItemsMap = { ...listItemsMap, [list.id]: updatedListItemsForList };
 }
 
 async function getAllLists(): Promise<List[]> {
-  return [];
+  return lists;
 }
 
 async function getListItems(list: List, doneItemsLast: boolean): Promise<ListItem[]> {
-  return [];
+  return listItemsMap[list.id];
 }
 
-function updateListItem(listItem: ListItem): Promise<void> {
+async function updateListItem(listItem: ListItem): Promise<void> {
   return;
 }
 
-function deleteList(list: List): Promise<void> {
+async function deleteList(list: List): Promise<void> {
   return;
 }
 

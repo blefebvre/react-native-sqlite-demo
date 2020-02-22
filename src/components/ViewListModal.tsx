@@ -53,7 +53,9 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
         style: "destructive",
         onPress: () => {
           // Delete the list, then head back to the main view
-          props.deleteList(list).then(() => props.back());
+          if (list) {
+            props.deleteList(list).then(() => props.back());
+          }
         },
       },
       {
