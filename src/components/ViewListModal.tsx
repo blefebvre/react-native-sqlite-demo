@@ -3,7 +3,7 @@
  * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
 import { Header } from "./Header";
 import { List } from "../types/List";
@@ -11,51 +11,46 @@ import { NewItem } from "./NewItem";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
 import { sharedStyle } from "../style/Shared";
-import { useDatabase } from "../context/DatabaseContext";
+import { useListItems } from "../hooks/useListItems";
 
 interface Props {
   visible: boolean;
-  list?: List;
-  listItems: ListItem[];
+  list: List;
   back(): void;
-  refreshListItems(): Promise<void>;
   deleteList(list: List): Promise<void>;
 }
 
+// Modal dialog to view and manage the items of a single list
 export const ViewListModal: React.FunctionComponent<Props> = function(props) {
+  const { visible, list } = props;
   const [newItemText, setNewItemText] = useState("");
-  const { visible, list, listItems } = props;
 
-  // Pull our database object from the context
-  const database = useDatabase();
+  // Use the useListItems hook to manage list items, instead of using the DB object directly
+  const { selectedListsItems, updateListItem, addListItem } = useListItems(list);
 
-  function toggleListItemDoneness(listItem: ListItem) {
+  async function toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
     listItem.done = newDoneState;
-    database.updateListItem(listItem).then(() => props.refreshListItems());
+    await updateListItem(listItem);
   }
 
-  function handleAddNewItemToList(): Promise<void> {
-    if (newItemText === "") {
+  async function handleAddNewItemToList(): Promise<void> {
+    if (newItemText.trim() === "") {
       // Don't create new list items with no text
-      return Promise.resolve();
+      return;
     }
-    if (list === undefined) {
-      return Promise.reject(Error("Cannot add new item to undefined list"));
-    }
-    return database.addListItem(newItemText, list).then(props.refreshListItems);
+    await addListItem(newItemText);
   }
 
-  function deleteList() {
+  function promptToDeleteList() {
     Alert.alert("Delete list?", "Are you sure you would like to delete this list?", [
       {
         text: "Yes, delete it",
         style: "destructive",
-        onPress: () => {
+        onPress: async () => {
           // Delete the list, then head back to the main view
-          if (list) {
-            props.deleteList(list).then(() => props.back());
-          }
+          await props.deleteList(list);
+          props.back();
         },
       },
       {
@@ -65,9 +60,6 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
     ]);
   }
 
-  if (list == null) {
-    return null;
-  }
   return (
     <Modal animationType="slide" transparent={false} visible={visible} onRequestClose={() => props.back()}>
       <SafeAreaView style={styles.container} testID="viewListModal">
@@ -88,11 +80,11 @@ export const ViewListModal: React.FunctionComponent<Props> = function(props) {
         />
 
         <FlatList
-          data={listItems}
+          data={selectedListsItems}
           renderItem={({ item }) => <ListItemRow listItem={item} handleListItemClicked={toggleListItemDoneness} />}
-          keyExtractor={(item, index) => `item-${index}`}
+          keyExtractor={(_, index) => `item-${index}`}
           ListFooterComponent={
-            <TouchableOpacity style={styles.deleteList} onPress={deleteList} testID="deleteListButton">
+            <TouchableOpacity style={styles.deleteList} onPress={promptToDeleteList} testID="deleteListButton">
               <Text>Delete list</Text>
             </TouchableOpacity>
           }

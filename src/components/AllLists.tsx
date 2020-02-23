@@ -24,12 +24,12 @@ export const AllLists: React.FunctionComponent = function() {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
   // Use the useLists hook to simplify list management.
-  const { lists, selectList, selectedList, createList, deleteList, selectedListsItems } = useLists();
+  const { lists, selectList, selectedList, createList, deleteList } = useLists();
 
   async function handleListClicked(list: List) {
     console.log(`List clicked! Title: ${list.title}`);
     await selectList(list);
-    // Open the modal which shows a single list's items
+    // Open a modal dialog to view and manage the items of a single list
     setIsListModalVisible(true);
   }
 
@@ -58,16 +58,14 @@ export const AllLists: React.FunctionComponent = function() {
         keyExtractor={(item, index) => `${index}`}
       />
 
-      <ViewListModal
-        visible={isListModalVisible}
-        list={selectedList}
-        back={() => setIsListModalVisible(false)}
-        listItems={selectedListsItems}
-        refreshListItems={async function() {
-          /* TODO!! */
-        }}
-        deleteList={deleteList}
-      />
+      {selectedList !== undefined && (
+        <ViewListModal
+          visible={isListModalVisible}
+          list={selectedList}
+          back={() => setIsListModalVisible(false)}
+          deleteList={deleteList}
+        />
+      )}
 
       <SettingsModal visible={isSettingsModalVisible} back={() => setIsSettingsModalVisible(false)} />
     </View>

@@ -12,7 +12,6 @@ import { ListItem } from "../types/ListItem";
 export function useLists() {
   const [lists, setLists] = useState<List[]>([]);
   const [selectedList, setSelectedList] = useState<List>();
-  const [selectedListsItems, setSelectedListsItems] = useState<ListItem[]>([]);
   const database = useDatabase();
 
   useEffect(() => {
@@ -36,27 +35,13 @@ export function useLists() {
     return Promise.reject(Error("Could not delete an undefined list"));
   }
 
-  function refreshListsItems(listToRefresh = selectedList, doneItemsLast = false): Promise<void> {
-    console.log(`Refreshing list items for list: ${listToRefresh && listToRefresh.title}`);
-
-    if (listToRefresh !== undefined) {
-      return database
-        .getListItems(listToRefresh, doneItemsLast)
-        .then((selectedListsItems) => setSelectedListsItems(selectedListsItems));
-    }
-    // otherwise, listToRefresh is undefined
-    return Promise.reject(Error("Could not refresh an undefined list's items"));
-  }
-
   async function selectList(list: List) {
     setSelectedList(list);
-    await refreshListsItems(list);
   }
 
   return {
     lists,
     selectedList,
-    selectedListsItems,
     createList,
     deleteList,
     selectList,
