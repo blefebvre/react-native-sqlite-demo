@@ -49,6 +49,7 @@ export const NewItem: React.FunctionComponent<Props> = function(props) {
 
 const styles = StyleSheet.create({
   textInput: {
+    color: "black",
     borderWidth: 1,
     padding: 5,
     flex: 4,
