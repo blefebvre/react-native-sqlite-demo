@@ -186,7 +186,7 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-netinfo (5.5.0):
     - React
-  - react-native-sqlite-storage (4.1.0):
+  - react-native-sqlite-storage (5.0.0):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -353,7 +353,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 752f034d0f007d1141a1c52ba9ef3fd9668fbfa7
   React-jsinspector: 044105eea064aec81adc5e4d777a8f6589e7d094
   react-native-netinfo: a91b5cf92ed3ada997cfe2bf067633386eb19fd8
-  react-native-sqlite-storage: c5e91bba735a2537a1dfd7a5a936d9c36d56521b
+  react-native-sqlite-storage: 32dece23a7f4e9254a1abbcd1327a6a35b3e1cc2
   React-RCTActionSheet: 49433f6e3659ba5d3ee650e44b9c18743ef9a7fc
   React-RCTAnimation: 12f86a4e3542032329366b03bca2cc254a7c64a9
   React-RCTBlob: ba90a4144ad478a022b79a4e8a1f150548d39425
