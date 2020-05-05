@@ -6,7 +6,6 @@
 import { useState, useEffect } from "react";
 import { List } from "../types/List";
 import { useDatabase } from "../context/DatabaseContext";
-import { ListItem } from "../types/ListItem";
 
 // Hook for managing and accessing lists (CRUD)
 export function useLists() {
