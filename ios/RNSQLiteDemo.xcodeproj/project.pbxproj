@@ -16,9 +16,9 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* RNSQLiteDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNSQLiteDemoTests.m */; };
-		31CEB100B31F38EBF2098F6D /* libPods-RNSQLiteDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DDE14F523CF1781FE1A6 /* libPods-RNSQLiteDemoTests.a */; };
 		5CF28822CB1C5C91B8640F91 /* libPods-RNSQLiteDemo-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 567427C44D84522675D3FDB2 /* libPods-RNSQLiteDemo-tvOSTests.a */; };
 		A4F21CC7ABC0D76CD0108958 /* libPods-RNSQLiteDemo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B0D26C9BB5697C8080CC71A /* libPods-RNSQLiteDemo-tvOS.a */; };
+		C82FA105D9BA4CF211BB274E /* libPods-RNSQLiteDemo-RNSQLiteDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2743DD8FFA43B4C68FB1CC60 /* libPods-RNSQLiteDemo-RNSQLiteDemoTests.a */; };
 		E5E344E60A0337ED9479632B /* libPods-RNSQLiteDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9188D39EB068FB5EC88C2A /* libPods-RNSQLiteDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -53,9 +53,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNSQLiteDemo/main.m; sourceTree = "<group>"; };
 		1563B1E9A18FA5FC3E55BDD3 /* Pods-RNSQLiteDemo-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo-tvOSTests/Pods-RNSQLiteDemo-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1B0D26C9BB5697C8080CC71A /* libPods-RNSQLiteDemo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSQLiteDemo-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2743DD8FFA43B4C68FB1CC60 /* libPods-RNSQLiteDemo-RNSQLiteDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSQLiteDemo-RNSQLiteDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B9188D39EB068FB5EC88C2A /* libPods-RNSQLiteDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSQLiteDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* RNSQLiteDemo-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RNSQLiteDemo-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* RNSQLiteDemo-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RNSQLiteDemo-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		324EED202597CDC200F065A9 /* RNSQLiteDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSQLiteDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		324EED212597CDC200F065A9 /* RNSQLiteDemo-tvOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSQLiteDemo-tvOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		56038F7BB6784B695C4A5ED6 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo-RNSQLiteDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo-RNSQLiteDemoTests/Pods-RNSQLiteDemo-RNSQLiteDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		567427C44D84522675D3FDB2 /* libPods-RNSQLiteDemo-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSQLiteDemo-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		705810ACD9FC80C8DDF49D09 /* Pods-RNSQLiteDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemoTests/Pods-RNSQLiteDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		7328F19A901A4A3B886F5D40 /* Pods-RNSQLiteDemo-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo-tvOS/Pods-RNSQLiteDemo-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -65,7 +69,7 @@
 		EB38A757DA69654EEC7A71BB /* Pods-RNSQLiteDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo/Pods-RNSQLiteDemo.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F534DDE14F523CF1781FE1A6 /* libPods-RNSQLiteDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSQLiteDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1C77D33898FE7F9E4C190C2 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo-RNSQLiteDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo-RNSQLiteDemoTests/Pods-RNSQLiteDemo-RNSQLiteDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		FC6E8538F1FFC045F1B9EB53 /* Pods-RNSQLiteDemo-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSQLiteDemo-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNSQLiteDemo-tvOS/Pods-RNSQLiteDemo-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31CEB100B31F38EBF2098F6D /* libPods-RNSQLiteDemoTests.a in Frameworks */,
+				C82FA105D9BA4CF211BB274E /* libPods-RNSQLiteDemo-RNSQLiteDemoTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +136,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				324EED202597CDC200F065A9 /* RNSQLiteDemo-Bridging-Header.h */,
+				324EED212597CDC200F065A9 /* RNSQLiteDemo-tvOS-Bridging-Header.h */,
 			);
 			name = RNSQLiteDemo;
 			sourceTree = "<group>";
@@ -144,7 +150,7 @@
 				2B9188D39EB068FB5EC88C2A /* libPods-RNSQLiteDemo.a */,
 				1B0D26C9BB5697C8080CC71A /* libPods-RNSQLiteDemo-tvOS.a */,
 				567427C44D84522675D3FDB2 /* libPods-RNSQLiteDemo-tvOSTests.a */,
-				F534DDE14F523CF1781FE1A6 /* libPods-RNSQLiteDemoTests.a */,
+				2743DD8FFA43B4C68FB1CC60 /* libPods-RNSQLiteDemo-RNSQLiteDemoTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -193,6 +199,8 @@
 				D947740067D657797FEE8B7A /* Pods-RNSQLiteDemo-tvOSTests.release.xcconfig */,
 				88F5B4DB7197463D172F1377 /* Pods-RNSQLiteDemoTests.debug.xcconfig */,
 				705810ACD9FC80C8DDF49D09 /* Pods-RNSQLiteDemoTests.release.xcconfig */,
+				56038F7BB6784B695C4A5ED6 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.debug.xcconfig */,
+				F1C77D33898FE7F9E4C190C2 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -284,15 +292,19 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1230;
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1230;
+					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 1230;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -388,7 +400,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNSQLiteDemoTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RNSQLiteDemo-RNSQLiteDemoTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -580,7 +592,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88F5B4DB7197463D172F1377 /* Pods-RNSQLiteDemoTests.debug.xcconfig */;
+			baseConfigurationReference = 56038F7BB6784B695C4A5ED6 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -588,7 +600,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RNSQLiteDemoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -603,12 +615,12 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 705810ACD9FC80C8DDF49D09 /* Pods-RNSQLiteDemoTests.release.xcconfig */;
+			baseConfigurationReference = F1C77D33898FE7F9E4C190C2 /* Pods-RNSQLiteDemo-RNSQLiteDemoTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = RNSQLiteDemoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -625,18 +637,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E03191FF71A21B7C679DD016 /* Pods-RNSQLiteDemo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = RNSQLiteDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.RNSQLiteDemo;
 				PRODUCT_NAME = RNSQLiteDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNSQLiteDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -645,17 +663,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EB38A757DA69654EEC7A71BB /* Pods-RNSQLiteDemo.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = RNSQLiteDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.brucelefebvre.RNSQLiteDemo;
 				PRODUCT_NAME = RNSQLiteDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNSQLiteDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -667,6 +690,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -683,8 +707,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNSQLiteDemo-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNSQLiteDemo-tvOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -695,6 +722,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -711,8 +739,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNSQLiteDemo-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNSQLiteDemo-tvOS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -739,7 +769,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNSQLiteDemo-tvOS.app/RNSQLiteDemo-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -766,7 +796,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNSQLiteDemo-tvOS.app/RNSQLiteDemo-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -774,6 +804,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -792,6 +823,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -816,7 +848,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -827,6 +864,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -845,6 +883,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -862,7 +901,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

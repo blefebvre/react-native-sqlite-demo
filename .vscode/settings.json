@@ -3,5 +3,6 @@
     "activityBar.background": "#1F3215",
     "titleBar.activeBackground": "#2B471D",
     "titleBar.activeForeground": "#F9FCF7"
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "disabled"
 }
