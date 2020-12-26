@@ -18,6 +18,7 @@ exports[`ListItemRow renders correctly 1`] = `
     style={
       Object {
         "borderWidth": 1,
+        "color": "black",
         "flex": 4,
         "padding": 5,
       }
