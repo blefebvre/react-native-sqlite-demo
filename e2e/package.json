@@ -13,10 +13,10 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@types/detox": "^9.0.5",
+    "@types/detox": "^16.4.3",
     "@types/jasmine": "^2.8.9",
     "@types/jest": "^25.1.2",
-    "detox": "^15.2.2",
+    "detox": "^17.14.6",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.0",
     "typescript": "^3.1.6"
@@ -27,7 +27,7 @@
         "binaryPath": "../ios/build/Build/Products/Debug-iphonesimulator/RNSQLiteDemo.app",
         "build": "xcodebuild -workspace ../ios/RNSQLiteDemo.xcworkspace -scheme RNSQLiteDemo -configuration Debug -sdk iphonesimulator -derivedDataPath ../ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 8"
+        "name": "iPhone 12"
       }
     },
     "test-runner": "jest",

@@ -91,6 +91,12 @@ target 'RNSQLiteDemo' do
   add_flipper_pods!
   post_install do |installer|
     flipper_post_install(installer)
+
+    # To avoid: "clang: error: linker command failed with exit code 1" arm64 errors
+    # (sol'n from: https://stackoverflow.com/a/63955114/1867332)
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
   end
 end
 
