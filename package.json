@@ -8,15 +8,17 @@
     "test": "jest",
     "lint": "eslint .",
     "tsc": "tsc",
-    "watch": "npm run tsc -- -w"
+    "watch": "npm run tsc -- -w",
+    "start:macos": "node node_modules/react-native-macos/local-cli/cli.js start --use-react-native-macos"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.7.1",
-    "@react-native-community/netinfo": "^5.5.0",
+    "@react-native-async-storage/async-storage": "^1.13.2",
+    "@react-native-community/netinfo": "^5.9.9",
     "moment": "^2.24.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-fs": "^2.16.4",
+    "react-native-macos": "^0.62.21",
     "react-native-restart": "0.0.13",
     "react-native-sqlite-storage": "^5.0.0",
     "rn-fetch-blob": "^0.12.0",

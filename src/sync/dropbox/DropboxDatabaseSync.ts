@@ -4,7 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import NetInfo from "@react-native-community/netinfo";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import moment, { Moment } from "moment";

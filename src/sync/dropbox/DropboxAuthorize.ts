@@ -4,7 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import { Linking } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import shittyQs from "shitty-qs";
 
 import { DROPBOX } from "./DropboxConstants";
