@@ -77,6 +77,8 @@ abstract_target 'Shared' do
   pod 'RCT-Folly', :podspec => '../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec'
   pod 'boost-for-react-native', :podspec => '../node_modules/react-native-macos/third-party-podspecs/boost-for-react-native.podspec'
 
+  pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
+
   target 'RNSQLiteDemo-macOS' do
     platform :macos, '10.15'
     use_native_modules!

@@ -5,8 +5,8 @@
  */
 import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import RNFS from "react-native-fs";
-import RNFetchBlob from "rn-fetch-blob";
+//import RNFetchBlob from "rn-fetch-blob";
+//import RNFS from "react-native-fs";
 import moment, { Moment } from "moment";
 
 import { DROPBOX } from "./DropboxConstants";
@@ -158,17 +158,16 @@ export class DropboxDatabaseSync implements DatabaseSync {
   // WARNING! Overwrites the existing DB with what is contained in Dropbox.
   // This function assumes the user has already agreed to overwrite the existing local DB.
   public download(): Promise<void> {
-    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY)
-      .then((accessToken) => {
-        if (accessToken === null) {
-          // Not wired up to Dropbox, so there cannot be a remote DB update
-          throw new Error("[Dropbox backup] no Dropbox access token; can't download update");
-        }
+    return AsyncStorage.getItem(DROPBOX.ACCESS_TOKEN_STORAGE_KEY).then((accessToken) => {
+      if (accessToken === null) {
+        // Not wired up to Dropbox, so there cannot be a remote DB update
+        throw new Error("[Dropbox backup] no Dropbox access token; can't download update");
+      }
 
-        console.log("[Dropbox backup] DOWNLOADING and applying DB from Dropbox: beginning.");
+      console.log("[Dropbox backup] DOWNLOADING and applying DB from Dropbox: beginning.");
 
-        // Download the backup file, replacing the existing database
-        return RNFetchBlob.config({
+      // Download the backup file, replacing the existing database
+      /*return RNFetchBlob.config({
           // DB data will be saved to this path
           path: this.getLocalDBFilePath(),
         }).fetch("POST", DROPBOX.DOWNLOAD_URL, {
@@ -176,9 +175,9 @@ export class DropboxDatabaseSync implements DatabaseSync {
           "Dropbox-API-Arg": JSON.stringify({
             path: this.getDropboxFolder() + this.getDatabaseBackupName(),
           }),
-        });
-      })
-      .then((response) => {
+        });*/
+    });
+    /*.then((response) => {
         console.log("[Dropbox backup] DOWNLOAD from Dropbox complete!");
         // Pull client_modified from the Dropbox-API-Result header and store it
         if (
@@ -199,7 +198,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
           console.error("[Dropbox backup] client_modified timestamp missing. Response:", response);
           return;
         }
-      });
+      });*/
   }
 
   public hasSynced(): Promise<boolean> {
@@ -242,8 +241,9 @@ export class DropboxDatabaseSync implements DatabaseSync {
 
   private copyDBToBackupFile(): Promise<void> {
     const databaseBackupFilePath = this.getLocalDBBackupFilePath();
+    return Promise.resolve();
     // Is there currently a backup file already?
-    return RNFS.stat(databaseBackupFilePath)
+    /*return RNFS.stat(databaseBackupFilePath)
       .then((statResult) => {
         console.log("RNFS statResult:", statResult);
         // There is a file here already! Delete it.
@@ -266,7 +266,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
       .then(() => {
         console.log("[Dropbox backup] Backup file created successfully!");
         return;
-      });
+      });*/
   }
 
   private getDatabaseFileMetadataFromDropbox(dropboxFilePath: string, dropboxAccessToken: string): Promise<Response> {
@@ -296,7 +296,8 @@ export class DropboxDatabaseSync implements DatabaseSync {
 
   private uploadDBToDropbox(localFilePath: string, dropboxFilePath: string, dropboxAccessToken: string): Promise<void> {
     console.log(`[Dropbox backup] UPLOADING local file [${localFilePath}] to remote file [${dropboxFilePath}]!`);
-    return RNFetchBlob.fetch(
+    return Promise.resolve();
+    /*return RNFetchBlob.fetch(
       "POST",
       DROPBOX.UPLOAD_URL,
       {
@@ -322,7 +323,7 @@ export class DropboxDatabaseSync implements DatabaseSync {
       } else {
         throw new Error("[Dropbox backup] Upload failure! HTTP status: " + fetchBlobResponse.respInfo.status);
       }
-    });
+    });*/
   }
 
   private getDatabaseName(): string {
@@ -338,10 +339,12 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   private getLocalDBFilePath(): string {
-    return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName();
+    return "xxxxx";
+    //return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName();
   }
 
   private getLocalDBBackupFilePath(): string {
-    return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseBackupName();
+    return "xxxxx";
+    //return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseBackupName();
   }
 }
