@@ -237,6 +237,8 @@ PODS:
   - React-jsinspector (0.62.21)
   - react-native-netinfo (5.9.9):
     - React-Core
+  - react-native-safe-area-context (3.1.9):
+    - React-Core
   - react-native-sqlite-storage (5.0.0):
     - React
   - React-RCTActionSheet (0.62.21):
@@ -302,8 +304,16 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.13.2):
     - React
-  - RNFS (2.16.4):
+  - RNCMaskedView (0.1.10):
     - React
+  - RNFS (2.16.6):
+    - React
+  - RNGestureHandler (1.9.0):
+    - React-Core
+  - RNReanimated (1.13.2):
+    - React-Core
+  - RNScreens (2.16.1):
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -347,6 +357,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native-macos/ReactCommon/jsinspector`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React-RCTActionSheet (from `../node_modules/react-native-macos/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native-macos/Libraries/NativeAnimation`)
@@ -361,7 +372,11 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNFS (from `../node_modules/react-native-fs`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -413,6 +428,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-macos/ReactCommon/jsinspector"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
   React-RCTActionSheet:
@@ -439,8 +456,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNFS:
     :path: "../node_modules/react-native-fs"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   Yoga:
     :path: "../node_modules/react-native-macos/ReactCommon/yoga"
 
@@ -472,6 +497,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: bb5b0cb1c9593b62f7c3306b890e3e68f937defa
   React-jsinspector: a8fa5d268a12885645ef6ba73d83650866355acd
   react-native-netinfo: 77d133105df525d4a11f10fcaa8d0b8883ea6429
+  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
   react-native-sqlite-storage: ce71689c5a73b79390a1ab213555ae80979a5dc7
   React-RCTActionSheet: d4c6811d601de8fc4f9b75db3c057e6cca993ad6
   React-RCTAnimation: fbba8af10947eeb588e41d105ac33d2382b04d6a
@@ -485,7 +511,11 @@ SPEC CHECKSUMS:
   ReactCommon: 16c035a87ae7344aa73bc4af23c9d3efc037b018
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: bc2f81cc1df90c267ce9ed30bb2dbc93b945a8ee
-  RNFS: 90d1a32d3bc8f75cc7fc3dd2f67506049664346b
+  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
+  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   Yoga: 3959958dd70574c156122f7a4a1aa9b14d76610f
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

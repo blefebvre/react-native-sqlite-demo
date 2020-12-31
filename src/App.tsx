@@ -5,14 +5,21 @@
  */
 import React, { useState, useEffect } from "react";
 import { AppState, StyleSheet, SafeAreaView, AppStateStatus } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import { AllLists } from "./components/AllLists";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { useDatabaseSync } from "./hooks/useDatabaseSync";
 import { DatabaseProvider } from "./context/DatabaseContext";
+import { HomeScreen } from "./components/HomeScreen";
 
 // Track the current state of the app as a regular variable (instead of in state), since
 // we do not want to re-render when this value changes.
 let appState: AppStateStatus;
+
+// React Navigation stack navigator
+const Stack = createStackNavigator();
 
 export const App: React.FunctionComponent = function() {
   // Initialize state
@@ -67,11 +74,11 @@ export const App: React.FunctionComponent = function() {
   if (isReady()) {
     // Once the database is ready, render the Lists
     return (
-      <SafeAreaView style={styles.container}>
-        <DatabaseProvider>
-          <AllLists />
-        </DatabaseProvider>
-      </SafeAreaView>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   } else {
     // Else, show a loading screen
