@@ -4,15 +4,15 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { useState, useEffect } from "react";
-import { AppState, StyleSheet, SafeAreaView, AppStateStatus } from "react-native";
+import { AppState, StyleSheet, AppStateStatus } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { AllLists } from "./components/AllLists";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { useDatabaseSync } from "./hooks/useDatabaseSync";
-import { DatabaseProvider } from "./context/DatabaseContext";
 import { HomeScreen } from "./components/HomeScreen";
+import { SettingsScreen } from "./components/SettingsScreen";
+import { ListDetailsScreen } from "./components/ListDetailsScreen";
 
 // Track the current state of the app as a regular variable (instead of in state), since
 // we do not want to re-render when this value changes.
@@ -76,7 +76,9 @@ export const App: React.FunctionComponent = function() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SQLite List App" component={HomeScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="List Details" component={ListDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

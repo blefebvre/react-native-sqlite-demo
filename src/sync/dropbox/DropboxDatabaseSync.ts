@@ -166,6 +166,8 @@ export class DropboxDatabaseSync implements DatabaseSync {
 
       console.log("[Dropbox backup] DOWNLOADING and applying DB from Dropbox: beginning.");
 
+      //console.log("RNFetchBlob", RNFetchBlob);
+
       // Download the backup file, replacing the existing database
       /*return RNFetchBlob.config({
           // DB data will be saved to this path
@@ -339,8 +341,8 @@ export class DropboxDatabaseSync implements DatabaseSync {
   }
 
   private getLocalDBFilePath(): string {
-    return "xxxxx";
-    //return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName();
+    //return "xxxxx";
+    return RNFS.LibraryDirectoryPath + "/LocalDatabase/" + this.getDatabaseName();
   }
 
   private getLocalDBBackupFilePath(): string {

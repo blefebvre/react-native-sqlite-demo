@@ -16,7 +16,7 @@ export const ListRow: React.FunctionComponent<Props> = function(props) {
   const { list, handleListClicked } = props;
   return (
     <TouchableOpacity onPress={() => handleListClicked(list)} style={styles.row} testID={`listButton:${list.title}`}>
-      <Text>{list.title}</Text>
+      <Text style={styles.text}>{list.title}</Text>
     </TouchableOpacity>
   );
 };
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     marginTop: 10,
-    backgroundColor: "#EEE",
+    backgroundColor: "#444",
     borderRadius: 3,
     shadowColor: "#000",
     shadowOffset: {
@@ -35,5 +35,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3,
+  },
+  text: {
+    color: "#EEE",
   },
 });

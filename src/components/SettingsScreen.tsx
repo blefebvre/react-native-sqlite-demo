@@ -3,8 +3,8 @@
  * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { useState } from "react";
-import { View, StyleSheet, Modal, Text, SafeAreaView, TouchableOpacity, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import RNRestart from "react-native-restart";
 import { Header } from "./Header";
 import { sharedStyle } from "../style/Shared";
@@ -13,19 +13,27 @@ import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
 import { LoadingScreen } from "./LoadingScreen";
 
 interface Props {
-  visible: boolean;
   back(): void;
 }
 
 const dropboxAuth: DropboxAuthorize = new DropboxAuthorize();
 const dropboxSync: DropboxDatabaseSync = new DropboxDatabaseSync();
 
-export const SettingsModal: React.FunctionComponent<Props> = function(props) {
-  const { visible } = props;
+export const SettingsScreen: React.FunctionComponent<Props> = function(props) {
   // Initialize state
   const [isDropboxStatusKnown, setIsDropboxStatusKnown] = useState(false);
   const [hasAuthorizedWithDropbox, setHasAuthorizedWithDropbox] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  useEffect(() => {
+    async function checkIfAuthorizedWithDropbox() {
+      // Check if this user has already authorized with Dropbox
+      const isAuthorized = await dropboxAuth.hasUserAuthorized();
+      setIsDropboxStatusKnown(true);
+      setHasAuthorizedWithDropbox(isAuthorized);
+    }
+    checkIfAuthorizedWithDropbox();
+  }, []); // [] = effect has no dependencies, so run this code only on component mount
 
   function renderDropboxComponents() {
     if (hasAuthorizedWithDropbox) {
@@ -129,36 +137,20 @@ export const SettingsModal: React.FunctionComponent<Props> = function(props) {
     setHasAuthorizedWithDropbox(false);
   }
 
-  async function modalOnShow() {
-    // Check if this user has already authorized with Dropbox
-    const isAuthorized = await dropboxAuth.hasUserAuthorized();
-    setIsDropboxStatusKnown(true);
-    setHasAuthorizedWithDropbox(isAuthorized);
-  }
+  return isDownloading ? (
+    <LoadingScreen text="Downloading database..." />
+  ) : (
+    <SafeAreaView style={styles.container} testID="settingsModal">
+      <View style={sharedStyle.headerWithButton}>
+        <Header title={`Settings`} />
 
-  return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={visible}
-      onRequestClose={() => props.back()}
-      onShow={modalOnShow}>
-      {isDownloading ? (
-        <LoadingScreen text="Downloading database..." />
-      ) : (
-        <SafeAreaView style={styles.container} testID="settingsModal">
-          <View style={sharedStyle.headerWithButton}>
-            <Header title={`Settings`} />
+        <TouchableOpacity style={sharedStyle.headerButton} onPress={() => props.back()}>
+          <Text>✖️</Text>
+        </TouchableOpacity>
+      </View>
 
-            <TouchableOpacity style={sharedStyle.headerButton} onPress={() => props.back()}>
-              <Text>✖️</Text>
-            </TouchableOpacity>
-          </View>
-
-          {isDropboxStatusKnown && renderDropboxComponents()}
-        </SafeAreaView>
-      )}
-    </Modal>
+      {isDropboxStatusKnown && renderDropboxComponents()}
+    </SafeAreaView>
   );
 };
 

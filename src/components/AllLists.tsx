@@ -10,8 +10,7 @@ import { NewItem } from "./NewItem";
 import { Header } from "./Header";
 import { List } from "../types/List";
 import { ListRow } from "./ListRow";
-import { ViewListModal } from "./ViewListModal";
-import { SettingsModal } from "./SettingsModal";
+import { ListDetailsScreen } from "./ListDetailsScreen";
 import { useLists } from "../hooks/useLists";
 
 // Main page of the app. This component renders:
@@ -20,8 +19,6 @@ import { useLists } from "../hooks/useLists";
 // - and a list of all the Lists saved locally in the app's database
 export const AllLists: React.FunctionComponent = function() {
   const [newListTitle, setNewListTitle] = useState("");
-  const [isListModalVisible, setIsListModalVisible] = useState(false);
-  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
   // Use the useLists hook to simplify list management.
   const { lists, selectList, selectedList, createList, deleteList } = useLists();
@@ -30,13 +27,17 @@ export const AllLists: React.FunctionComponent = function() {
     console.log(`List clicked! Title: ${list.title}`);
     await selectList(list);
     // Open a modal dialog to view and manage the items of a single list
-    setIsListModalVisible(true);
+    //setIsListModalVisible(true);
   }
 
   return (
     <View style={styles.container} testID="allListsView">
       <View style={styles.headerWithSettings}>
-        <TouchableOpacity style={styles.settingsButton} onPress={() => setIsSettingsModalVisible(true)}>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => {
+            /* setIsSettingsModalVisible(true) */
+          }}>
           <Text style={styles.settingsButtonText}>⚙️</Text>
         </TouchableOpacity>
         <Header title="SQLite List App - with Hooks" />
@@ -59,15 +60,14 @@ export const AllLists: React.FunctionComponent = function() {
       />
 
       {selectedList !== undefined && (
-        <ViewListModal
-          visible={isListModalVisible}
+        <ListDetailsScreen
           list={selectedList}
-          back={() => setIsListModalVisible(false)}
+          back={() => {
+            /* setIsListModalVisible(false) */
+          }}
           deleteList={deleteList}
         />
       )}
-
-      <SettingsModal visible={isSettingsModalVisible} back={() => setIsSettingsModalVisible(false)} />
     </View>
   );
 };
