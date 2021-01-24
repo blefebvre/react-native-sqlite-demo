@@ -6,6 +6,7 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ListItem } from "../types/ListItem";
+import { AppText } from "./AppText";
 import { Checkbox } from "./Checkbox";
 
 interface Props {
@@ -21,7 +22,7 @@ export const ListItemRow: React.FunctionComponent<Props> = function(props) {
       style={styles.row}
       testID={`listItem:${listItem.text}`}>
       <Checkbox checked={listItem.done} />
-      <Text style={[styles.itemText, listItem.done && styles.done]}>{listItem.text}</Text>
+      <AppText style={[styles.itemText, listItem.done && styles.done]}>{listItem.text}</AppText>
     </TouchableOpacity>
   );
 };

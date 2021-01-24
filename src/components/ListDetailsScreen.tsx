@@ -1,31 +1,37 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { useState } from "react";
 import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
 import { Header } from "./Header";
-import { List } from "../types/List";
 import { NewItem } from "./NewItem";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
 import { sharedStyle } from "../style/Shared";
 import { useListItems } from "../hooks/useListItems";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../App";
+import { useLists } from "../hooks/useLists";
+import { AppText } from "./AppText";
 
 interface Props {
-  list: List;
-  back(): void;
-  deleteList(list: List): Promise<void>;
+  navigation: StackNavigationProp<RootStackParamList, "List Details">;
+  route: RouteProp<RootStackParamList, "List Details">;
 }
 
 // Modal dialog to view and manage the items of a single list
 export const ListDetailsScreen: React.FunctionComponent<Props> = function(props) {
-  const { list } = props;
+  const { navigation, route } = props;
+  const { list } = route.params;
   const [newItemText, setNewItemText] = useState("");
 
   // Use the useListItems hook to manage list items, instead of using the DB object directly
   const { selectedListsItems, updateListItem, addListItem } = useListItems(list);
+  // Use the useLists hook to simplify list management
+  const { deleteList } = useLists();
 
   async function toggleListItemDoneness(listItem: ListItem) {
     const newDoneState = !listItem.done;
@@ -48,8 +54,8 @@ export const ListDetailsScreen: React.FunctionComponent<Props> = function(props)
         style: "destructive",
         onPress: async () => {
           // Delete the list, then head back to the main view
-          await props.deleteList(list);
-          props.back();
+          await deleteList(list);
+          navigation.goBack();
         },
       },
       {
@@ -61,14 +67,6 @@ export const ListDetailsScreen: React.FunctionComponent<Props> = function(props)
 
   return (
     <SafeAreaView style={styles.container} testID="viewListModal">
-      <View style={sharedStyle.headerWithButton}>
-        <Header title={`List: ${list.title}`} />
-
-        <TouchableOpacity style={sharedStyle.headerButton} onPress={() => props.back()}>
-          <Text>✖️</Text>
-        </TouchableOpacity>
-      </View>
-
       <NewItem
         newItemName={newItemText}
         handleNameChange={(value) => setNewItemText(value)}
@@ -83,7 +81,7 @@ export const ListDetailsScreen: React.FunctionComponent<Props> = function(props)
         keyExtractor={(_, index) => `item-${index}`}
         ListFooterComponent={
           <TouchableOpacity style={styles.deleteList} onPress={promptToDeleteList} testID="deleteListButton">
-            <Text>Delete list</Text>
+            <AppText>Delete list</AppText>
           </TouchableOpacity>
         }
       />

@@ -1,6 +1,6 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { useEffect, useState } from "react";
@@ -11,9 +11,12 @@ import { sharedStyle } from "../style/Shared";
 import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";
 import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
 import { LoadingScreen } from "./LoadingScreen";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../App";
 
 interface Props {
   back(): void;
+  navigation: StackNavigationProp<RootStackParamList, "Settings">;
 }
 
 const dropboxAuth: DropboxAuthorize = new DropboxAuthorize();
@@ -24,6 +27,8 @@ export const SettingsScreen: React.FunctionComponent<Props> = function(props) {
   const [isDropboxStatusKnown, setIsDropboxStatusKnown] = useState(false);
   const [hasAuthorizedWithDropbox, setHasAuthorizedWithDropbox] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const { navigation } = props;
 
   useEffect(() => {
     async function checkIfAuthorizedWithDropbox() {
@@ -141,14 +146,6 @@ export const SettingsScreen: React.FunctionComponent<Props> = function(props) {
     <LoadingScreen text="Downloading database..." />
   ) : (
     <SafeAreaView style={styles.container} testID="settingsModal">
-      <View style={sharedStyle.headerWithButton}>
-        <Header title={`Settings`} />
-
-        <TouchableOpacity style={sharedStyle.headerButton} onPress={() => props.back()}>
-          <Text>✖️</Text>
-        </TouchableOpacity>
-      </View>
-
       {isDropboxStatusKnown && renderDropboxComponents()}
     </SafeAreaView>
   );
@@ -157,6 +154,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = function(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
   },

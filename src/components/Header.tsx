@@ -4,7 +4,8 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { AppText } from "./AppText";
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ interface Props {
 
 export const Header: React.FunctionComponent<Props> = function(props) {
   const { title } = props;
-  return <Text style={styles.header}>{title}</Text>;
+  return <AppText style={styles.header}>{title}</AppText>;
 };
 
 const styles = StyleSheet.create({

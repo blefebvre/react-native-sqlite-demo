@@ -5,6 +5,7 @@
  */
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { AppText } from "./AppText";
 
 interface Props {
   text?: string;
@@ -15,7 +16,7 @@ export const LoadingScreen: React.FunctionComponent<Props> = function(props) {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#00FF00" />
-      <Text style={styles.text}>{props.text || "Loading..."}</Text>
+      <AppText style={styles.text}>{props.text || "Loading..."}</AppText>
     </View>
   );
 };
