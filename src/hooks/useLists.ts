@@ -14,21 +14,21 @@ export function useLists() {
   const database = useDatabase();
 
   useEffect(() => {
-    refreshListOfLists();
+    refreshLists();
   }, []);
 
-  function refreshListOfLists() {
+  function refreshLists() {
     // Query all lists from the DB, then store them as state
     return database.getAllLists().then(setLists);
   }
 
   function createList(newListTitle: string): Promise<void> {
-    return database.createList(newListTitle).then(refreshListOfLists);
+    return database.createList(newListTitle).then(refreshLists);
   }
 
   function deleteList(listToDelete: List): Promise<void> {
     if (listToDelete !== undefined) {
-      return database.deleteList(listToDelete).then(refreshListOfLists);
+      return database.deleteList(listToDelete).then(refreshLists);
     }
     // otherwise:
     return Promise.reject(Error("Could not delete an undefined list"));
@@ -44,5 +44,6 @@ export function useLists() {
     createList,
     deleteList,
     selectList,
+    refreshLists,
   };
 }

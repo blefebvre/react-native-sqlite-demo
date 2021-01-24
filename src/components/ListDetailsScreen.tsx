@@ -4,12 +4,10 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React, { useState } from "react";
-import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
-import { Header } from "./Header";
+import { StyleSheet, SafeAreaView, TouchableOpacity, FlatList, Alert } from "react-native";
 import { NewItem } from "./NewItem";
 import { ListItem } from "../types/ListItem";
 import { ListItemRow } from "./ListItemRow";
-import { sharedStyle } from "../style/Shared";
 import { useListItems } from "../hooks/useListItems";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
