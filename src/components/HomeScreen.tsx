@@ -3,16 +3,12 @@
  * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../App";
 import { List } from "../types/List";
 import { useLists } from "../hooks/useLists";
-import { StyleSheet, View } from "react-native";
-import { NewItem } from "./NewItem";
-import { FlatList } from "react-native-gesture-handler";
-import { ListRow } from "./ListRow";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
 import { AllLists } from "./AllLists";
 
 interface Props {

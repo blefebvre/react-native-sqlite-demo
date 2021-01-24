@@ -6,8 +6,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import RNRestart from "react-native-restart";
-import { Header } from "./Header";
-import { sharedStyle } from "../style/Shared";
 import { DropboxAuthorize } from "../sync/dropbox/DropboxAuthorize";
 import { DropboxDatabaseSync } from "../sync/dropbox/DropboxDatabaseSync";
 import { LoadingScreen } from "./LoadingScreen";

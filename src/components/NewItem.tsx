@@ -4,7 +4,7 @@
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import * as React from "react";
-import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { AppText } from "./AppText";
 
 interface Props {
