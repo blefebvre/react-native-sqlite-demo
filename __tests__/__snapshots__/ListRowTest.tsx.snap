@@ -4,7 +4,6 @@ exports[`ListRow renders correctly 1`] = `
 <View
   accessible={true}
   focusable={true}
-  isTVSelectable={true}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -14,7 +13,7 @@ exports[`ListRow renders correctly 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     Object {
-      "backgroundColor": "#EEE",
+      "backgroundColor": "#444",
       "borderRadius": 3,
       "borderWidth": 1,
       "marginTop": 10,
@@ -31,7 +30,13 @@ exports[`ListRow renders correctly 1`] = `
   }
   testID="listButton:Test list title"
 >
-  <Text>
+  <Text
+    style={
+      Object {
+        "color": "#EEE",
+      }
+    }
+  >
     Test list title
   </Text>
 </View>
