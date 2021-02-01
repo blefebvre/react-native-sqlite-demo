@@ -1,8 +1,8 @@
 # React Native SQLite + Dropbox sync demo
 
-This project is a basic List application that demonstrates building an offline first app with SQLite and React Native (featuring TypeScript and CocoaPods under the hood). Once authorized, the database can be synced between multiple devices using Dropbox. 
+This project is a basic List application that demonstrates building an offline first app with SQLite and React Native (featuring TypeScript and CocoaPods under the hood). Once authorized, the database can be synced between multiple iOS devices using Dropbox. 
 
-These instructions only cover iOS usage at this time.
+These instructions cover iOS and macOS usage at this time.
 
 
 ## Install JS dependencies
@@ -17,27 +17,19 @@ These instructions only cover iOS usage at this time.
     popd
 
 
+## Install macOS dependencies
+
+    pushd macos/
+    pod install
+    popd
+
+
 ## Start the React Native Metro Bundler
 
-    npm start
+    npm run start:macos
 
 
-## Compile TypeScript source in watch mode
-
-    npm run tsc -- -w
-
-
-## Run the Jest tests in watch mode
-
-    npm test
-
-
-## Open the source in VS Code
-
-    code .
-
-
-## Run (and debug) on an iOS simulator
+## Run (and debug) on the iOS simulator
 
 With the "React Native Tools" VSCode extension installed, open the Debug tab and press the "Play" button with "Debug iOS" selected in the dropdown.
 
@@ -49,7 +41,28 @@ Alternatively:
 
 Select a simulator of your choice. Press the "run" button.
 
-## E2E Testing with Detox
+## Run on the macOS simulator
+
+Open the macOS Xcode project:
+
+    open macos/RNSQLiteDemo.xcworkspace/
+
+Select `My Mac` as the "active scheme". Press the "Build and then run" (Play) button.
+
+
+## Types and testing
+
+### Compile TypeScript source in watch mode
+
+    npm run tsc -- -w
+
+
+### Run the Jest unit tests
+
+    npm test
+
+
+### E2E Testing with Detox on iOS
 
 End-to-end testing happens from within the `e2e/` directory:
 

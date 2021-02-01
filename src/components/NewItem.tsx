@@ -1,10 +1,11 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React from "react";
-import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
+import * as React from "react";
+import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { AppText } from "./AppText";
 
 interface Props {
   newItemName: string; // Prop that the TextInput is controlled by
@@ -34,6 +35,7 @@ export const NewItem: React.FunctionComponent<Props> = function(props) {
     <View style={styles.wrapper}>
       <TextInput
         placeholder={placeholderText}
+        placeholderTextColor="#999"
         onChangeText={handleNameChange}
         value={newItemName}
         style={styles.textInput}
@@ -41,7 +43,7 @@ export const NewItem: React.FunctionComponent<Props> = function(props) {
         onSubmitEditing={createNewItem}
       />
       <TouchableOpacity style={styles.button} onPress={createNewItem} testID={props.buttonTestId || "newItemButton"}>
-        <Text>{createButtonText}</Text>
+        <AppText>{createButtonText}</AppText>
       </TouchableOpacity>
     </View>
   );
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: 10,
   },
   button: {
     flex: 1,

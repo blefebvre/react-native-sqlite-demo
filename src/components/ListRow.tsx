@@ -1,11 +1,12 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import React from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import { List } from "../types/List";
+import { AppText } from "./AppText";
 
 interface Props {
   list: List;
@@ -16,7 +17,7 @@ export const ListRow: React.FunctionComponent<Props> = function(props) {
   const { list, handleListClicked } = props;
   return (
     <TouchableOpacity onPress={() => handleListClicked(list)} style={styles.row} testID={`listButton:${list.title}`}>
-      <Text>{list.title}</Text>
+      <AppText style={styles.text}>{list.title}</AppText>
     </TouchableOpacity>
   );
 };
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     marginTop: 10,
-    backgroundColor: "#EEE",
+    backgroundColor: "#444",
     borderRadius: 3,
     shadowColor: "#000",
     shadowOffset: {
@@ -35,5 +36,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3,
+  },
+  text: {
+    color: "#EEE",
   },
 });

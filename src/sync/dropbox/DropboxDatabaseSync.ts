@@ -1,10 +1,10 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
 import NetInfo from "@react-native-community/netinfo";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import moment, { Moment } from "moment";

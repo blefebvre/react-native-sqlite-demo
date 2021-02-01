@@ -5,6 +5,7 @@ exports[`Renders correctly checked 1`] = `
   accessibilityLabel="checkbox:checked"
   style={
     Object {
+      "color": "#000",
       "fontSize": 30,
     }
   }
@@ -18,6 +19,7 @@ exports[`Renders correctly unchecked 1`] = `
   accessibilityLabel="checkbox:unchecked"
   style={
     Object {
+      "color": "#000",
       "fontSize": 30,
     }
   }

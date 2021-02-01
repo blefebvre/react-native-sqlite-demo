@@ -4,7 +4,6 @@ exports[`ListItemRow renders correctly 1`] = `
 <View
   accessible={true}
   focusable={true}
-  isTVSelectable={true}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -29,6 +28,7 @@ exports[`ListItemRow renders correctly 1`] = `
     accessibilityLabel="checkbox:unchecked"
     style={
       Object {
+        "color": "#000",
         "fontSize": 30,
       }
     }
@@ -38,6 +38,9 @@ exports[`ListItemRow renders correctly 1`] = `
   <Text
     style={
       Array [
+        Object {
+          "color": "#000",
+        },
         Object {
           "marginBottom": 15,
           "marginLeft": 11,
