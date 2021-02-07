@@ -21,15 +21,8 @@ interface Props {
 // - and a list of all the Lists saved locally in the app's database
 export const HomeScreen: React.FunctionComponent<Props> = function({ navigation }) {
   // Use the useLists hook to simplify list management.
-  const { lists, createList, refreshLists } = useLists();
+  const { lists, createList } = useLists();
   const { navigate } = navigation;
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      refreshLists();
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   return (
     <AllLists lists={lists} createList={createList} openList={(list: List) => navigate("List Details", { list })} />

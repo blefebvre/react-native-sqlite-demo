@@ -1,23 +1,37 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Database, sqliteDatabase } from "../database/Database";
-import { inMemoryDatabase } from "../database/InMemoryDatabase";
+import { inMemoryDatabase } from "../database/InMemoryDatabase"; // optional: see comments below
+import { List } from "../types/List";
 
 // Initialize our Database context.
 // Any implementation that matches the Database interface will do. We will go with our
 // sqliteDatabase for this app.
 const DatabaseContext = React.createContext<Database | undefined>(undefined);
 
-// The provider which enables accessing our database context from it's component tree.
-export const DatabaseProvider: React.FunctionComponent = function(props) {
-  return <DatabaseContext.Provider value={sqliteDatabase} {...props} />;
-  // Alternatively, try the InMemoryDatabase instead by commenting out the above line,
-  // and uncommenting the one below.
-  //return <DatabaseContext.Provider value={inMemoryDatabase} {...props} />;
+// Store the List state in context as well
+const ListsContext = React.createContext<List[] | undefined>(undefined);
+type SetLists = (lists: List[]) => void;
+const SetListsContext = React.createContext<SetLists | undefined>(undefined);
+
+// The provider which enables accessing our list context from it's component tree.
+export const ListContextProvider: React.FunctionComponent = function({ children }) {
+  const [lists, setLists] = useState<List[]>([]); // Init with empty list of Lists
+
+  return (
+    <DatabaseContext.Provider value={sqliteDatabase}>
+      <ListsContext.Provider value={lists}>
+        <SetListsContext.Provider value={setLists}>{children}</SetListsContext.Provider>
+      </ListsContext.Provider>
+    </DatabaseContext.Provider>
+  );
+
+  // Alternatively, try the InMemoryDatabase instead by replacing `sqliteDatabase` above
+  // with `inMemoryDatabase`.
 };
 
 // Hook to pull our database object from the context and return it.
@@ -25,7 +39,23 @@ export const DatabaseProvider: React.FunctionComponent = function(props) {
 export function useDatabase(): Database {
   const database = useContext(DatabaseContext);
   if (database === undefined) {
-    throw new Error("useDatabase must be used within a DatabaseProvider");
+    throw new Error("useDatabase must be used within a ListContextProvider");
   }
   return database;
+}
+
+export function useListsContext(): List[] {
+  const listsContext = useContext(ListsContext);
+  if (listsContext === undefined) {
+    throw new Error("useListsContext must be used within a ListContextProvider");
+  }
+  return listsContext;
+}
+
+export function useSetListsContext(): SetLists {
+  const listsUpdateContext = useContext(SetListsContext);
+  if (listsUpdateContext === undefined) {
+    throw new Error("useSetListsContext must be used within a ListContextProvider");
+  }
+  return listsUpdateContext;
 }

@@ -1,16 +1,17 @@
 /**
  * React Native SQLite Demo
- * Copyright (c) 2018-2020 Bruce Lefebvre <bruce@brucelefebvre.com>
+ * Copyright (c) 2021 Bruce Lefebvre <bruce@brucelefebvre.com>
  * https://github.com/blefebvre/react-native-sqlite-demo/blob/master/LICENSE
  */
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { List } from "../types/List";
-import { useDatabase } from "../context/DatabaseContext";
+import { useDatabase, useListsContext, useSetListsContext } from "../context/DatabaseContext";
 
 // Hook for managing and accessing lists (CRUD)
 export function useLists() {
-  const [lists, setLists] = useState<List[]>([]);
-  const [selectedList, setSelectedList] = useState<List>();
+  // Get the lists array and setter from context
+  const lists: List[] = useListsContext();
+  const setLists: (lists: List[]) => void = useSetListsContext();
   const database = useDatabase();
 
   useEffect(() => {
@@ -34,16 +35,10 @@ export function useLists() {
     return Promise.reject(Error("Could not delete an undefined list"));
   }
 
-  async function selectList(list: List) {
-    setSelectedList(list);
-  }
-
   return {
     lists,
-    selectedList,
     createList,
     deleteList,
-    selectList,
     refreshLists,
   };
 }

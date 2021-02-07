@@ -13,7 +13,7 @@ import { HomeScreen } from "./components/HomeScreen";
 import { SettingsScreen } from "./components/SettingsScreen";
 import { ListDetailsScreen } from "./components/ListDetailsScreen";
 import { List } from "./types/List";
-import { DatabaseProvider } from "./context/DatabaseContext";
+import { ListContextProvider } from "./context/DatabaseContext";
 import { AppText } from "./components/AppText";
 
 // Track the current state of the app as a regular variable (instead of in state), since
@@ -82,7 +82,7 @@ export const App: React.FunctionComponent = function() {
   if (isReady()) {
     // Once the database is ready, render the Lists
     return (
-      <DatabaseProvider>
+      <ListContextProvider>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
@@ -122,7 +122,7 @@ export const App: React.FunctionComponent = function() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </DatabaseProvider>
+      </ListContextProvider>
     );
   } else {
     // Else, show a loading screen
