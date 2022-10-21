@@ -23,7 +23,7 @@
     "react-native-fs": "^2.16.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-macos": "^0.62.21",
-    "react-native-reanimated": "^1.13.2",
+    "react-native-reanimated": "^2.10.0",
     "react-native-restart": "0.0.13",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
